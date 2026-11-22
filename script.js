@@ -170,10 +170,21 @@ if(name==='xiaohongshu'){
   const category=saved.xhsCategory||'推荐';
   const query=saved.xhsQuery||'';
   // 首次打开搜索页时预置参考截图中的三条历史记录；用户主动清空后保持空白。
-  if(!Array.isArray(saved.xhsSearchHistory)){
-    saved.xhsSearchHistory=['韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];
-    persist();
-  }
+ if(!Array.isArray(saved.xhsSearchHistory)){
+  saved.xhsSearchHistory=[];
+}
+
+if(
+  saved.xhsSearchHistory.length===0 &&
+  saved.xhsSearchHistoryCleared!==true
+){
+  saved.xhsSearchHistory=[
+    '韩国打卡地点推荐',
+    '礼山',
+    '太喜欢哥哥了怎么办'
+  ];
+  persist();
+}
   const history=saved.xhsSearchHistory;
   const feed=[
    ['美妆','男生也能用的清爽底妆思路','少量妆前保湿，局部遮瑕后薄薄压一层散粉。重点是均匀肤色，不要让底妆有厚重面具感。','xhs-assets/beauty_01.jpg','2.4万','momo的化妆台','💗'],
@@ -235,7 +246,13 @@ appContent.addEventListener('click',async e=>{
  if(act){
   if(act==='xhs-search-open'){saved.xhsTab='search';saved.xhsQuery='';persist();renderApp('xiaohongshu');setTimeout(()=>$('#xhsSearchInput')?.focus(),40);return}
   if(act==='xhs-search-back'){saved.xhsTab='home';persist();renderApp('xiaohongshu');return}
-  if(act==='xhs-clear-history'){saved.xhsSearchHistory=[];persist();renderApp('xiaohongshu');return}
+ if(act==='xhs-clear-history'){
+  saved.xhsSearchHistory=[];
+  saved.xhsSearchHistoryCleared=true;
+  persist();
+  renderApp('xiaohongshu');
+  return;
+}
   if(act==='xhs-history-item'||act==='xhs-suggestion'){
     const q=e.target.closest('[data-query]')?.dataset.query||'';if(!q)return;
     saved.xhsQuery=q;saved.xhsSearchHistory=[q,...(saved.xhsSearchHistory||[]).filter(x=>x!==q)].slice(0,12);saved.xhsTab='search-results';persist();renderApp('xiaohongshu');return;
