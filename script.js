@@ -169,7 +169,12 @@ if(name==='xiaohongshu'){
   const profileTab=saved.xhsProfileTab||'notes';
   const category=saved.xhsCategory||'推荐';
   const query=saved.xhsQuery||'';
-  const history=saved.xhsSearchHistory||[];
+  // 首次打开搜索页时预置参考截图中的三条历史记录；用户主动清空后保持空白。
+  if(!Array.isArray(saved.xhsSearchHistory)){
+    saved.xhsSearchHistory=['韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];
+    persist();
+  }
+  const history=saved.xhsSearchHistory;
   const feed=[
    ['美妆','男生也能用的清爽底妆思路','少量妆前保湿，局部遮瑕后薄薄压一层散粉。重点是均匀肤色，不要让底妆有厚重面具感。','xhs-assets/beauty_01.jpg','2.4万','momo的化妆台','💗'],
    ['自拍','男生镜子自拍｜手机放这个高度更显比例','手机放在胸口到下巴之间试拍，身体微侧、肩膀放松，背景尽量留白。','xhs-assets/selfie_01.jpg','8763','日常自拍研究所','🪞'],
