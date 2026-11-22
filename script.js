@@ -165,15 +165,29 @@ function renderApp(name){
  }
  if(name==='xiaohongshu'){
   const tab=saved.xhsTab||'home',following=saved.xhsFollowing||(saved.xhsFollowing=Math.floor(Math.random()*240+30));
-  const feed=[['生活','今天不赶时间，慢慢把日子过舒服','早上做一杯冰咖啡，开窗通风，收拾一下桌面。普通的日子也想留个记录。','photos/1.jpg','2.4万','今天也要松弛','☁️'],['穿搭','最近出门最常穿的轻松搭配','宽松衬衫搭直筒裤和舒服的鞋，低饱和色系随手搭都自然。','photos/2.jpg','8763','衣橱慢慢整理','🧸'],['手作','周末手作计划｜给桌面添一点小东西','不追求一次做得完美，享受慢慢拼、慢慢整理的过程。','photos/3.jpg','1.1万','小小制作所','🧵'],['旅行','散步也能拍出旅行感的小方法','找一条没走过的街，留意光影、店招和树影。半日漫游也会有惊喜。','photos/4.jpg','5632','沿途收藏家','🌿'],['好物','桌面上留下来的几样小物','只留下真正会用的东西，收纳不必复杂。顺手、耐看、每天碰到就是好物。','photos/5.jpg','3.6万','桌面研究员','🪴'],['美食','五分钟搞定的懒人早餐','酸奶、当季水果和烤吐司，忙的时候也记得好好吃饭。','photos/6.jpg','9450','早餐不迟到','🍓'],['兴趣','收藏夹里的兴趣终于开始行动','从最小的一步开始：材料准备好，给自己留半小时。不必等有空才开始。','photos/7.jpg','1.8万','兴趣加载中','🎧'],['居家','房间一角，最近越看越喜欢','光线好的时候整理床边和书桌，放一束花或一本书，家就有新的感觉。','photos/1.jpg','7218','住在小角落','🏠']];
-  const shortcuts=['🔴|直播广场','⭐|星光夜市','🖐️|超级合拍','📦|好货市场','🧾|宠粉清单','🗒️|我的订单','🛒|购物车','🏷️|优惠券','💬|客服消息','🕒|商品足迹'];
+  const profileTab=saved.xhsProfileTab||'notes',category=saved.xhsCategory||'推荐';
+  const feed=[
+   ['美妆','新手也能学会的清透奶油肌','妆前保湿、薄薄上底妆，再用少量腮红提气色。重点是少量多次，保留自然皮肤质感。','xhs-assets/xhs-makeup.jpg','2.4万','momo的化妆台','💗'],
+   ['自拍','自然光自拍｜脸部更立体的小技巧','站在窗边让光从斜前方照过来，镜头略高于眼睛，肩膀放松，表情会更自然。','xhs-assets/xhs-selfie.jpg','8763','日常自拍研究所','🪞'],
+   ['出片','不尴尬的拍照姿势清单','身体微微侧转、重心放后脚，手里拿一件小道具；连拍几张比僵硬摆拍更容易出片。','xhs-assets/xhs-photo-tips.jpg','1.1万','出片灵感簿','📸'],
+   ['韩语学习','每天五分钟｜日常韩语表达','把常用短句放进自己的生活场景里练习：안녕하세요 你好；천천히 말해 주세요 请说慢一点。','xhs-assets/xhs-korean-study.jpg','5632','momo学韩语','🇰🇷'],
+   ['美妆','腮红怎么打才有自然氛围感','先微笑找到苹果肌，少量点涂后向太阳穴轻轻晕开。冷调粉和蜜桃色可以按妆容选择。','xhs-assets/xhs-makeup.jpg','3.6万','今日妆容灵感','🌷'],
+   ['自拍','镜子自拍构图｜留白更显干净','镜面擦干净，手机稍微偏离脸部中心，背景只保留一两个重点，画面就不会太杂乱。','xhs-assets/xhs-selfie.jpg','9450','镜头里的日常','🤍'],
+   ['出片','咖啡店拍照的三个取景角度','试试桌面俯拍、窗边半身和环境远景。先找干净背景，再把人物放在画面三分之一处。','xhs-assets/xhs-photo-tips.jpg','1.8万','周末拍照计划','☕'],
+   ['韩语学习','韩语入门｜先记住这几句','오늘 뭐 해요? 今天做什么？ 너무 예뻐요 真的好漂亮。跟读时先慢速，再试着连读。','xhs-assets/xhs-korean-study.jpg','7218','韩语慢慢学','📖']
+  ];
+  const categories=['推荐','美妆','自拍','出片','韩语学习'];
   const nav=(active)=>`<div class="xhs-bottom"><button class="${active==='home'?'active':''}" data-action="xhs-tab" data-tab="home">首页</button><button class="${active==='mall'?'active':''}" data-action="xhs-tab" data-tab="mall">市集</button><button class="xhs-plus">＋</button><button class="${active==='messages'?'active':''}" data-action="xhs-tab" data-tab="messages">消息</button><button class="${active==='me'?'active':''}" data-action="xhs-tab" data-tab="me">我</button></div>`;
-  if(tab==='messages'){c.innerHTML=wrap(`<div class="xhs-topbar"><span></span><strong>消息</strong><span>⌕　＋</span></div><div class="xhs-empty"><div class="xhs-empty-ico">💬</div><b>暂时没有消息</b><p>新的互动会显示在这里</p></div>${nav('messages')}`,'');return}
-  if(tab==='me'){c.innerHTML=wrap(`<div class="xhs-profile"><div class="xhs-profile-head"><img class="xhs-p5-avatar" src="avatars/p5.jpg" alt="p5头像"><div><strong>momo</strong><small>小红书号：momo_0716</small><small>IP属地：福建</small></div><button class="xhs-edit">编辑资料</button></div><div class="xhs-stats"><div><b>${following}</b><span>关注</span></div><div><b>0</b><span>粉丝</span></div><div><b>0</b><span>获赞与收藏</span></div></div><p class="xhs-bio">慢慢生活，收集喜欢的小事 ✨</p><div class="xhs-profile-buttons"><button>笔记</button><button>收藏</button><button>浏览记录</button></div><div class="xhs-profile-tabs"><b>笔记</b><span>收藏</span><span>赞过</span></div><div class="xhs-empty"><div class="xhs-empty-ico">📔</div><b>还没有发布笔记</b><p>记录生活的第一篇笔记吧</p></div>${nav('me')}`,'');return}
-  const mall=tab==='mall';
-  c.innerHTML=wrap(`<div class="xhs-searchbar"><span>⌕　搜索穿搭、好物、灵感</span><b>▣</b><button>搜索</button></div><div class="xhs-tabs"><button class="active" data-action="xhs-tab" data-tab="home">推荐</button><button>REDONE</button><button>穿搭</button><button>家居</button><button>潮玩</button><button>数码</button><button>美食</button></div>${mall?`<div class="xhs-shortcuts">${shortcuts.map(x=>{const [em,n]=x.split('|');return `<div><i>${em}</i><span>${n}</span></div>`}).join('')}</div>`:''}<div class="xhs-feed-title">${mall?'好物灵感':'为你发现'} <small>探索更多生活灵感</small></div><div class="xhs-masonry">${feed.map(p=>`<article class="xhs-card"><img src="${p[3]}" alt=""><div class="xhs-card-text"><small class="xhs-tag">${p[0]}</small><b>${p[1]}</b><p>${p[2]}</p><div class="xhs-card-author"><span class="xhs-mini-avatar">${p[6]}</span><span>${p[5]}</span><span class="xhs-heart">♡ ${p[4]}</span></div></div></article>`).join('')}</div>${nav(mall?'mall':'home')}`,'');return;
+  if(tab==='messages'){c.innerHTML=wrap(`<div class="xhs-topbar"><span></span><strong>消息</strong><span>⌕　＋</span></div><div class="xhs-empty"><div class="xhs-empty-ico">♡</div><b>暂时没有消息</b><p>新的互动会显示在这里</p></div>${nav('messages')}`,'');return}
+  if(tab==='me'){
+   const empty=profileTab==='notes'?['📔','还没有发布笔记','记录生活的第一篇笔记吧']:profileTab==='favorites'?['♡','还没有收藏内容','喜欢的内容会保存在这里']:profileTab==='history'?['◷','暂无浏览记录','看过的内容会显示在这里']:['♡','还没有赞过的内容','点亮喜欢的内容后会显示在这里'];
+   c.innerHTML=wrap(`<div class="xhs-profile"><div class="xhs-profile-head"><img class="xhs-p5-avatar" src="xhs-assets/p5-avatar.jpg" alt="momo头像"><div><strong>momo</strong><small>小红书号：momo_0716</small><small>IP属地：韩国</small></div><button class="xhs-edit">编辑资料</button></div><div class="xhs-stats"><div><b>${following}</b><span>关注</span></div><div><b>0</b><span>粉丝</span></div><div><b>0</b><span>获赞与收藏</span></div></div><p class="xhs-bio">慢慢生活，收集喜欢的小事 ✨</p><div class="xhs-profile-buttons"><button data-action="xhs-profile-tab" data-tab="notes">笔记</button><button data-action="xhs-profile-tab" data-tab="favorites">收藏</button><button data-action="xhs-profile-tab" data-tab="history">浏览记录</button></div><div class="xhs-profile-tabs"><button class="${profileTab==='notes'?'active':''}" data-action="xhs-profile-tab" data-tab="notes">笔记</button><button class="${profileTab==='favorites'?'active':''}" data-action="xhs-profile-tab" data-tab="favorites">收藏</button><button class="${profileTab==='likes'?'active':''}" data-action="xhs-profile-tab" data-tab="likes">赞过</button></div><div class="xhs-empty"><div class="xhs-empty-ico">${empty[0]}</div><b>${empty[1]}</b><p>${empty[2]}</p></div>${nav('me')}`,'');return
+  }
+  const mall=tab==='mall',filtered=category==='推荐'?feed:feed.filter(p=>p[0]===category);
+  const visible=mall?feed:filtered;
+  c.innerHTML=wrap(`<div class="xhs-searchbar"><span>⌕　搜索美妆、自拍、韩语学习</span><b>▣</b><button>搜索</button></div><div class="xhs-tabs">${categories.map(k=>`<button class="${category===k?'active':''}" data-action="xhs-category" data-category="${k}">${k}</button>`).join('')}</div>${mall?`<div class="xhs-shortcuts"><div><i>💄</i><span>美妆灵感</span></div><div><i>🪞</i><span>自拍技巧</span></div><div><i>📸</i><span>拍照姿势</span></div><div><i>🇰🇷</i><span>韩语入门</span></div><div><i>📝</i><span>学习打卡</span></div></div>`:''}<div class="xhs-feed-title">${mall?'灵感专题':'为你推荐'} <small>美妆 · 自拍 · 出片 · 한국어</small></div><div class="xhs-masonry">${visible.map(p=>`<article class="xhs-card"><img src="${p[3]}" alt=""><div class="xhs-card-text"><small class="xhs-tag">${p[0]}</small><b>${p[1]}</b><p>${p[2]}</p><div class="xhs-card-author"><span class="xhs-mini-avatar">${p[6]}</span><span>${p[5]}</span><span class="xhs-heart">♡ ${p[4]}</span></div></div></article>`).join('')}</div>${nav(mall?'mall':'home')}`,'');return;
  }
- if(name==='browser'){
+if(name==='browser'){
   c.innerHTML=wrap(`<form class="browser-form" id="browserForm"><span>🔍</span><input id="browserUrl" placeholder="输入网址或搜索内容" value="https://www.apple.com"><button>前往</button></form><div class="browser-shortcuts">${[['Apple','https://www.apple.com'],['Bing','https://www.bing.com'],['GitHub','https://github.com']].map(x=>`<button data-url="${x[1]}"><span>🌐</span>${x[0]}</button>`).join('')}</div><div class="browser-note">网页将在独立浏览器标签页打开。<p>为了安全和兼容性，模拟器不直接把外部网页嵌入手机内。</p></div>`,'搜索或输入网址');return;
  }
  if(name==='camera')return;
@@ -187,6 +201,8 @@ appContent.addEventListener('click',async e=>{
  const act=e.target.closest('[data-action]')?.dataset.action;
  if(act){
   if(act==='xhs-tab'){saved.xhsTab=e.target.closest('[data-tab]')?.dataset.tab||'home';persist();renderApp('xiaohongshu');return}
+  if(act==='xhs-category'){saved.xhsCategory=e.target.closest('[data-category]')?.dataset.category||'推荐';saved.xhsTab='home';persist();renderApp('xiaohongshu');return}
+  if(act==='xhs-profile-tab'){saved.xhsProfileTab=e.target.closest('[data-tab]')?.dataset.tab||'notes';saved.xhsTab='me';persist();renderApp('xiaohongshu');return}
   const index=Number(e.target.closest('[data-index]')?.dataset.index);
   if(act==='new-note')editorNote();
   if(act==='edit-note')editorNote(index);
