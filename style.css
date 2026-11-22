@@ -308,3 +308,66 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.xiaohongshu .xhs-card>img{display:block;width:100%;height:auto;aspect-ratio:4/5;min-height:0;max-height:none;object-fit:cover;background:#f4f4f4}
 .sim-app.xiaohongshu .xhs-card-text{padding:8px}
 .sim-app.xiaohongshu .xhs-card-text>b{overflow-wrap:anywhere}
+
+
+/* Xiaohongshu refreshed layout: scroll content + stable bottom navigation */
+.app-view.open{display:flex;flex-direction:column;min-height:0}
+.app-header{flex:0 0 112px;min-height:112px}
+.app-content:has(.sim-app.xiaohongshu){flex:1 1 auto;height:auto;min-height:0;padding:0 15px;overflow:hidden;display:flex}
+.sim-app.xiaohongshu{position:relative;display:flex;flex:1 1 auto;flex-direction:column;width:100%;height:100%;min-height:0;margin:0 -15px;padding:0;background:#fff;color:#222;overflow:hidden}
+.sim-app.xiaohongshu .sim-app-subtitle{display:none}
+.sim-app.xiaohongshu .xhs-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:0 0 14px;-webkit-overflow-scrolling:touch}
+.sim-app.xiaohongshu .xhs-bottom{position:relative;inset:auto;display:flex;flex:0 0 56px;align-items:center;justify-content:space-around;margin:0;padding:7px 3px calc(7px + env(safe-area-inset-bottom));background:rgba(255,255,255,.98);border-top:1px solid #eee;z-index:8}
+.sim-app.xiaohongshu .xhs-bottom button{min-width:40px;border:0;background:transparent;font-size:12px;color:#777}
+.sim-app.xiaohongshu .xhs-bottom button.active{color:#222;font-weight:700}
+.sim-app.xiaohongshu .xhs-bottom .xhs-plus{width:45px;height:30px;padding:0;background:#ff2442;color:#fff;border-radius:9px;font-size:24px;line-height:27px;font-weight:700}
+.sim-app.xiaohongshu .xhs-searchbar{margin:10px 13px 8px;padding:0 12px;height:40px;border-radius:22px;background:#f5f5f6;display:flex;align-items:center;gap:8px;color:#999;font-size:13px;cursor:pointer}
+.sim-app.xiaohongshu .xhs-searchbar span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sim-app.xiaohongshu .xhs-searchbar button{border:0;background:transparent;color:#222;font-size:13px}
+.sim-app.xiaohongshu .xhs-tabs{display:flex;gap:19px;overflow-x:auto;white-space:nowrap;padding:7px 14px 11px;border-bottom:1px solid #eee;scrollbar-width:none}
+.sim-app.xiaohongshu .xhs-tabs button{border:0;background:transparent;font-size:14px;color:#555;padding:0 0 5px}
+.sim-app.xiaohongshu .xhs-tabs button.active{font-weight:700;color:#222;border-bottom:2px solid #ff2442}
+.sim-app.xiaohongshu .xhs-feed-title{padding:12px 13px 8px;font-weight:700;font-size:15px}
+.sim-app.xiaohongshu .xhs-masonry{columns:2;column-gap:7px;padding:0 7px 14px}
+.sim-app.xiaohongshu .xhs-card{break-inside:avoid;margin:0 0 8px;border-radius:9px;overflow:hidden;border:1px solid #f3f3f3;background:#fff}
+.sim-app.xiaohongshu .xhs-card>img{display:block;width:100%;height:auto;aspect-ratio:4/5;min-height:0;max-height:none;object-fit:cover;background:#f4f4f4}
+.sim-app.xiaohongshu .xhs-card-text{padding:8px}
+.sim-app.xiaohongshu .xhs-card-text>b{display:block;font-size:13px;line-height:1.45;margin:5px 0;font-weight:650;overflow-wrap:anywhere}
+.sim-app.xiaohongshu .xhs-card-text p{font-size:11px;color:#666;line-height:1.4;margin:0 0 8px}
+.sim-app.xiaohongshu .xhs-search-page{background:#fff}
+.sim-app.xiaohongshu .xhs-search-head{height:66px;display:flex;align-items:center;gap:10px;padding:0 13px;border-bottom:1px solid #f3f3f3}
+.sim-app.xiaohongshu .xhs-back{border:0;background:none;font-size:30px;line-height:1;color:#333;padding:0 3px}
+.sim-app.xiaohongshu .xhs-search-form{height:43px;flex:1;display:flex;align-items:center;gap:8px;padding:0 11px;border-radius:24px;background:#f5f5f5}
+.sim-app.xiaohongshu .xhs-search-form>span{font-size:20px;color:#999}
+.sim-app.xiaohongshu .xhs-search-form input{flex:1;min-width:0;width:0;border:0;outline:0;background:transparent;font-size:14px;color:#333}
+.sim-app.xiaohongshu .xhs-camera{border:0;background:none;color:#555;font-size:17px}
+.sim-app.xiaohongshu .xhs-submit{border:0;border-left:1px solid #ddd;padding-left:10px;background:none;color:#222;font-size:14px;white-space:nowrap}
+.sim-app.xiaohongshu .xhs-search-section{padding:20px 17px 8px}
+.sim-app.xiaohongshu .xhs-search-section-title{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:600;margin-bottom:15px}
+.sim-app.xiaohongshu .xhs-search-section-title button{border:0;background:none;color:#999;font-size:18px}
+.sim-app.xiaohongshu .xhs-history-list{display:flex;flex-wrap:wrap;gap:9px}
+.sim-app.xiaohongshu .xhs-history-list button{border:1px solid #eee;border-radius:22px;background:#fff;padding:8px 14px;color:#555;font-size:13px}
+.sim-app.xiaohongshu .xhs-muted{font-size:12px;color:#bbb}
+.sim-app.xiaohongshu .xhs-suggest-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px 12px}
+.sim-app.xiaohongshu .xhs-suggest-grid button{text-align:left;border:0;background:none;padding:2px 0;color:#444;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sim-app.xiaohongshu .xhs-search-results-title{padding:14px 14px 8px;font-size:15px;font-weight:600}
+.sim-app.xiaohongshu .xhs-search-empty{break-inside:avoid;text-align:center;padding:55px 15px;color:#aaa;font-size:13px}
+.sim-app.xiaohongshu .xhs-mall-banner{margin:10px 13px 12px;padding:18px 16px;border-radius:12px;background:linear-gradient(110deg,#fff0e9,#fff6f2);display:flex;flex-direction:column;gap:5px;color:#503b32}
+.sim-app.xiaohongshu .xhs-mall-banner b{font-size:17px}
+.sim-app.xiaohongshu .xhs-mall-banner span{font-size:11px;color:#9a8176}
+.sim-app.xiaohongshu .xhs-mall-categories{display:grid;grid-template-columns:repeat(4,1fr);gap:15px 4px;padding:12px 8px 17px}
+.sim-app.xiaohongshu .xhs-mall-categories button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:6px;color:#555;font-size:11px}
+.sim-app.xiaohongshu .xhs-mall-categories i{width:42px;height:42px;border-radius:50%;background:#f7f4f2;display:grid;place-items:center;font-style:normal;font-size:20px;color:#a17c6c}
+.sim-app.xiaohongshu .xhs-mall-section{padding:8px 13px 10px;display:flex;align-items:baseline;gap:8px}
+.sim-app.xiaohongshu .xhs-mall-section b{font-size:15px;color:#222}
+.sim-app.xiaohongshu .xhs-mall-section small{font-size:11px;color:#aaa}
+.sim-app.xiaohongshu .xhs-goods-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:0 9px 16px}
+.sim-app.xiaohongshu .xhs-goods-card{min-width:0;overflow:hidden;border-radius:9px;background:#fff;border:1px solid #f1f1f1}
+.sim-app.xiaohongshu .xhs-goods-card img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#f7f5f3}
+.sim-app.xiaohongshu .xhs-goods-card>div{padding:8px}
+.sim-app.xiaohongshu .xhs-goods-card b{display:block;font-size:13px;color:#222}
+.sim-app.xiaohongshu .xhs-goods-card p{font-size:10px;color:#999;margin:4px 0 7px}
+.sim-app.xiaohongshu .xhs-goods-card strong{font-size:14px;color:#ff2442}
+.sim-app.xiaohongshu .xhs-profile-head{display:flex;align-items:center;gap:12px;flex-wrap:nowrap}
+.sim-app.xiaohongshu .xhs-profile-head>div:nth-child(2){flex:1;min-width:0}
+.sim-app.xiaohongshu .xhs-empty{min-height:245px}
