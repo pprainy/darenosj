@@ -163,30 +163,38 @@ function renderApp(name){
   const posts=saved.posts_x||[];
   c.innerHTML=wrap(`<div class="x-topbar"><strong>𝕏</strong><span>为你推荐　　正在关注</span></div><div class="x-compose"><div class="x-avatar">雨</div><div class="x-compose-body"><textarea id="xQuickPost" rows="2" placeholder="有什么新鲜事？"></textarea><div class="x-compose-actions"><span>◎　▧　☷</span><button data-action="publish-x-quick">发帖</button></div></div></div><div class="x-feed">${posts.map((p,i)=>`<article class="x-post"><div class="x-avatar">${i%2?'☁':'雨'}</div><div class="x-post-main"><div class="x-post-meta"><b>${i%2?'慢慢来':'日常观察员'}</b><span>@${i%2?'slowly_today':'daily_note'} · ${i?'3小时':'1小时'}</span><button aria-label="更多">•••</button></div><p>${esc(p.body||p.title)}</p>${p.image?`<img class="x-post-image" src="${esc(p.image)}" alt="帖子图片" data-action="open-post-image" data-index="${i}">`:''}<div class="x-post-stats"><button aria-label="回复">▢ <span>${i?3:2}</span></button><button aria-label="转发">♧ <span>${i?5:8}</span></button><button data-action="like-post" data-index="${i}">♡ <span>${p.likes||8}</span></button><button aria-label="浏览">▥ <span>${i?'126':'248'}</span></button><button aria-label="分享">↥</button></div></div></article>`).join('')}</div><div class="x-bottom"><span>⌂</span><span>⌕</span><span>◎</span><span>♧</span><span>♙</span></div>`,'');return;
  }
- if(name==='xiaohongshu'){
-  const tab=saved.xhsTab||'home',following=saved.xhsFollowing||(saved.xhsFollowing=Math.floor(Math.random()*240+30));
-  const profileTab=saved.xhsProfileTab||'notes',category=saved.xhsCategory||'推荐';
+if(name==='xiaohongshu'){
+  const tab=saved.xhsTab||'home';
+  const following=saved.xhsFollowing||(saved.xhsFollowing=Math.floor(Math.random()*240+30));
+  const profileTab=saved.xhsProfileTab||'notes';
+  const category=saved.xhsCategory||'推荐';
   const feed=[
-   ['美妆','新手也能学会的清透奶油肌','妆前保湿、薄薄上底妆，再用少量腮红提气色。重点是少量多次，保留自然皮肤质感。','xhs-assets/xhs-makeup.jpg','2.4万','momo的化妆台','💗'],
-   ['自拍','自然光自拍｜脸部更立体的小技巧','站在窗边让光从斜前方照过来，镜头略高于眼睛，肩膀放松，表情会更自然。','xhs-assets/xhs-selfie.jpg','8763','日常自拍研究所','🪞'],
-   ['出片','不尴尬的拍照姿势清单','身体微微侧转、重心放后脚，手里拿一件小道具；连拍几张比僵硬摆拍更容易出片。','xhs-assets/xhs-photo-tips.jpg','1.1万','出片灵感簿','📸'],
-   ['韩语学习','每天五分钟｜日常韩语表达','把常用短句放进自己的生活场景里练习：안녕하세요 你好；천천히 말해 주세요 请说慢一点。','xhs-assets/xhs-korean-study.jpg','5632','momo学韩语','🇰🇷'],
-   ['美妆','腮红怎么打才有自然氛围感','先微笑找到苹果肌，少量点涂后向太阳穴轻轻晕开。冷调粉和蜜桃色可以按妆容选择。','xhs-assets/xhs-makeup.jpg','3.6万','今日妆容灵感','🌷'],
-   ['自拍','镜子自拍构图｜留白更显干净','镜面擦干净，手机稍微偏离脸部中心，背景只保留一两个重点，画面就不会太杂乱。','xhs-assets/xhs-selfie.jpg','9450','镜头里的日常','🤍'],
-   ['出片','咖啡店拍照的三个取景角度','试试桌面俯拍、窗边半身和环境远景。先找干净背景，再把人物放在画面三分之一处。','xhs-assets/xhs-photo-tips.jpg','1.8万','周末拍照计划','☕'],
-   ['韩语学习','韩语入门｜先记住这几句','오늘 뭐 해요? 今天做什么？ 너무 예뻐요 真的好漂亮。跟读时先慢速，再试着连读。','xhs-assets/xhs-korean-study.jpg','7218','韩语慢慢学','📖']
+   ['美妆','男生也能用的清爽底妆思路','少量妆前保湿，局部遮瑕后薄薄压一层散粉。重点是均匀肤色，不要让底妆有厚重面具感。','xhs-assets/beauty_01.jpg','2.4万','momo的化妆台','💗'],
+   ['自拍','男生镜子自拍｜手机放这个高度更显比例','手机放在胸口到下巴之间试拍，身体微侧、肩膀放松，背景尽量留白。','xhs-assets/selfie_01.jpg','8763','日常自拍研究所','🪞'],
+   ['出片','韩系男生拍照｜咖啡店窗边怎么站','先找侧面自然光，身体不要正对镜头，视线看窗外或手里的咖啡，画面更松弛。','xhs-assets/photo_01.jpg','1.1万','出片灵感簿','📸'],
+   ['韩语学习','每天五分钟｜初级韩语日常短句','안녕하세요 你好；오늘 뭐 해요? 今天做什么？先跟读，再把短句放进真实生活场景里练习。','xhs-assets/korean_01.jpg','5632','momo学韩语','🇰🇷'],
+   ['美妆','男生眉毛整理｜自然不生硬的关键','先顺着眉毛生长方向梳理，只修掉明显杂毛，眉头不要画得太实，保留原生毛流。','xhs-assets/beauty_02.jpg','3.6万','清爽男生护理','🌿'],
+   ['自拍','不露脸也能拍｜男生穿搭镜子照','手机稍微挡住面部，脚尖错开站，衣服保持简单配色，画面里留一点环境空间。','xhs-assets/selfie_02.jpg','9450','镜头里的日常','🤍'],
+   ['出片','首尔街拍构图｜全身照别贴着墙站','人物离背景一段距离，镜头略低于腰部，利用街道线条引导视线，腿部比例更自然。','xhs-assets/photo_02.jpg','1.8万','周末拍照计划','☕'],
+   ['韩语学习','韩语发音入门｜先分清收音','先练 가、나、다 等基础音节，再慢速练习 받침 收音。每天短时间重复，比一次背很多更有效。','xhs-assets/korean_02.jpg','7218','韩语慢慢学','📖'],
+   ['美妆','男生护肤顺序｜早上三步就够','洁面后先保湿，再涂防晒。容易出油的区域少量叠加，先把皮肤状态稳定下来。','xhs-assets/beauty_03.jpg','1.6万','日常护理笔记','🧴'],
+   ['出片','男生夜景人像｜找一块干净的光','站在店铺暖光边缘，曝光稍微压低一点，避免背景灯牌过曝，人物轮廓会更清晰。','xhs-assets/photo_03.jpg','9860','夜景出片指南','🌙'],
+   ['韩语学习','韩语学习桌面｜一页笔记怎么整理','把单词、例句和易错点分成三栏，每天复习旧词再增加少量新词，笔记更容易回看。','xhs-assets/korean_03.jpg','6048','自习室记录','✏️'],
+   ['美妆','男生唇部护理｜自然润色不油亮','睡前厚涂润唇膏，白天用纸巾轻压掉多余油光，选择透明或低饱和润色款更自然。','xhs-assets/beauty_04.jpg','1.2万','清爽护理研究所','🫧']
   ];
   const categories=['推荐','美妆','自拍','出片','韩语学习'];
-  const nav=(active)=>`<div class="xhs-bottom"><button class="${active==='home'?'active':''}" data-action="xhs-tab" data-tab="home">首页</button><button class="${active==='mall'?'active':''}" data-action="xhs-tab" data-tab="mall">市集</button><button class="xhs-plus">＋</button><button class="${active==='messages'?'active':''}" data-action="xhs-tab" data-tab="messages">消息</button><button class="${active==='me'?'active':''}" data-action="xhs-tab" data-tab="me">我</button></div>`;
-  if(tab==='messages'){c.innerHTML=wrap(`<div class="xhs-topbar"><span></span><strong>消息</strong><span>⌕　＋</span></div><div class="xhs-empty"><div class="xhs-empty-ico">♡</div><b>暂时没有消息</b><p>新的互动会显示在这里</p></div>${nav('messages')}`,'');return}
+  const nav=(active)=>'<div class="xhs-bottom"><button class="'+(active==='home'?'active':'')+'" data-action="xhs-tab" data-tab="home">首页</button><button class="'+(active==='mall'?'active':'')+'" data-action="xhs-tab" data-tab="mall">市集</button><button class="xhs-plus" aria-label="发布">＋</button><button class="'+(active==='messages'?'active':'')+'" data-action="xhs-tab" data-tab="messages">消息</button><button class="'+(active==='me'?'active':'')+'" data-action="xhs-tab" data-tab="me">我</button></div>';
+  if(tab==='messages'){
+   c.innerHTML=wrap('<div class="xhs-scroll"><div class="xhs-topbar"><span></span><strong>消息</strong><span></span></div></div>'+nav('messages'),'');return
+  }
   if(tab==='me'){
    const empty=profileTab==='notes'?['📔','还没有发布笔记','记录生活的第一篇笔记吧']:profileTab==='favorites'?['♡','还没有收藏内容','喜欢的内容会保存在这里']:profileTab==='history'?['◷','暂无浏览记录','看过的内容会显示在这里']:['♡','还没有赞过的内容','点亮喜欢的内容后会显示在这里'];
-   c.innerHTML=wrap(`<div class="xhs-profile"><div class="xhs-profile-head"><img class="xhs-p5-avatar" src="xhs-assets/p5-avatar.jpg" alt="momo头像"><div><strong>momo</strong><small>小红书号：momo_0716</small><small>IP属地：韩国</small></div><button class="xhs-edit">编辑资料</button></div><div class="xhs-stats"><div><b>${following}</b><span>关注</span></div><div><b>0</b><span>粉丝</span></div><div><b>0</b><span>获赞与收藏</span></div></div><p class="xhs-bio">慢慢生活，收集喜欢的小事 ✨</p><div class="xhs-profile-buttons"><button data-action="xhs-profile-tab" data-tab="notes">笔记</button><button data-action="xhs-profile-tab" data-tab="favorites">收藏</button><button data-action="xhs-profile-tab" data-tab="history">浏览记录</button></div><div class="xhs-profile-tabs"><button class="${profileTab==='notes'?'active':''}" data-action="xhs-profile-tab" data-tab="notes">笔记</button><button class="${profileTab==='favorites'?'active':''}" data-action="xhs-profile-tab" data-tab="favorites">收藏</button><button class="${profileTab==='likes'?'active':''}" data-action="xhs-profile-tab" data-tab="likes">赞过</button></div><div class="xhs-empty"><div class="xhs-empty-ico">${empty[0]}</div><b>${empty[1]}</b><p>${empty[2]}</p></div>${nav('me')}`,'');return
+   c.innerHTML=wrap('<div class="xhs-scroll"><div class="xhs-profile"><div class="xhs-profile-head"><img class="xhs-p5-avatar" src="xhs-assets/p5-avatar.jpg" alt="momo头像"><div><strong>momo</strong><small>小红书号：momo_0716</small><small>IP属地：韩国</small></div><button class="xhs-edit">编辑资料</button></div><div class="xhs-stats"><div><b>'+following+'</b><span>关注</span></div><div><b>0</b><span>粉丝</span></div><div><b>0</b><span>获赞与收藏</span></div></div><p class="xhs-bio">慢慢生活，收集喜欢的小事 ✨</p><div class="xhs-profile-buttons"><button data-action="xhs-profile-tab" data-tab="notes">笔记</button><button data-action="xhs-profile-tab" data-tab="favorites">收藏</button><button data-action="xhs-profile-tab" data-tab="history">浏览记录</button></div><div class="xhs-profile-tabs"><button class="'+(profileTab==='notes'?'active':'')+'" data-action="xhs-profile-tab" data-tab="notes">笔记</button><button class="'+(profileTab==='favorites'?'active':'')+'" data-action="xhs-profile-tab" data-tab="favorites">收藏</button><button class="'+(profileTab==='likes'?'active':'')+'" data-action="xhs-profile-tab" data-tab="likes">赞过</button></div><div class="xhs-empty"><div class="xhs-empty-ico">'+empty[0]+'</div><b>'+empty[1]+'</b><p>'+empty[2]+'</p></div></div></div>'+nav('me'),'');return
   }
-  const mall=tab==='mall',filtered=category==='推荐'?feed:feed.filter(p=>p[0]===category);
-  const visible=mall?feed:filtered;
-  c.innerHTML=wrap(`<div class="xhs-searchbar"><span>⌕　搜索美妆、自拍、韩语学习</span><b>▣</b><button>搜索</button></div><div class="xhs-tabs">${categories.map(k=>`<button class="${category===k?'active':''}" data-action="xhs-category" data-category="${k}">${k}</button>`).join('')}</div>${mall?`<div class="xhs-shortcuts"><div><i>💄</i><span>美妆灵感</span></div><div><i>🪞</i><span>自拍技巧</span></div><div><i>📸</i><span>拍照姿势</span></div><div><i>🇰🇷</i><span>韩语入门</span></div><div><i>📝</i><span>学习打卡</span></div></div>`:''}<div class="xhs-feed-title">${mall?'灵感专题':'为你推荐'} <small>美妆 · 自拍 · 出片 · 한국어</small></div><div class="xhs-masonry">${visible.map(p=>`<article class="xhs-card"><img src="${p[3]}" alt=""><div class="xhs-card-text"><small class="xhs-tag">${p[0]}</small><b>${p[1]}</b><p>${p[2]}</p><div class="xhs-card-author"><span class="xhs-mini-avatar">${p[6]}</span><span>${p[5]}</span><span class="xhs-heart">♡ ${p[4]}</span></div></div></article>`).join('')}</div>${nav(mall?'mall':'home')}`,'');return;
- }
+  const mall=tab==='mall',filtered=category==='推荐'?feed:feed.filter(p=>p[0]===category),visible=mall?feed:filtered;
+  const cards=visible.map(p=>'<article class="xhs-card"><img src="'+p[3]+'" alt="'+p[1]+'" loading="lazy"><div class="xhs-card-text"><small class="xhs-tag">'+p[0]+'</small><b>'+p[1]+'</b><p>'+p[2]+'</p><div class="xhs-card-author"><span class="xhs-mini-avatar">'+p[6]+'</span><span>'+p[5]+'</span><span class="xhs-heart">♡ '+p[4]+'</span></div></div></article>').join('');
+  c.innerHTML=wrap('<div class="xhs-scroll"><div class="xhs-searchbar"><span>⌕　搜索美妆、男生自拍、出片、韩语学习</span><b>▣</b><button>搜索</button></div><div class="xhs-tabs">'+categories.map(k=>'<button class="'+(category===k?'active':'')+'" data-action="xhs-category" data-category="'+k+'">'+k+'</button>').join('')+'</div>'+(mall?'<div class="xhs-shortcuts"><div><i>💄</i><span>男生护理</span></div><div><i>🪞</i><span>自拍技巧</span></div><div><i>📸</i><span>拍照姿势</span></div><div><i>🇰🇷</i><span>韩语入门</span></div><div><i>📝</i><span>学习打卡</span></div></div>':'')+'<div class="xhs-feed-title">'+(mall?'灵感专题':'为你推荐')+' <small>男生护理 · 自拍 · 出片 · 한국어</small></div><div class="xhs-masonry">'+cards+'</div></div>'+nav(mall?'mall':'home'),'');return;
+}
 if(name==='browser'){
   c.innerHTML=wrap(`<form class="browser-form" id="browserForm"><span>🔍</span><input id="browserUrl" placeholder="输入网址或搜索内容" value="https://www.apple.com"><button>前往</button></form><div class="browser-shortcuts">${[['Apple','https://www.apple.com'],['Bing','https://www.bing.com'],['GitHub','https://github.com']].map(x=>`<button data-url="${x[1]}"><span>🌐</span>${x[0]}</button>`).join('')}</div><div class="browser-note">网页将在独立浏览器标签页打开。<p>为了安全和兼容性，模拟器不直接把外部网页嵌入手机内。</p></div>`,'搜索或输入网址');return;
  }

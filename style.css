@@ -288,3 +288,23 @@ body { min-height: 100vh; min-height: 100dvh; }
 .xhs-profile-buttons button:active,.xhs-profile-tabs button:active{opacity:.65}
 .xhs-masonry{padding-bottom:12px}
 .xhs-card>img{aspect-ratio:1/1;max-height:none;min-height:0}
+/* XHS responsive viewport + fixed bottom navigation repair */
+.app-view.open{display:flex;flex-direction:column;min-height:0}
+.app-header{flex:0 0 112px;min-height:112px}
+.app-content:has(.sim-app.xiaohongshu){flex:1 1 auto;height:auto;min-height:0;padding:0 15px;overflow:hidden;display:flex}
+.sim-app.xiaohongshu{position:relative;display:flex;flex:1 1 auto;flex-direction:column;width:100%;height:100%;min-height:0;margin:0 -15px;padding:0;background:#fff;color:#222;overflow:hidden}
+.sim-app.xiaohongshu .sim-app-subtitle{display:none}
+.sim-app.xiaohongshu .xhs-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;padding:0 0 14px;-webkit-overflow-scrolling:touch}
+.sim-app.xiaohongshu .xhs-bottom{position:relative;inset:auto;display:flex;flex:0 0 56px;align-items:center;justify-content:space-around;margin:0;padding:7px 3px calc(7px + env(safe-area-inset-bottom));background:rgba(255,255,255,.98);border-top:1px solid #eee;z-index:8}
+.sim-app.xiaohongshu .xhs-bottom button{min-width:40px;border:0;background:transparent;font-size:12px;color:#777}
+.sim-app.xiaohongshu .xhs-bottom button.active{color:#222;font-weight:700}
+.sim-app.xiaohongshu .xhs-bottom .xhs-plus{width:45px;height:30px;padding:0;background:#ff2442;color:#fff;border-radius:9px;font-size:24px;line-height:27px;font-weight:700}
+.sim-app.xiaohongshu .xhs-empty{min-height:245px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#aaa;text-align:center}
+.sim-app.xiaohongshu .xhs-profile{padding:20px 11px 0}
+.sim-app.xiaohongshu .xhs-profile-head{display:flex;align-items:center;gap:12px;flex-wrap:nowrap}
+.sim-app.xiaohongshu .xhs-profile-head>div:nth-child(2){flex:1;min-width:0}
+.sim-app.xiaohongshu .xhs-masonry{columns:2;column-gap:7px;padding:0 6px 14px}
+.sim-app.xiaohongshu .xhs-card{break-inside:avoid;margin:0 0 8px;border-radius:9px;overflow:hidden}
+.sim-app.xiaohongshu .xhs-card>img{display:block;width:100%;height:auto;aspect-ratio:4/5;min-height:0;max-height:none;object-fit:cover;background:#f4f4f4}
+.sim-app.xiaohongshu .xhs-card-text{padding:8px}
+.sim-app.xiaohongshu .xhs-card-text>b{overflow-wrap:anywhere}
