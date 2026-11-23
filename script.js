@@ -168,8 +168,10 @@ homeScreen.addEventListener('pointerup',()=>{if(dragging)finishIconDrag();else{s
 homeScreen.addEventListener('pointercancel',()=>{if(dragging)finishIconDrag();else{stopPressTimer();dragStart=null}},{passive:true});
 homeScreen.addEventListener('click',e=>{const item=e.target.closest('.app-item[data-app]');if(!item)return;e.stopPropagation();if(suppressAppClick)return;openApp(item.dataset.app)});
 $('.widget-calendar')?.addEventListener('click',()=>openApp('calendar'));
-$('#backBtn').addEventListener('click',()=>{appView.classList.remove('open');currentApp=''});
-function openApp(name){currentApp=name;appTitle.textContent=appNames[name]||name;renderApp(name);appView.classList.add('open');}
+function closeApp(){appView.classList.remove('open');appView.removeAttribute('data-app');currentApp='';activeChat=null;}
+$('#backBtn').addEventListener('click',closeApp);
+function openApp(name){currentApp=name;appView.dataset.app=name;appTitle.textContent=appNames[name]||name;renderApp(name);appView.classList.add('open');}
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&appView.classList.contains('open'))closeApp()});
 function actionButton(label,action,cls=''){return `<button class="sim-btn ${cls}" data-action="${action}">${label}</button>`}
 function field(label,id,value='',placeholder=''){return `<label class="sim-field">${label}<input id="${id}" value="${esc(value)}" placeholder="${esc(placeholder)}"></label>`}
 function emptyState(icon,title,desc=''){return `<div class="sim-empty"><div>${icon}</div><strong>${title}</strong><p>${desc}</p></div>`}
