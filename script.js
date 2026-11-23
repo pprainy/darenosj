@@ -424,8 +424,8 @@ appContent.addEventListener('click',async e=>{
    const row=e.target.closest('.chat-message-actions'),idx=Number(row?.dataset.messageIndex),item=(saved[currentApp]||[]).find(x=>x.to===activeChat),msg=item?.thread?.[idx];
    if(!msg)return;
    if(act==='message-copy'){const value=msg.text||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(value).then(()=>toast('已复制消息')).catch(()=>toast('复制失败，请检查浏览器权限'));else{const ta=document.createElement('textarea');ta.value=value;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove();toast('已复制消息')}}
-   if(act==='message-recall'){if(msg.from!=='me'){toast('只能撤回自己发送的消息');return}msg.recalled=true;msg.text='';persist();renderChatThread(currentApp,activeChat);toast('已撤回消息')}
-   if(act==='message-delete'){item.thread.splice(idx,1);persist();renderChatThread(currentApp,activeChat);toast('已删除消息')}
+   if(act==='message-recall'){if(msg.from!=='me'){toast('只能撤回自己发送的消息');return}msg.recalled=true;msg.text='';item.body='你撤回了一条消息';persist();renderChatThread(currentApp,activeChat);toast('已撤回消息')}
+   if(act==='message-delete'){item.thread.splice(idx,1);const latest=item.thread[item.thread.length-1];item.body=latest?.text||'';item.date=latest?.date||'刚刚';persist();renderChatThread(currentApp,activeChat);toast('已删除消息')}
    return;
   }
   if(act==='message-menu-close'){$('#chatActionHost')?.replaceChildren();return}
