@@ -657,3 +657,28 @@ body { min-height: 100vh; min-height: 100dvh; }
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+
+/* Recent Calls: align rows like the native iOS Phone app and keep actions distinct. */
+.phone-app .phone-tab-content{padding:24px 0 14px}
+.phone-app .phone-page-heading{padding:0 20px;margin:0 0 18px;min-height:40px}
+.phone-app .phone-page-heading h2{font-size:32px;letter-spacing:-1px;font-weight:750}
+.phone-app .phone-filter{display:flex;gap:0;margin:0 20px 14px;padding:2px;background:#e9e9eb;border-radius:9px}
+.phone-app .phone-filter button{flex:1;min-height:30px;border:0;border-radius:7px;background:transparent;color:#333;font:500 13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.phone-app .phone-filter button.selected{background:#fff;color:#111;font-weight:650;box-shadow:0 1px 3px #00000018}
+.phone-app .phone-list{border-top:1px solid #e5e5ea;padding-left:20px}
+.phone-app .phone-row{display:flex;align-items:center;gap:10px;min-height:76px;padding:0 16px 0 0;border:0;border-bottom:1px solid #e5e5ea;background:#fff}
+.phone-app .phone-row-open{display:flex;align-items:center;gap:12px;flex:1;min-width:0;min-height:75px;padding:8px 0;border:0;background:transparent;text-align:left;color:inherit}
+.phone-app .phone-row-open:active{background:#f2f2f7}
+.phone-app .phone-row-main{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.phone-app .phone-row-main b{font-size:16px;line-height:20px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.phone-app .phone-row-main small{display:block;font-size:13px;line-height:17px;color:#8e8e93;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.phone-app .phone-row-main small.missed{color:#ff3b30}
+.phone-app .phone-call-type-icon{display:inline-block;width:16px;font-size:15px;font-weight:700}
+.phone-app .phone-row-side{display:flex;align-items:center;gap:10px;flex:0 0 auto;color:#8e8e93}
+.phone-app .phone-row-side small{font-size:12px;white-space:nowrap}
+.phone-app .phone-info-icon{font-size:20px;line-height:1;color:#007aff}
+.phone-app .phone-row-delete{flex:0 0 auto;border:0;border-radius:8px;background:#ff3b30;color:#fff;padding:7px 11px;font-size:13px}
+.phone-app .phone-row.is-editing .phone-row-open{gap:9px}
+.phone-app .phone-empty{padding:30px 20px;text-align:center;color:#8e8e93;font-size:14px}
+.phone-app .phone-tabbar{flex-basis:68px;height:68px;padding-bottom:max(5px,env(safe-area-inset-bottom))}
