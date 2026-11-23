@@ -13,10 +13,7 @@ const demoData={
   {title:'随手记',body:'慢一点也没关系，把喜欢的日常认真记录下来。',date:'昨天'}
  ],
  contacts:[
-  {name:'小雨',phone:'138 0000 1107',note:'好朋友'},
-  {name:'林同学',phone:'138 0000 2024',note:'一起出去玩的人'},
-  {name:'妈妈',phone:'138 0000 0001',note:'家人'},
-  {name:'阿哲',phone:'139 0000 1028',note:'朋友'}
+  {name:'妈妈',phone:'138 0000 0001',note:'家人'}
  ],
  messages:[
   {to:'小雨',body:'到家跟我说一声呀～',date:'今天 21:18'},
@@ -183,11 +180,11 @@ function renderChatThread(app,person){
  const all=saved[app]||[];let item=all.find(x=>x.to===person);
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
- const bubbles=item.thread.map((m,i)=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}"><div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(isKakao&&saved.kakaoTranslate?(kakaoChinese[m.text]||'（暂无这句的中文翻译）'):m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
+ const bubbles=item.thread.map((m,i)=>{const show=isKakao&&saved.kakaoTranslations?.[person+'_'+i];const tr=kakaoChinese[m.text];return `<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}"><div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(m.text)}</div>${isKakao&&tr?`<button class="kakao-inline-translate" data-action="kakao-inline-translate" data-person="${esc(person)}" data-index="${i}">${show?esc(tr):'翻译'}</button>`:''}<small>${esc(m.date||'')}</small></div>`}).join('');
  const navTitle=isKakao?person:isWechat?person:person;
  const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
-  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${isKakao?'<button type="button" data-action="kakao-translate">'+(saved.kakaoTranslate?'显示韩文':'翻译中文')+'</button>':''}${tools}</span></div>
+  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
   <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
   <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'输入消息…':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'发送':isWechat?'发送':'发送'}</button></div>
  </div>`;
@@ -219,7 +216,7 @@ function renderSocialLanding(app,tab){
 }
 function renderSocialContact(app,person){
  const p=(saved.contacts||[]).find(x=>x.name===person)||{name:person,phone:'',note:''};
- appContent.innerHTML='<div class="sim-app social-subpage '+app+'"><header class="social-subnav"><button data-action="social-detail-back">‹ 返回</button><b>联系人详情</b><button data-action="social-more">•••</button></header><section class="social-contact-card">'+avatarMarkup(p.name,'social-detail-avatar')+'<h2>'+esc(p.name)+'</h2><p>'+esc(app==='kakaotalk'?'朋友':(p.note||'联系人'))+'</p></section><div class="social-detail-actions"><button data-action="social-contact-message" data-person="'+esc(p.name)+'">发消息</button><button data-action="social-contact-call" data-person="'+esc(p.name)+'">语音通话</button></div><div class="social-feature-list"><div><b>备注</b><small>'+esc(p.note||'未设置')+'</small></div><div><b>电话号码</b><small>'+esc(p.phone||'未填写')+'</small></div><button data-action="open-social-chat-settings" data-person="'+esc(p.name)+'"><b>聊天设置</b><i>›</i></button></div></div>';
+ appContent.innerHTML='<div class="sim-app social-subpage '+app+'"><header class="social-subnav"><button data-action="social-detail-back">‹ 返回</button><b>联系人详情</b><button data-action="social-more">•••</button></header><section class="social-contact-card">'+avatarMarkup(p.name,'social-detail-avatar')+'<h2>'+esc(p.name)+'</h2><p>'+esc(app==='kakaotalk'?(p.name==='申惟哥哥'?'哥哥':'朋友'):(p.note||'联系人'))+'</p></section><div class="social-detail-actions"><button data-action="social-contact-message" data-person="'+esc(p.name)+'">发消息</button><button data-action="social-contact-call" data-person="'+esc(p.name)+'">语音通话</button></div><div class="social-feature-list"><div><b>备注</b><small>'+esc(app==='kakaotalk'?(p.name==='申惟哥哥'?'哥哥':'朋友'):(p.note||'未设置'))+'</small></div><div><b>电话号码</b><small>'+esc(p.phone||'未填写')+'</small></div><button data-action="open-social-chat-settings" data-person="'+esc(p.name)+'"><b>聊天设置</b><i>›</i></button></div></div>';
 }
 function renderSocialChatSettings(app,person){
  const item=(saved[app]||[]).find(x=>x.to===person)||{};
@@ -413,6 +410,7 @@ appContent.addEventListener('click',async e=>{
   const index=Number(e.target.closest('[data-index]')?.dataset.index);
   if(act==='focus-chat-search'){$('#chatListSearch')?.focus();return}
   if(act==='kakao-translate'){saved.kakaoTranslate=!saved.kakaoTranslate;persist();renderChatThread('kakaotalk',activeChat);return}
+  if(act==='kakao-inline-translate'){const who=e.target.closest('[data-person]')?.dataset.person,idx=e.target.closest('[data-index]')?.dataset.index,key=who+'_'+idx;saved.kakaoTranslations=saved.kakaoTranslations||{};saved.kakaoTranslations[key]=!saved.kakaoTranslations[key];persist();renderChatThread('kakaotalk',who);return}
   if(act==='social-tab'){renderSocialLanding(currentApp,e.target.closest('[data-tab]')?.dataset.tab||'chats');return}
   if(act==='open-social-contact'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderSocialContact(currentApp,person);return}
   if(act==='social-detail-back'){renderSocialLanding(currentApp,saved[currentApp+'Tab']||'chats');return}
