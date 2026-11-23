@@ -371,3 +371,41 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.xiaohongshu .xhs-profile-head{display:flex;align-items:center;gap:12px;flex-wrap:nowrap}
 .sim-app.xiaohongshu .xhs-profile-head>div:nth-child(2){flex:1;min-width:0}
 .sim-app.xiaohongshu .xhs-empty{min-height:245px}
+
+/* ===== Native-feeling iOS Messages / Contacts and KakaoTalk polish ===== */
+.sim-app.messages .sim-app-subtitle,.sim-app.kakaotalk .sim-app-subtitle,.sim-app.contacts .sim-app-subtitle{display:none}
+.ios-contact-top,.ios-message-head,.kakao-head{display:flex;align-items:flex-end;justify-content:space-between;padding:8px 2px 16px}
+.ios-contact-top small,.ios-message-head small,.kakao-head small{display:block;color:#8e8e93;font-size:12px;margin-bottom:4px}
+.ios-contact-top h2,.ios-message-head h2,.kakao-head h2{font-size:30px;line-height:1.1;font-weight:750;letter-spacing:-.7px;color:#111}
+.ios-icon-btn,.ios-compose{min-width:38px;height:38px;border-radius:50%;padding:0!important;display:grid;place-items:center;font-size:22px!important}
+.ios-search{border:0!important;border-radius:12px!important;background:#e9e9ee!important;margin:4px 0 14px!important;padding:11px 14px!important}
+.ios-contact-count{font-size:12px;color:#8e8e93;padding:0 4px 7px}
+.ios-contact-list,.ios-message-list{border-radius:14px;background:#fff;box-shadow:none;margin:0;overflow:hidden}
+.ios-contact-row,.ios-message-row{min-height:66px;padding:10px 12px;border-bottom:1px solid #ececf0;gap:12px}
+.ios-contact-row .contact-avatar,.ios-message-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#b7c9ff,#6e85c9);font-weight:650;font-size:17px}
+.ios-contact-row b,.ios-message-row b{font-size:15px;font-weight:600}
+.ios-contact-row small,.ios-message-row small{font-size:12px;color:#8e8e93;margin-top:3px}
+.ios-chevron{color:#c7c7cc;font-size:24px;padding:0 5px}
+.ios-message-head{align-items:center;padding-top:7px}
+.ios-message-head h2{font-size:31px}
+.ios-message-row{min-height:76px;padding:12px 5px;background:#f2f2f7}
+.ios-message-list{background:transparent}
+.ios-message-avatar{background:#d6e4fa;color:#315b94;display:grid;place-items:center}
+.ios-message-row>span:nth-child(2){padding-bottom:8px;border-bottom:1px solid #d9d9df;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.ios-message-row>button,.kakao-row>button{border:0;background:transparent;color:#b0b0b6;font-size:18px}
+.sim-app.kakaotalk{background:#fffdf4;margin:-14px -15px 0;padding:14px 15px 30px;min-height:100%}
+.kakao-head h2{font-size:29px}
+.kakao-add{background:#fee500!important;color:#222!important;border-radius:50%!important;width:38px;height:38px;padding:0!important;font-size:22px!important}
+.kakao-friends-strip{display:flex;gap:13px;overflow-x:auto;padding:5px 0 16px;border-bottom:1px solid #eee8d9;margin-bottom:10px}
+.kakao-friends-strip>div{min-width:54px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.kakao-friends-strip span{width:48px;height:48px;border-radius:17px;background:#fee500;display:grid;place-items:center;font-weight:700;font-size:19px;color:#3d3520}
+.kakao-friends-strip small{font-size:10px;white-space:nowrap;color:#5d5546}
+.kakao-chat-list{background:transparent;border-radius:0;box-shadow:none;margin:0}
+.kakao-row{background:transparent;min-height:72px;padding:11px 3px;border-bottom:1px solid #f1eee5}
+.kakao-avatar{width:48px;height:48px;border-radius:17px;background:#fee500;color:#423b2b;display:grid;place-items:center;font-weight:700}
+.kakao-row b{font-size:14px}.kakao-row small{font-size:11px;color:#928c7d}
+.sim-app.instagram .sim-app-subtitle{display:none}
+.ig-stories{scrollbar-width:none}.ig-stories::-webkit-scrollbar,.kakao-friends-strip::-webkit-scrollbar{display:none}
+.ig-story{min-width:58px;max-width:66px}.ig-story small{max-width:66px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ig-story-avatar{font-size:17px;font-weight:650;color:#fff}
+.ig-contact-0{background:linear-gradient(135deg,#ffb36b,#ec477a)}.ig-contact-1{background:linear-gradient(135deg,#ffd36a,#f07847)}.ig-contact-2{background:linear-gradient(135deg,#b9a0ff,#e25c9a)}.ig-contact-3{background:linear-gradient(135deg,#75c8d5,#5477c9)}.ig-contact-4{background:linear-gradient(135deg,#9bd6a4,#3c9d82)}
