@@ -13,39 +13,23 @@ const demoData={
   {title:'随手记',body:'慢一点也没关系，把喜欢的日常认真记录下来。',date:'昨天'}
  ],
  contacts:[
-  {name:'申惟哥哥',phone:'010-0000-0001',note:'好友'},{name:'道勋哥',phone:'010-0000-0002',note:'好友'},
-  {name:'英宰哥',phone:'010-0000-0003',note:'好友'},{name:'志薰🪼',phone:'010-0000-0004',note:'好友'},
-  {name:'炅潣',phone:'010-0000-0005',note:'好友'},{name:'爸爸',phone:'010-0000-0006',note:'家人'},
-  {name:'妈妈',phone:'010-0000-0007',note:'家人'},{name:'弟弟',phone:'010-0000-0008',note:'家人'},
-  {name:'小弟',phone:'010-0000-0009',note:'家人'},{name:'姐姐',phone:'010-0000-0010',note:'家人'}
+  {name:'小雨',phone:'138 0000 1107',note:'好朋友'},
+  {name:'林同学',phone:'138 0000 2024',note:'一起出去玩的人'},
+  {name:'妈妈',phone:'138 0000 0001',note:'家人'},
+  {name:'阿哲',phone:'139 0000 1028',note:'朋友'}
  ],
  messages:[
-  {to:'申惟哥哥',body:'今天也辛苦啦，早点休息～',date:'今天 21:18'},
-  {to:'道勋哥',body:'刚刚看到你发的照片了！',date:'今天 20:42'},
-  {to:'英宰哥',body:'下次有空一起吃饭吧。',date:'今天 19:30'},
-  {to:'志薰🪼',body:'ㅋㅋㅋ 真的太好笑了',date:'今天 18:16'},
-  {to:'炅潣',body:'到家记得说一声。',date:'今天 17:50'},
-  {to:'爸爸',body:'最近一切都好，别担心。',date:'昨天 20:12'},
-  {to:'妈妈',body:'周末有空给你打电话。',date:'昨天 19:05'},
-  {to:'弟弟',body:'作业写完了吗？',date:'昨天 18:20'},
-  {to:'小弟',body:'有空一起打游戏。',date:'昨天 16:40'},
-  {to:'姐姐',body:'最近天气变凉了，注意保暖。',date:'昨天 15:10'}
+  {to:'小雨',body:'到家跟我说一声呀～',date:'今天 21:18'},
+  {to:'妈妈',body:'周末有空的话给你打电话。',date:'今天 18:42'},
+  {to:'林同学',body:'照片我整理好再发给你！',date:'昨天 16:20'}
  ],
  mail:[
   {to:'自己',body:'周末计划：整理照片、听歌、出门走走。',date:'今天 09:30'},
   {to:'小雨',body:`主题：上次拍的照片\n我先把照片整理一下，晚点发你。`,date:'昨天 20:15'}
  ],
  kakaotalk:[
-  {to:'申惟哥哥',body:'오늘도 수고했어요 ☺️（今天也辛苦啦）',date:'21:18'},
-  {to:'道勋哥',body:'사진 너무 잘 나왔다!（照片拍得真好）',date:'20:42'},
-  {to:'英宰哥',body:'다음에 같이 밥 먹어요（下次一起吃饭吧）',date:'19:30'},
-  {to:'志薰🪼',body:'ㅋㅋㅋㅋ 진짜 웃겨（真的好好笑）',date:'18:16'},
-  {to:'炅潣',body:'집에 도착하면 연락해（到家联系我）',date:'17:50'},
-  {to:'爸爸',body:'잘 지내고 있어요（我一切都好）',date:'昨天'},
-  {to:'妈妈',body:'주말에 전화할게요（周末给你打电话）',date:'昨天'},
-  {to:'弟弟',body:'숙제 다 했어?（作业写完了吗）',date:'昨天'},
-  {to:'小弟',body:'나중에 같이 게임하자（晚点一起打游戏）',date:'昨天'},
-  {to:'姐姐',body:'따뜻하게 입어요（记得穿暖一点）',date:'昨天'}
+  {to:'지민 / 智敏',body:'오늘 뭐 해? 😊（今天做什么呀？）',date:'今天 20:35'},
+  {to:'친구들 / 好友群',body:'周末一起去喝咖啡吗？',date:'今天 17:06'}
  ],
  'posts_instagram':[
   {title:'最近的日常 📷',body:'一些普通但很喜欢的瞬间。生活碎片慢慢收集。',image:'',likes:24},
@@ -66,17 +50,23 @@ const demoData={
  photos:[1,2,3,4,5,6,7].map(n=>({data:`photos/${n}.jpg`,demo:true}))
 };
 Object.entries(demoData).forEach(([key,value])=>{if(!Object.prototype.hasOwnProperty.call(saved,key))saved[key]=value});
-persist();
-// 所有通信类 App 共用同一份十人联系人名单；只迁移一次，之后保留用户编辑。
-const canonicalContacts=[['申惟哥哥','010-0000-0001','好友'],['道勋哥','010-0000-0002','好友'],['英宰哥','010-0000-0003','好友'],['志薰🪼','010-0000-0004','好友'],['炅潣','010-0000-0005','好友'],['爸爸','010-0000-0006','家人'],['妈妈','010-0000-0007','家人'],['弟弟','010-0000-0008','家人'],['小弟','010-0000-0009','家人'],['姐姐','010-0000-0010','家人']];
-if(!saved.contactsMigrated){
- saved.contacts=canonicalContacts.map(([name,phone,note])=>({name,phone,note}));
- const allContactNames=canonicalContacts.map(c=>c[0]);
- ['messages','kakaotalk'].forEach(key=>{const existing=new Map((saved[key]||[]).map(x=>[x.to,x]));const seeds=demoData[key]||[];saved[key]=allContactNames.map((name,i)=>existing.get(name)||{to:name,body:seeds[i]?.body||'发来一条消息',date:seeds[i]?.date||'昨天'});});
- saved.contactsMigrated=true;
- saved.calls=canonicalContacts.map(([name,phone],i)=>({name,number:phone,type:i%4===3?'未接来电':i%2?'呼出':'呼入',time:i<3?'今天 '+['21:08','20:32','19:45'][i]:'昨天'}));
- saved.callsMigrated=true;
+// 统一所有应用使用的十位联系人；已有的号码和备注尽量保留。
+const canonicalContacts=[
+ ['申惟哥哥','010-2301-0001','哥哥'],['道勋哥','010-2301-0002','哥哥'],['英宰哥','010-2301-0003','哥哥'],['志薰🪼','010-2301-0004','朋友'],['炅潣','010-2301-0005','朋友'],
+ ['爸爸','010-2301-0006','家人'],['妈妈','010-2301-0007','家人'],['弟弟','010-2301-0008','家人'],['小弟','010-2301-0009','家人'],['姐姐','010-2301-0010','家人']
+];
+const oldContacts=Array.isArray(saved.contacts)?saved.contacts:[];
+saved.contacts=canonicalContacts.map(([name,phone,note],i)=>({...oldContacts[i],name,phone:oldContacts[i]?.phone||phone,note}));
+const conversationSeeds=[
+ ['申惟哥哥','今天有空吗？想和你分享一张照片。','刚刚','今天有空吗？'],['道勋哥','到家了吗？路上注意安全。','10:42','到家了吗？'],['英宰哥','周末一起出去玩吗？','昨天','周末一起出去玩吗？'],['志薰🪼','ㅋㅋㅋ 这个真的太好笑了','昨天','这个真的太好笑了'],['炅潣','照片拍得很好看！','周一','照片拍得很好看！'],['爸爸','记得按时吃饭。','周日','记得按时吃饭。'],['妈妈','有空给家里打个电话呀。','周日','有空给家里打个电话呀。'],['弟弟','游戏晚上一起吗？','周六','游戏晚上一起吗？'],['小弟','我把链接发你了。','周五','我把链接发你了。'],['姐姐','最近天气变冷了，注意保暖。','周四','注意保暖。']
+];
+for(const key of ['messages','kakaotalk']){
+ const old=Array.isArray(saved[key])?saved[key]:[];
+ saved[key]=conversationSeeds.map(([to,body,date,last],i)=>{const prior=old.find(x=>x.to===to)||old[i]||{};return {...prior,to,body:prior.body||body,date:prior.date||date,thread:Array.isArray(prior.thread)&&prior.thread.length?prior.thread:[{from:'them',text:body,date}]}});
 }
+// 搜索历史默认四条；显式清空后不自动补回。
+if(!Array.isArray(saved.xhsSearchHistory))saved.xhsSearchHistory=[];
+if(saved.xhsSearchHistory.length===0&&saved.xhsSearchHistoryCleared!==true){saved.xhsSearchHistory=['哥哥太受欢迎了不开心是正常的吗','韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];}
 persist();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const appNames={messages:'信息',mail:'邮件',notes:'备忘录',camera:'相机',instagram:'Instagram',browser:'浏览器',settings:'设置',x:'X',kakaotalk:'KakaoTalk',phone:'电话',xiaohongshu:'小红书',voice:'语音备忘录',photos:'照片',contacts:'通讯录',calendar:'日历'};
@@ -147,6 +137,17 @@ function openApp(name){currentApp=name;appTitle.textContent=appNames[name]||name
 function actionButton(label,action,cls=''){return `<button class="sim-btn ${cls}" data-action="${action}">${label}</button>`}
 function field(label,id,value='',placeholder=''){return `<label class="sim-field">${label}<input id="${id}" value="${esc(value)}" placeholder="${esc(placeholder)}"></label>`}
 function emptyState(icon,title,desc=''){return `<div class="sim-empty"><div>${icon}</div><strong>${title}</strong><p>${desc}</p></div>`}
+let activeChat=null;
+function renderChatThread(app,person){
+ activeChat=person;
+ const isKakao=app==='kakaotalk';
+ const all=saved[app]||[];let item=all.find(x=>x.to===person);
+ if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
+ if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
+ const bubbles=item.thread.map(m=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}"><div class="chat-bubble">${esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
+ appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':''}"><div class="chat-nav"><button data-action="chat-back">‹</button><strong>${esc(person)}</strong><button aria-label="更多">•••</button></div><div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div class="chat-compose"><button aria-label="添加">＋</button><input id="chatInput" placeholder="${isKakao?'메시지 보내기':'iMessage'}"><button data-action="send-chat">${isKakao?'전송':'发送'}</button></div></div>`;
+ const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
+}
 function renderApp(name){
  const c=appContent;
  const wrap=(inner,sub='')=>`<div class="sim-app ${name}"><div class="sim-app-subtitle">${sub}</div>${inner}</div>`;
@@ -154,8 +155,8 @@ function renderApp(name){
   const notes=saved.notes||[];c.innerHTML=wrap(`<div class="sim-toolbar">${actionButton('＋ 新建备忘录','new-note')}</div><div id="noteEditor"></div><div class="sim-list">${notes.length?notes.map((n,i)=>`<button class="sim-list-row" data-action="edit-note" data-index="${i}"><span class="sim-row-icon">📝</span><span><b>${esc(n.title||'新备忘录')}</b><small>${esc(n.body||'没有其他内容')}</small></span><span>›</span></button>`).join(''):emptyState('📝','还没有备忘录','点击“新建备忘录”记录想法')}</div>`,'随手记录你的灵感');return;
  }
  if(name==='contacts'){
-  const contacts=saved.contacts||[{name:'小雨',phone:'138 0000 1107',note:'好朋友'},{name:'妈妈',phone:'138 0000 0001',note:'家人'}];
-  c.innerHTML=wrap(`<div class="ios-contact-top"><div><small>我的名片</small><h2>联系人</h2></div>${actionButton('＋','new-contact','ios-icon-btn')}</div><div id="contactEditor"></div><input class="sim-search ios-search" id="contactSearch" placeholder="搜索"><div class="ios-contact-count">所有联系人 · ${contacts.length}</div><div class="sim-list ios-contact-list" id="contactList">${contacts.map((p,i)=>contactRow(p,i)).join('')}</div>`,'');return;
+  const contacts=saved.contacts||[];
+  c.innerHTML=wrap(`<div class="contacts-heading"><strong>联系人</strong><span>${contacts.length} 位联系人</span></div><div class="sim-toolbar">${actionButton('＋ 添加联系人','new-contact')}</div><div id="contactEditor"></div><input class="sim-search" id="contactSearch" placeholder="搜索姓名或号码"><div class="sim-list" id="contactList">${contacts.map((p,i)=>contactRow(p,i)).join('')}</div>`,'');return;
  }
  if(name==='photos'){
   const photos=saved.photos||[];c.innerHTML=wrap(`<div class="sim-toolbar"><span>所有照片</span><span class="photo-count">${photos.length} 张照片</span></div><div class="photo-grid">${photos.map((p,i)=>`<button class="photo-tile" data-action="open-photo" data-index="${i}" aria-label="查看照片"><img src="${esc(p.data)}" alt="照片 ${i+1}"></button>`).join('')}</div>${photos.length?'':emptyState('🌄','还没有照片','用相机拍下喜欢的瞬间')}`,'回忆都在这里');return;
@@ -174,21 +175,23 @@ function renderApp(name){
   const d=new Date();c.innerHTML=wrap(`<div class="calendar-hero"><div>${d.getFullYear()}年 ${d.getMonth()+1}月</div><strong>${d.getDate()}</strong><span>${['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][d.getDay()]}</span></div><div class="sim-card"><h3>日程安排</h3><p>今天暂时没有日程。给自己留一点自由时间吧。</p>${actionButton('＋ 添加日程','add-event')}</div><div id="eventList">${(saved.events||[]).map((e,i)=>`<div class="sim-list-row"><span>📅</span><span><b>${esc(e.title)}</b><small>${esc(e.date)}</small></span><button data-action="delete-event" data-index="${i}">删除</button></div>`).join('')}</div>`,'日程安排');return;
  }
  if(name==='phone'){
-  const calls=saved.calls||canonicalContacts.map(([name,number],i)=>({name,number,type:i%4===3?'未接来电':i%2?'呼出':'呼入',time:i<3?'今天':'昨天'}));
+  const calls=saved.calls||[{name:'小雨',number:'138 0000 1107',type:'呼入',time:'今天 21:08'},{name:'林同学',number:'138 0000 2024',type:'呼出',time:'今天 17:32'},{name:'妈妈',number:'138 0000 0001',type:'未接来电',time:'昨天 19:45'}];
   c.innerHTML=wrap(`<div class="sim-card"><h3>最近通话</h3><div class="sim-list">${calls.map((p,i)=>`<div class="sim-list-row"><span class="contact-avatar">${p.type==='未接来电'?'↙':'☎'}</span><span><b>${esc(p.name)}</b><small>${esc(p.type)} · ${esc(p.time)}</small><small>${esc(p.number)}</small></span><button data-action="call-contact" data-index="${i}">拨打</button></div>`).join('')}</div></div><div class="sim-card"><h3>拨号键盘</h3><div class="dial-display" id="dialDisplay"></div><div class="dial-pad">${'123456789*0#'.split('').map(n=>`<button data-dial="${n}">${n}</button>`).join('')}</div><div class="dial-actions">${actionButton('⌫ 删除','dial-delete','secondary')}${actionButton('📞 模拟拨号','dial-call','green')}</div></div>`,'个人收藏');return;
  }
  if(name==='messages'||name==='mail'||name==='kakaotalk'){
-  const isMail=name==='mail', isKakao=name==='kakaotalk', label=isMail?'收件箱':isKakao?'聊天':'信息';
+  const isMail=name==='mail', isKakao=name==='kakaotalk', label=isMail?'收件箱':isKakao?'채팅':'信息';
   const items=saved[name]||[];
-  c.innerHTML=wrap(`<div class="${isKakao?'kakao-head':'ios-message-head'}"><div><small>${isKakao?'친구와 함께':'最近'}</small><h2>${label}</h2></div>${actionButton(isKakao?'＋':'写信息','new-message',isKakao?'kakao-add':'ios-compose')}</div>${isKakao?'<div class="kakao-friends-strip">'+(saved.contacts||[]).map(p=>`<div><span>${esc(p.name.slice(0,1))}</span><small>${esc(p.name)}</small></div>`).join('')+'</div>':''}<div id="messageEditor"></div><div class="sim-list ${isKakao?'kakao-chat-list':'ios-message-list'}">${items.length?items.map((m,i)=>`<div class="sim-list-row ${isKakao?'kakao-row':'ios-message-row'}"><span class="sim-row-icon ${isKakao?'kakao-avatar':'ios-message-avatar'}">${esc((m.to||'?').slice(0,1))}</span><span><b>${esc(m.to||'新对话')}</b><small>${esc(m.body)}</small><small>${esc(m.date||'刚刚')}</small></span><button data-action="delete-message" data-index="${i}">×</button></div>`).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
+  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':isKakao?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>`<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}"><span class="contact-avatar">${esc((m.to||'聊').slice(0,1))}</span><span><b>${esc(m.to||'新对话')}</b><small>${esc(m.body||'点击进入聊天')}</small></span><small class="message-time">${esc(m.date||'刚刚')}</small><span class="message-chevron">›</span></button>`).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
  }
  if(name==='instagram'){
   const posts=saved.posts_instagram||[];
-  c.innerHTML=wrap(`<div class="ig-topbar"><strong>Instagram</strong><div><button aria-label="通知">♡</button><button aria-label="私信">➤</button></div></div><div class="ig-stories"><div class="ig-story"><span class="ig-story-avatar own">＋</span><small>你的动态</small></div>${(saved.contacts||[]).map((p,i)=>`<div class="ig-story"><span class="ig-story-avatar ig-contact-${i%5}">${esc(p.name.slice(0,1))}</span><small>${esc(p.name)}</small></div>`).join('')}</div><div id="postEditor"></div><div class="ig-feed">${posts.map((p,i)=>`<article class="ig-post"><div class="ig-post-head"><span class="ig-avatar">${i%2?'🌙':'📷'}</span><div><b>${i%2?'slow.days':'daily.moments'}</b><small>${i%2?'城市散步':'日常记录'}</small></div><button class="ig-more" aria-label="更多">•••</button></div>${p.image?`<img class="ig-post-image" src="${esc(p.image)}" alt="动态照片" data-action="open-post-image" data-index="${i}">`:`<div class="ig-post-art ig-art-${i%3}"><span>${i%2?'☁️':'🌿'}</span><b>${esc(p.title||'最近的日常')}</b><small>${esc(p.body)}</small></div>`}<div class="ig-post-actions"><button data-action="like-post" data-index="${i}">♡</button><button aria-label="评论">▢</button><button aria-label="分享">➤</button><button class="ig-bookmark" aria-label="收藏">♧</button></div><b class="ig-likes">${p.likes||24} 次赞</b><p class="ig-caption"><b>${i%2?'slow.days':'daily.moments'}</b> ${esc(p.body)}</p><small class="ig-comments">查看全部评论 · 昨天</small></article>`).join('')}</div><div class="ig-bottom"><span>⌂</span><span>⌕</span><button data-action="new-post">＋</button><span>♡</span><span>◉</span></div>`,'');return;
+  c.innerHTML=wrap(`<div class="ig-topbar"><strong>Instagram</strong><div><button aria-label="通知">♡</button><button aria-label="私信">➤</button></div></div><div class="ig-stories"><div class="ig-story"><span class="ig-story-avatar own">＋</span><small>你的动态</small></div>${[['小雨','🌷'],['智敏','🌙'],['阿哲','☕'],['朋友','🌤️']].map(([n,em])=>`<div class="ig-story"><span class="ig-story-avatar">${em}</span><small>${n}</small></div>`).join('')}</div><div id="postEditor"></div><div class="ig-feed">${posts.map((p,i)=>`<article class="ig-post"><div class="ig-post-head"><span class="ig-avatar">${i%2?'🌙':'📷'}</span><div><b>${i%2?'slow.days':'daily.moments'}</b><small>${i%2?'城市散步':'日常记录'}</small></div><button class="ig-more" aria-label="更多">•••</button></div>${p.image?`<img class="ig-post-image" src="${esc(p.image)}" alt="动态照片" data-action="open-post-image" data-index="${i}">`:`<div class="ig-post-art ig-art-${i%3}"><span>${i%2?'☁️':'🌿'}</span><b>${esc(p.title||'最近的日常')}</b><small>${esc(p.body)}</small></div>`}<div class="ig-post-actions"><button data-action="like-post" data-index="${i}">♡</button><button aria-label="评论">▢</button><button aria-label="分享">➤</button><button class="ig-bookmark" aria-label="收藏">♧</button></div><b class="ig-likes">${p.likes||24} 次赞</b><p class="ig-caption"><b>${i%2?'slow.days':'daily.moments'}</b> ${esc(p.body)}</p><small class="ig-comments">查看全部评论 · 昨天</small></article>`).join('')}</div><div class="ig-bottom"><span>⌂</span><span>⌕</span><button data-action="new-post">＋</button><span>♡</span><span>◉</span></div>`,'');return;
  }
  if(name==='x'){
-  const posts=saved.posts_x||[];
-  c.innerHTML=wrap(`<div class="x-topbar"><strong>𝕏</strong><span>为你推荐　　正在关注</span></div><div class="x-compose"><div class="x-avatar">雨</div><div class="x-compose-body"><textarea id="xQuickPost" rows="2" placeholder="有什么新鲜事？"></textarea><div class="x-compose-actions"><span>◎　▧　☷</span><button data-action="publish-x-quick">发帖</button></div></div></div><div class="x-feed">${posts.map((p,i)=>`<article class="x-post"><div class="x-avatar">${i%2?'☁':'雨'}</div><div class="x-post-main"><div class="x-post-meta"><b>${i%2?'慢慢来':'日常观察员'}</b><span>@${i%2?'slowly_today':'daily_note'} · ${i?'3小时':'1小时'}</span><button aria-label="更多">•••</button></div><p>${esc(p.body||p.title)}</p>${p.image?`<img class="x-post-image" src="${esc(p.image)}" alt="帖子图片" data-action="open-post-image" data-index="${i}">`:''}<div class="x-post-stats"><button aria-label="回复">▢ <span>${i?3:2}</span></button><button aria-label="转发">♧ <span>${i?5:8}</span></button><button data-action="like-post" data-index="${i}">♡ <span>${p.likes||8}</span></button><button aria-label="浏览">▥ <span>${i?'126':'248'}</span></button><button aria-label="分享">↥</button></div></div></article>`).join('')}</div><div class="x-bottom"><span>⌂</span><span>⌕</span><span>◎</span><span>♧</span><span>♙</span></div>`,'');return;
+  const posts=saved.posts_x||[];const tab=saved.xTab||'for-you';
+  const tabs=[['for-you','为你推荐'],['following','正在关注']];
+  const feed=posts.map((p,i)=>`<article class="x-post"><div class="x-avatar">${i%2?'☁':'雨'}</div><div class="x-post-main"><div class="x-post-meta"><b>${i%2?'慢慢来':'momo'}</b><span>@${i%2?'slowly_today':'momo_daily'} · ${i?'3小时':'1小时'}</span><button aria-label="更多">•••</button></div><p>${esc(p.body||p.title)}</p>${p.image?`<img class="x-post-image" src="${esc(p.image)}" alt="帖子图片" data-action="open-post-image" data-index="${i}">`:''}<div class="x-post-stats"><button data-action="x-reply" data-index="${i}">▢ <span>${i?3:2}</span></button><button data-action="x-repost" data-index="${i}">🔁 <span>${i?5:8}</span></button><button data-action="like-post" data-index="${i}">♡ <span>${p.likes||8}</span></button><button>▥ <span>${i?'126':'248'}</span></button><button>↥</button></div></div></article>`).join('');
+  c.innerHTML=wrap(`<div class="x-shell"><div class="x-topbar"><strong>𝕏</strong><button class="x-premium">升级 Premium</button></div><div class="x-tabs">${tabs.map(([k,t])=>`<button class="${tab===k?'active':''}" data-action="x-tab" data-tab="${k}">${t}</button>`).join('')}</div><div class="x-compose"><div class="x-avatar">m</div><div class="x-compose-body"><textarea id="xQuickPost" rows="2" placeholder="有什么新鲜事？"></textarea><div class="x-compose-actions"><span>◎　▧　☷</span><button data-action="publish-x-quick">发帖</button></div></div></div><div class="x-feed">${feed||emptyState('𝕏','暂时没有帖子','发布一条动态开始分享')}</div><div class="x-bottom"><button data-action="x-tab" data-tab="home">⌂</button><button data-action="x-tab" data-tab="search">⌕</button><button data-action="x-tab" data-tab="communities">◎</button><button data-action="x-tab" data-tab="notifications">♡</button><button data-action="x-tab" data-tab="profile">♙</button></div></div>`,'');return;
  }
 if(name==='xiaohongshu'){
   const tab=saved.xhsTab||'home';
@@ -201,12 +204,17 @@ if(name==='xiaohongshu'){
   saved.xhsSearchHistory=[];
 }
 
-if(saved.xhsSearchHistoryCleared!==true){
-    const defaults=['哥哥太受欢迎了不开心是正常的吗','韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];
-    if(saved.xhsSearchHistory.length===0)saved.xhsSearchHistory=defaults;
-    else if(!saved.xhsSearchHistory.includes(defaults[0]))saved.xhsSearchHistory.unshift(defaults[0]);
-    persist();
-  }
+if(
+  saved.xhsSearchHistory.length===0 &&
+  saved.xhsSearchHistoryCleared!==true
+){
+  saved.xhsSearchHistory=[
+    '韩国打卡地点推荐',
+    '礼山',
+    '太喜欢哥哥了怎么办'
+  ];
+  persist();
+}
   const history=saved.xhsSearchHistory;
   const feed=[
    ['美妆','男生也能用的清爽底妆思路','少量妆前保湿，局部遮瑕后薄薄压一层散粉。重点是均匀肤色，不要让底妆有厚重面具感。','xhs-assets/beauty_01.jpg','2.4万','momo的化妆台','💗'],
@@ -260,7 +268,7 @@ if(name==='browser'){
  c.innerHTML=wrap(`<div class="sim-app-hero">${icons[name]||'📱'}</div><h2>${appNames[name]||name}</h2><p class="sim-muted">欢迎使用${appNames[name]||name}。</p><div class="sim-card"><h3>功能说明</h3><p>浏览并使用这里的功能。</p>${actionButton('返回桌面','go-home')}</div>`,'欢迎使用');
 }
 function openPhotoViewer(src,index=0){let viewer=$('#photoViewer');if(!viewer){viewer=document.createElement('div');viewer.id='photoViewer';viewer.className='photo-viewer';viewer.innerHTML='<button class="photo-viewer-close" aria-label="返回">‹</button><span class="photo-viewer-index"></span><img alt="照片大图">';$('.phone-frame').appendChild(viewer);viewer.addEventListener('click',e=>{if(e.target===viewer||e.target.closest('.photo-viewer-close'))viewer.classList.remove('open')})}viewer.querySelector('img').src=src;viewer.querySelector('.photo-viewer-index').textContent=String(index+1);viewer.classList.add('open')}
-function contactRow(p,i){return `<div class="sim-list-row ios-contact-row"><span class="contact-avatar">${esc((p.name||'?').slice(0,1))}</span><span><b>${esc(p.name)}</b><small>${esc(p.phone)} · ${esc(p.note||'')}</small></span><span class="ios-chevron">›</span></div>`}
+function contactRow(p,i){return `<div class="sim-list-row"><span class="contact-avatar">${esc((p.name||'?').slice(0,1))}</span><span><b>${esc(p.name)}</b><small>${esc(p.phone)}</small><small>${esc(p.note||'')}</small></span><button data-action="delete-contact" data-index="${i}">删除</button></div>`}
 function editorNote(index=null){const n=index===null?{title:'',body:''}:saved.notes[index];$('#noteEditor').innerHTML=`<div class="editor-card">${field('标题','noteTitle',n.title,'新备忘录')}<label class="sim-field">内容<textarea id="noteBody" rows="4" placeholder="开始输入...">${esc(n.body)}</textarea></label>${actionButton('保存','save-note')}${actionButton('取消','cancel-editor','secondary')}<input type="hidden" id="noteIndex" value="${index===null?'':index}"></div>`}
 function renderEditor(id,html){const el=$('#'+id);if(el)el.innerHTML=html}
 appContent.addEventListener('click',async e=>{
@@ -283,6 +291,11 @@ appContent.addEventListener('click',async e=>{
   if(act==='xhs-category'){saved.xhsCategory=e.target.closest('[data-category]')?.dataset.category||'推荐';saved.xhsTab='home';persist();renderApp('xiaohongshu');return}
   if(act==='xhs-profile-tab'){saved.xhsProfileTab=e.target.closest('[data-tab]')?.dataset.tab||'notes';saved.xhsTab='me';persist();renderApp('xiaohongshu');return}
   const index=Number(e.target.closest('[data-index]')?.dataset.index);
+  if(act==='open-chat'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
+  if(act==='chat-back'){activeChat=null;renderApp(currentApp);return}
+  if(act==='send-chat'){const input=$('#chatInput'),text=input?.value.trim();if(!text||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();renderChatThread(currentApp,activeChat);return}
+  if(act==='x-tab'){saved.xTab=e.target.closest('[data-tab]')?.dataset.tab||'for-you';persist();renderApp('x');return}
+  if(act==='x-reply'||act==='x-repost'){toast(act==='x-reply'?'回复功能已打开（演示）':'已模拟转发');return}
   if(act==='new-note')editorNote();
   if(act==='edit-note')editorNote(index);
   if(act==='cancel-editor')renderEditor('noteEditor','');
@@ -320,6 +333,7 @@ appContent.addEventListener('click',async e=>{
  const dial=e.target.closest('[data-dial]');if(dial)$('#dialDisplay').textContent+=dial.dataset.dial;
  const shortcut=e.target.closest('[data-url]');if(shortcut)window.open(shortcut.dataset.url,'_blank','noopener');
 });
+appContent.addEventListener('keydown',e=>{if(e.target.id==='chatInput'&&e.key==='Enter'){e.preventDefault();const b=appContent.querySelector('[data-action="send-chat"]');b?.click()}});
 appContent.addEventListener('change',e=>{
  if(e.target.matches('[data-setting]')){saved.settings=saved.settings||{};saved.settings[e.target.dataset.setting]=e.target.checked;persist();document.body.classList.toggle('sim-dark',!!saved.settings.dark);toast('设置已保存')}
  if(e.target.id==='cameraUpload'){const files=[...e.target.files];files.forEach(file=>{const reader=new FileReader();reader.onload=()=>{$('#cameraPreview').innerHTML=`<img class="camera-result" src="${reader.result}"><p>已拍摄并保存</p>`;saved.photos=saved.photos||[];saved.photos.unshift({data:reader.result});persist();toast('照片已保存到相册')};reader.readAsDataURL(file)})}

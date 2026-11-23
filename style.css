@@ -372,40 +372,55 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.xiaohongshu .xhs-profile-head>div:nth-child(2){flex:1;min-width:0}
 .sim-app.xiaohongshu .xhs-empty{min-height:245px}
 
-/* ===== Native-feeling iOS Messages / Contacts and KakaoTalk polish ===== */
-.sim-app.messages .sim-app-subtitle,.sim-app.kakaotalk .sim-app-subtitle,.sim-app.contacts .sim-app-subtitle{display:none}
-.ios-contact-top,.ios-message-head,.kakao-head{display:flex;align-items:flex-end;justify-content:space-between;padding:8px 2px 16px}
-.ios-contact-top small,.ios-message-head small,.kakao-head small{display:block;color:#8e8e93;font-size:12px;margin-bottom:4px}
-.ios-contact-top h2,.ios-message-head h2,.kakao-head h2{font-size:30px;line-height:1.1;font-weight:750;letter-spacing:-.7px;color:#111}
-.ios-icon-btn,.ios-compose{min-width:38px;height:38px;border-radius:50%;padding:0!important;display:grid;place-items:center;font-size:22px!important}
-.ios-search{border:0!important;border-radius:12px!important;background:#e9e9ee!important;margin:4px 0 14px!important;padding:11px 14px!important}
-.ios-contact-count{font-size:12px;color:#8e8e93;padding:0 4px 7px}
-.ios-contact-list,.ios-message-list{border-radius:14px;background:#fff;box-shadow:none;margin:0;overflow:hidden}
-.ios-contact-row,.ios-message-row{min-height:66px;padding:10px 12px;border-bottom:1px solid #ececf0;gap:12px}
-.ios-contact-row .contact-avatar,.ios-message-avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(145deg,#b7c9ff,#6e85c9);font-weight:650;font-size:17px}
-.ios-contact-row b,.ios-message-row b{font-size:15px;font-weight:600}
-.ios-contact-row small,.ios-message-row small{font-size:12px;color:#8e8e93;margin-top:3px}
-.ios-chevron{color:#c7c7cc;font-size:24px;padding:0 5px}
-.ios-message-head{align-items:center;padding-top:7px}
-.ios-message-head h2{font-size:31px}
-.ios-message-row{min-height:76px;padding:12px 5px;background:#f2f2f7}
-.ios-message-list{background:transparent}
-.ios-message-avatar{background:#d6e4fa;color:#315b94;display:grid;place-items:center}
-.ios-message-row>span:nth-child(2){padding-bottom:8px;border-bottom:1px solid #d9d9df;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
-.ios-message-row>button,.kakao-row>button{border:0;background:transparent;color:#b0b0b6;font-size:18px}
-.sim-app.kakaotalk{background:#fffdf4;margin:-14px -15px 0;padding:14px 15px 30px;min-height:100%}
-.kakao-head h2{font-size:29px}
-.kakao-add{background:#fee500!important;color:#222!important;border-radius:50%!important;width:38px;height:38px;padding:0!important;font-size:22px!important}
-.kakao-friends-strip{display:flex;gap:13px;overflow-x:auto;padding:5px 0 16px;border-bottom:1px solid #eee8d9;margin-bottom:10px}
-.kakao-friends-strip>div{min-width:54px;display:flex;flex-direction:column;align-items:center;gap:5px}
-.kakao-friends-strip span{width:48px;height:48px;border-radius:17px;background:#fee500;display:grid;place-items:center;font-weight:700;font-size:19px;color:#3d3520}
-.kakao-friends-strip small{font-size:10px;white-space:nowrap;color:#5d5546}
-.kakao-chat-list{background:transparent;border-radius:0;box-shadow:none;margin:0}
-.kakao-row{background:transparent;min-height:72px;padding:11px 3px;border-bottom:1px solid #f1eee5}
-.kakao-avatar{width:48px;height:48px;border-radius:17px;background:#fee500;color:#423b2b;display:grid;place-items:center;font-weight:700}
-.kakao-row b{font-size:14px}.kakao-row small{font-size:11px;color:#928c7d}
-.sim-app.instagram .sim-app-subtitle{display:none}
-.ig-stories{scrollbar-width:none}.ig-stories::-webkit-scrollbar,.kakao-friends-strip::-webkit-scrollbar{display:none}
-.ig-story{min-width:58px;max-width:66px}.ig-story small{max-width:66px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ig-story-avatar{font-size:17px;font-weight:650;color:#fff}
-.ig-contact-0{background:linear-gradient(135deg,#ffb36b,#ec477a)}.ig-contact-1{background:linear-gradient(135deg,#ffd36a,#f07847)}.ig-contact-2{background:linear-gradient(135deg,#b9a0ff,#e25c9a)}.ig-contact-3{background:linear-gradient(135deg,#75c8d5,#5477c9)}.ig-contact-4{background:linear-gradient(135deg,#9bd6a4,#3c9d82)}
+/* ===== 真实聊天详情页与 X 时间线升级 ===== */
+.message-heading,.contacts-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 2px 14px}
+.message-heading>b,.contacts-heading>strong{font-size:23px;font-weight:750;letter-spacing:-.5px}
+.contacts-heading>span{font-size:12px;color:#8e8e93}
+.message-list{border-radius:0;background:transparent;box-shadow:none}
+.message-row{min-height:76px;padding:12px 8px;border-bottom:1px solid #ececf0;border-radius:0;text-decoration:none}
+.message-row .contact-avatar{width:48px;height:48px;background:linear-gradient(145deg,#d9eaff,#8fb6ed);color:#24518a;font-weight:700}
+.message-time{align-self:flex-start;white-space:nowrap;font-size:11px!important;margin:3px 0 0 auto!important}
+.message-chevron{font-size:22px;color:#c7c7cc;margin-left:2px}
+.chat-app{height:calc(100% + 12px);min-height:520px;margin:-14px -15px -34px;background:#f4f4f8;display:flex;flex-direction:column;padding:0 0 8px}
+.chat-nav{height:54px;flex:0 0 54px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(255,255,255,.94);border-bottom:1px solid #e5e5ea}
+.chat-nav strong{font-size:16px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chat-nav button{border:0;background:transparent;color:#007aff;font-size:28px;min-width:34px}
+.chat-history{flex:1;overflow:auto;padding:18px 13px 24px;display:flex;flex-direction:column;gap:10px}
+.chat-day{text-align:center;color:#999;font-size:11px;margin:8px 0}
+.chat-line{display:flex;flex-direction:column;max-width:82%;gap:3px}
+.chat-line.theirs{align-self:flex-start;align-items:flex-start}
+.chat-line.mine{align-self:flex-end;align-items:flex-end}
+.chat-bubble{padding:10px 13px;border-radius:18px;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;box-shadow:0 1px 1px #0000000a}
+.chat-line.theirs .chat-bubble{background:#fff;color:#222;border-bottom-left-radius:5px}
+.chat-line.mine .chat-bubble{background:#1684ff;color:#fff;border-bottom-right-radius:5px}
+.chat-line small{font-size:10px;color:#999;padding:0 4px}
+.chat-compose{display:flex;align-items:center;gap:8px;padding:9px 10px;background:#fff;border-top:1px solid #e5e5ea}
+.chat-compose input{flex:1;min-width:0;border:0;border-radius:18px;background:#f1f1f5;padding:10px 13px;font-size:14px;outline:none;color:#222}
+.chat-compose button{border:0;background:transparent;color:#1684ff;font-size:14px;font-weight:650;padding:7px}
+.kakao-chat{background:#b2c7da}
+.kakao-chat .chat-nav{background:#b2c7da;border-color:#a2b9cc}
+.kakao-chat .chat-compose{background:#f8f8f8}
+.kakao-chat .chat-compose input{background:#fff;border:1px solid #e4e4e4;border-radius:5px}
+.kakao-chat .chat-line.theirs .chat-bubble{background:#fff;border-radius:4px}
+.kakao-chat .chat-line.mine .chat-bubble{background:#fee500;color:#222;border-radius:4px}
+.x-shell{margin:-2px -2px 0;color:#0f1419;background:#fff;min-height:100%;padding-bottom:12px}
+.x-topbar{height:48px;padding:0 14px;border-bottom:1px solid #eff3f4;display:flex;justify-content:space-between}
+.x-topbar strong{font-size:25px}
+.x-premium{border:1px solid #cfd9de;border-radius:18px;background:#fff;padding:6px 12px;font-weight:700;font-size:12px}
+.x-tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid #eff3f4}
+.x-tabs button{background:#fff;border:0;padding:15px 6px;color:#657786;font-weight:650;position:relative}
+.x-tabs button.active{color:#0f1419}
+.x-tabs button.active:after{content:"";position:absolute;bottom:0;left:25%;width:50%;height:4px;border-radius:4px;background:#1d9bf0}
+.x-compose{padding:15px 12px;border-bottom:8px solid #f7f9f9;display:flex;gap:10px}
+.x-compose textarea{font-size:15px;min-height:50px}
+.x-avatar{background:#d9eaf7;color:#1769aa;flex:0 0 42px;width:42px;height:42px;border-radius:50%}
+.x-compose-actions button{background:#1d9bf0;border-radius:18px;padding:8px 16px}
+.x-post{padding:14px 12px;border-bottom:1px solid #eff3f4}
+.x-post-meta b{font-size:13px;white-space:nowrap}
+.x-post-meta span{font-size:11px}
+.x-post-main p{font-size:14px;color:#0f1419}
+.x-post-stats{margin-top:4px}
+.x-post-stats button{color:#536471;cursor:pointer}
+.x-bottom{position:sticky;bottom:-24px;margin:12px -2px -24px;padding:12px 4px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid #eff3f4}
+.x-bottom button{border:0;background:transparent;color:#0f1419;font-size:23px;padding:3px 10px}
+@media(max-width:420px){.chat-app{margin:-12px -12px -28px}.message-row{padding-left:4px;padding-right:4px}}
