@@ -219,7 +219,23 @@ function renderApp(name){
   const tab=saved.phoneTab||'recent', calls=saved.calls||[], contacts=saved.contacts||[];
   const tabs=[['favorites','☆','个人收藏'],['recent','◷','最近通话'],['contacts','♙','通讯录'],['keypad','▦','拨号键盘'],['voicemail','▣','语音留言']];
   let body='';
-  if(tab==='recent'){const filter=saved.phoneFilter||'all', visibleCalls=calls.map((p,i)=>({...p,_index:i})).filter(p=>filter==='missed'?p.type==='未接来电':true);body=`<div class="phone-page-heading"><h2>最近通话</h2><button class="phone-edit" data-action="phone-clear-recent">编辑</button></div><div class="phone-filter"><button type="button" class="${filter==='all'?'selected':''}" data-action="phone-filter" data-filter="all">全部</button><button type="button" class="${filter==='missed'?'selected':''}" data-action="phone-filter" data-filter="missed">未接来电</button></div><div class="phone-list">${visibleCalls.map(p=>`<button type="button" class="phone-row phone-row-clickable" data-action="phone-call-row" data-call-id="${esc(p.id)}">${avatarMarkup(p.name,'phone-avatar')}<div class="phone-row-main"><b>${esc(p.name)}</b><small class="${p.type==='未接来电'?'missed':''}">${p.type==='呼出'?'↗':p.type==='未接来电'?'↙':'↙'} ${esc(p.type||'呼入')}</small></div><div class="phone-row-side"><small>${esc(p.time||'最近')}</small><span aria-hidden="true">ⓘ</span></div></button>`).join('')||'<p class="phone-empty">暂无未接来电</p>'}</div>`;}
+  if(tab==='recent'){
+   const filter=saved.phoneFilter||'all', editing=!!saved.phoneEditing;
+   const visibleCalls=calls.filter(p=>filter==='missed'?p.type==='未接来电':true);
+   body=`<div class="phone-page-heading"><h2>最近通话</h2><button class="phone-edit" data-action="phone-edit-recent">${editing?'完成':'编辑'}</button></div>
+   <div class="phone-filter" role="group" aria-label="通话筛选">
+    <button type="button" class="${filter==='all'?'selected':''}" data-action="phone-filter" data-filter="all" aria-pressed="${filter==='all'}">全部</button>
+    <button type="button" class="${filter==='missed'?'selected':''}" data-action="phone-filter" data-filter="missed" aria-pressed="${filter==='missed'}">未接来电</button>
+   </div>
+   <div class="phone-list">${visibleCalls.map(p=>`<div class="phone-row ${editing?'is-editing':''}">
+    <button type="button" class="phone-row-open" data-action="phone-call-row" data-call-id="${esc(p.id)}" aria-label="回拨 ${esc(p.name||p.number||'未知号码')}">
+     ${avatarMarkup(p.name||p.number,'phone-avatar')}
+     <span class="phone-row-main"><b>${esc(p.name||p.number||'未知号码')}</b><small class="${p.type==='未接来电'?'missed':''}"><span class="phone-call-type-icon">${p.type==='呼出'?'↗':p.type==='未接来电'?'↙':'↙'}</span>${esc(p.type||'呼入')}${p.number&&p.name&&p.number!==p.name?' · '+esc(p.number):''}</small></span>
+     <span class="phone-row-side"><small>${esc(p.time||'最近')}</small><span class="phone-info-icon" aria-hidden="true">ⓘ</span></span>
+    </button>
+    ${editing?`<button type="button" class="phone-row-delete" data-action="phone-delete-call" data-call-id="${esc(p.id)}" aria-label="删除这条通话记录">删除</button>`:''}
+   </div>`).join('')||`<p class="phone-empty">${filter==='missed'?'暂无未接来电':'暂无通话记录'}</p>`}</div>`;
+  }
   if(tab==='favorites') body=`<div class="phone-page-heading"><h2>个人收藏</h2><button class="phone-edit" data-action="phone-add-favorite">＋</button></div><div class="phone-favorites-grid">${['申惟哥哥'].map(n=>{const p=contacts.find(x=>x.name===n)||{name:n,phone:''};return `<button class="phone-favorite" data-action="phone-contact-call" data-person="${esc(p.name)}">${avatarMarkup(p.name,'phone-fav-avatar')}<b>${esc(p.name)}</b><small>电话</small></button>`}).join('')}</div>`;
   if(tab==='contacts') body=`<div class="phone-page-heading"><h2>通讯录</h2><button class="phone-add" data-action="new-contact" aria-label="添加联系人">＋</button></div><div id="contactEditor"></div><input class="phone-search" id="contactSearch" placeholder="搜索"><div class="phone-list">${contacts.map(p=>`<button class="phone-contact-row" data-action="phone-contact-call" data-person="${esc(p.name)}">${avatarMarkup(p.name,'phone-avatar')}<span>${esc(p.name)}</span><small>›</small></button>`).join('')}</div>`;
   if(tab==='keypad') body=`<div class="phone-keypad-wrap"><div class="phone-number-field"><input id="dialNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="输入电话号码" aria-label="电话号码" value="${esc(saved.phoneDialNumber||'')}"><button type="button" data-action="phone-backspace" aria-label="删除号码">⌫</button></div><div class="phone-keypad">${[['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['*',''],['0','+'],['#','']].map(([n,l])=>`<button data-action="phone-key" data-key="${n}"><b>${n}</b><small>${l}</small></button>`).join('')}</div><button class="phone-call-button" data-action="dial-call" aria-label="呼叫">☎</button></div>`;
@@ -386,6 +402,8 @@ appContent.addEventListener('click',async e=>{
   if(act==='delete-event'){saved.events.splice(index,1);persist();renderApp('calendar')}
   if(act==='phone-tab'){saved.phoneTab=e.target.closest('[data-tab]')?.dataset.tab||'recent';persist();renderApp('phone');return}
   if(act==='phone-filter'){saved.phoneFilter=e.target.closest('[data-filter]')?.dataset.filter||'all';persist();renderApp('phone');return}
+  if(act==='phone-edit-recent'){saved.phoneEditing=!saved.phoneEditing;persist();renderApp('phone');return}
+  if(act==='phone-delete-call'){const callId=e.target.closest('[data-call-id]')?.dataset.callId;saved.calls=(saved.calls||[]).filter(item=>item.id!==callId);persist();renderApp('phone');return}
   if(act==='phone-key'){const d=$('#dialNumber');if(d){d.value+=e.target.closest('[data-key]').dataset.key;saved.phoneDialNumber=d.value;persist()}}
   if(act==='phone-backspace'){const d=$('#dialNumber');if(d){d.value=d.value.slice(0,-1);saved.phoneDialNumber=d.value;persist()}}
   if(act==='phone-contact-call'){const name=e.target.closest('[data-person]')?.dataset.person,p=(saved.contacts||[]).find(x=>x.name===name);if(p)startPhoneCall(p.phone,p.name);return}
