@@ -192,6 +192,41 @@ function renderChatThread(app,person){
  </div>`;
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
+function renderSocialLanding(app,tab){
+ const isKakao=app==='kakaotalk',key=app+'Tab',people=saved.contacts||[],chats=saved[app]||[];
+ tab=tab||'chats';saved[key]=tab;
+ const tabs=isKakao?[['friends','好友','♙'],['chats','聊天','▢'],['open','开放聊天','◉'],['more','更多','•••']]:[['chats','微信','◉'],['contacts','通讯录','♙'],['discover','发现','⌕'],['me','我','☺']];
+ const title=isKakao?({friends:'好友',chats:'聊天',open:'开放聊天',more:'更多'}[tab]||'KakaoTalk'):({chats:'微信',contacts:'通讯录',discover:'发现',me:'我'}[tab]||'微信');
+ let body='';
+ if(tab==='chats'){
+  const rows=chats.map(m=>{const t=Array.isArray(m.thread)?m.thread:[],last=t[t.length-1];return '<button class="social-row" data-action="open-chat" data-person="'+esc(m.to)+'">'+avatarMarkup(m.to,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(m.to)+'</b><small>'+esc(last?.text||m.body||'点击进入聊天')+'</small></span><time>'+esc(last?.date||m.date||'刚刚')+'</time></button>'}).join('');
+  body='<label class="social-chat-search"><span>⌕</span><input id="chatListSearch" type="search" placeholder="'+(isKakao?'搜索聊天':'搜索')+'"></label><div class="social-list">'+(rows||emptyState('💬','还没有聊天','选择联系人开始聊天'))+'</div>';
+ }else if(tab==='friends'||tab==='contacts'){
+  const rows=people.map(p=>'<button class="social-row" data-action="open-social-contact" data-person="'+esc(p.name)+'">'+avatarMarkup(p.name,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.note||p.phone||'查看联系人资料')+'</small></span><span>›</span></button>').join('');
+  body='<label class="social-chat-search"><span>⌕</span><input id="socialContactSearch" type="search" placeholder="搜索联系人"></label><div class="social-list">'+(rows||emptyState('♙','暂无联系人','联系人会显示在这里'))+'</div>';
+ }else if(tab==='discover'){
+  body='<div class="social-feature-list"><button data-action="social-feature" data-feature="朋友圈"><span>◎</span><b>朋友圈</b><small>分享生活动态</small><i>›</i></button><button data-action="social-feature" data-feature="视频号"><span>▷</span><b>视频号</b><small>看看有趣的视频</small><i>›</i></button><button data-action="social-feature" data-feature="扫一扫"><span>▦</span><b>扫一扫</b><small>扫描二维码</small><i>›</i></button><button data-action="social-feature" data-feature="小程序"><span>▧</span><b>小程序</b><small>发现更多服务</small><i>›</i></button></div>';
+ }else if(tab==='me'){
+  body='<div class="social-me-card">'+avatarMarkup('我','social-me-avatar')+'<div><b>我的账号</b><small>个人资料与设置</small></div><button data-action="social-more">设置　›</button></div><div class="social-feature-list"><button data-action="social-feature" data-feature="收藏"><span>☆</span><b>收藏</b><i>›</i></button><button data-action="social-feature" data-feature="相册"><span>▧</span><b>相册</b><i>›</i></button><button data-action="social-feature" data-feature="卡包"><span>▤</span><b>卡包</b><i>›</i></button><button data-action="social-more"><span>⚙</span><b>设置</b><i>›</i></button></div>';
+ }else if(tab==='open'){
+  body='<div class="social-open-hero"><b>发现感兴趣的开放聊天</b><p>加入公开话题，和更多朋友交流</p><button data-action="social-feature" data-feature="推荐聊天室">浏览推荐聊天室</button></div><div class="social-feature-list"><button data-action="social-feature" data-feature="热门聊天室"><span>◉</span><b>热门聊天室</b><i>›</i></button><button data-action="social-feature" data-feature="附近的开放聊天"><span>⌖</span><b>附近的开放聊天</b><i>›</i></button></div>';
+ }else{
+  body='<div class="social-feature-list"><button data-action="social-more"><span>⚙</span><b>设置</b><i>›</i></button><button data-action="social-feature" data-feature="通知"><span>♧</span><b>通知</b><i>›</i></button><button data-action="social-feature" data-feature="帮助"><span>?</span><b>帮助与支持</b><i>›</i></button></div>';
+ }
+ const tools=tab==='chats'?'<button type="button" data-action="focus-chat-search" aria-label="搜索">⌕</button><button type="button" data-action="new-message" aria-label="新建聊天">＋</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
+ appContent.innerHTML='<div class="sim-app social-shell '+app+'"><header class="social-chat-top"><h2>'+title+'</h2><div class="social-chat-tools">'+tools+'</div></header><main class="social-tab-content">'+body+'</main><nav class="social-tabbar">'+tabs.map(t=>'<button type="button" class="'+(tab===t[0]?'active':'')+'" data-action="social-tab" data-tab="'+t[0]+'"><span>'+t[2]+'</span><small>'+t[1]+'</small></button>').join('')+'</nav></div>';
+}
+function renderSocialContact(app,person){
+ const p=(saved.contacts||[]).find(x=>x.name===person)||{name:person,phone:'',note:''};
+ appContent.innerHTML='<div class="sim-app social-subpage '+app+'"><header class="social-subnav"><button data-action="social-detail-back">‹ 返回</button><b>联系人详情</b><button data-action="social-more">•••</button></header><section class="social-contact-card">'+avatarMarkup(p.name,'social-detail-avatar')+'<h2>'+esc(p.name)+'</h2><p>'+esc(p.note||'联系人')+'</p></section><div class="social-detail-actions"><button data-action="social-contact-message" data-person="'+esc(p.name)+'">发消息</button><button data-action="social-contact-call" data-person="'+esc(p.name)+'">语音通话</button></div><div class="social-feature-list"><div><b>备注</b><small>'+esc(p.note||'未设置')+'</small></div><div><b>电话号码</b><small>'+esc(p.phone||'未填写')+'</small></div><button data-action="open-social-chat-settings" data-person="'+esc(p.name)+'"><b>聊天设置</b><i>›</i></button></div></div>';
+}
+function renderSocialChatSettings(app,person){
+ const item=(saved[app]||[]).find(x=>x.to===person)||{};
+ appContent.innerHTML='<div class="sim-app social-subpage '+app+'"><header class="social-subnav"><button data-action="social-detail-back">‹ 返回</button><b>聊天设置</b><span></span></header><section class="social-contact-card compact">'+avatarMarkup(person,'social-detail-avatar')+'<h2>'+esc(person)+'</h2></section><div class="social-feature-list"><label><span><b>消息免打扰</b><small>关闭此聊天的通知提醒</small></span><input type="checkbox" data-chat-setting="mute" data-person="'+esc(person)+'" '+(item.muted?'checked':'')+'></label><label><span><b>置顶聊天</b><small>在聊天列表中优先显示</small></span><input type="checkbox" data-chat-setting="pinned" data-person="'+esc(person)+'" '+(item.pinned?'checked':'')+'></label><label><span><b>保存到通讯录</b><small>保留联系人资料</small></span><input type="checkbox" data-chat-setting="saved" data-person="'+esc(person)+'" '+(item.savedContact?'checked':'')+'></label><button data-action="clear-chat-history" data-person="'+esc(person)+'"><b>清空聊天记录</b><i>›</i></button></div></div>';
+}
+function renderSocialMore(app){
+ appContent.innerHTML='<div class="sim-app social-subpage '+app+'"><header class="social-subnav"><button data-action="social-detail-back">‹ 返回</button><b>'+(app==='wechat'?'微信':'KakaoTalk')+' · 更多</b><span></span></header><div class="social-feature-list"><button data-action="social-feature" data-feature="通知设置"><b>通知设置</b><i>›</i></button><button data-action="social-feature" data-feature="隐私设置"><b>隐私设置</b><i>›</i></button><button data-action="social-feature" data-feature="聊天背景"><b>聊天背景</b><i>›</i></button><button data-action="social-feature" data-feature="关于应用"><b>关于应用</b><i>›</i></button></div></div>';
+}
 function renderApp(name){
  const c=appContent;
  const wrap=(inner,sub='')=>`<div class="sim-app ${name}"><div class="sim-app-subtitle">${sub}</div>${inner}</div>`;
@@ -251,27 +286,10 @@ function renderApp(name){
   c.innerHTML=`<div class="sim-app phone-app"><main class="phone-tab-content">${body}</main><nav class="phone-tabbar">${tabs.map(([k,ico,label])=>`<button class="${tab===k?'active':''}" data-action="phone-tab" data-tab="${k}"><span>${ico}</span><small>${label}</small></button>`).join('')}</nav></div>`;return;
  }
  if(name==='messages'||name==='mail'||name==='kakaotalk'||name==='wechat'){
-  const isMail=name==='mail', isKakao=name==='kakaotalk', isWechat=name==='wechat';
-  const label=isMail?'收件箱':isKakao?'채팅':isWechat?'微信':'信息';
-  const items=saved[name]||[];
-  const heading=isKakao
-   ? `<div class="social-chat-top"><div><h2>채팅</h2><small>친구들과 나누는 이야기</small></div><div class="social-chat-tools"><button type="button" aria-label="搜索" data-action="focus-chat-search">⌕</button><button type="button" aria-label="新聊天" data-action="new-message">＋</button><button type="button" aria-label="更多">•••</button></div></div>`
-   : isWechat
-   ? `<div class="social-chat-top"><div><h2>微信</h2><small>聊天</small></div><div class="social-chat-tools"><button type="button" aria-label="搜索" data-action="focus-chat-search">⌕</button><button type="button" aria-label="添加" data-action="new-message">＋</button></div></div>`
-   : `<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':'＋ 新信息','new-message')}</div>`;
-  const rows=items.length?items.map(m=>{
-   const thread=Array.isArray(m.thread)?m.thread:[];
-   const latest=thread[thread.length-1];
-   const preview=latest?.text||m.body||'点击进入聊天';
-   const stamp=latest?.date||m.date||'刚刚';
-   return `<button class="sim-list-row message-row ${isKakao?'kakao-message-row':isWechat?'wechat-message-row':''}" data-action="open-chat" data-person="${esc(m.to||'新对话')}">
-    ${avatarMarkup(m.to||'聊',isKakao?'contact-avatar kakao-list-avatar':isWechat?'contact-avatar wechat-list-avatar':'contact-avatar')}
-    <span class="message-row-copy"><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span>
-    <span class="message-row-meta"><small class="message-time">${esc(stamp)}</small></span>
-   </button>`;
-  }).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击右上角按钮，创建一条模拟聊天');
-  c.innerHTML=wrap(`${heading}<label class="social-chat-search"><span>⌕</span><input id="chatListSearch" type="search" placeholder="${isKakao?'채팅방 검색':'搜索'}"></label><div id="messageEditor"></div><div class="sim-list message-list social-message-list">${rows}</div>`,'');
-  return;
+  if(name==='wechat'||name==='kakaotalk'){renderSocialLanding(name,saved[name+'Tab']||'chats');return}
+  const isMail=name==='mail',label=isMail?'收件箱':'信息',items=saved[name]||[];
+  const rows=items.map(m=>{const thread=Array.isArray(m.thread)?m.thread:[],latest=thread[thread.length-1];return '<button class="sim-list-row message-row" data-action="open-chat" data-person="'+esc(m.to||'新对话')+'">'+avatarMarkup(m.to||'聊')+'<span class="message-row-copy"><b>'+esc(m.to||'新对话')+'</b><small>'+esc(latest?.text||m.body||'点击进入聊天')+'</small></span><span class="message-row-meta"><small class="message-time">'+esc(latest?.date||m.date||'刚刚')+'</small></span></button>'}).join('');
+  c.innerHTML=wrap('<div class="message-heading"><b>'+label+'</b>'+actionButton(isMail?'＋ 写邮件':'＋ 新信息','new-message')+'</div><div id="messageEditor"></div><div class="sim-list message-list">'+(rows||emptyState('💬','还没有对话','点击右上角按钮，创建一条模拟聊天'))+'</div>','');return;
  }
  if(name==='instagram'){
   const posts=saved.posts_instagram||[];
