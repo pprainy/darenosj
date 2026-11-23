@@ -196,7 +196,7 @@ function renderSocialLanding(app,tab){
  const isKakao=app==='kakaotalk',key=app+'Tab',people=saved.contacts||[],chats=saved[app]||[];
  tab=tab||'chats';saved[key]=tab;persist();
  const tabs=isKakao?[['friends','好友','♙'],['chats','聊天','▢'],['open','开放聊天','◉'],['more','更多','•••']]:[['chats','微信','◉'],['contacts','通讯录','♙'],['discover','发现','⌕'],['me','我','☺']];
- const title=isKakao?({friends:'好友',chats:'聊天',open:'开放聊天',more:'更多'}[tab]||'KakaoTalk'):({chats:'微信',contacts:'通讯录',discover:'发现',me:'我'}[tab]||'微信');
+ const title=isKakao?({friends:'好友',chats:'聊天',open:'开放聊天',more:'更多'}[tab]||'KakaoTalk'):({chats:'聊天',contacts:'通讯录',discover:'发现',me:'我'}[tab]||'微信');
  let body='';
  if(tab==='chats'){
   const rows=[...chats].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)).map(m=>{const t=Array.isArray(m.thread)?m.thread:[],last=t[t.length-1];return '<button class="social-row" data-action="open-chat" data-person="'+esc(m.to)+'">'+avatarMarkup(m.to,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(m.to)+'</b><small>'+esc(last?.text||m.body||'点击进入聊天')+'</small></span><time>'+esc(last?.date||m.date||'刚刚')+'</time></button>'}).join('');
