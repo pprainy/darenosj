@@ -924,3 +924,7 @@ body { min-height: 100vh; min-height: 100dvh; }
 /* Ensure contact photos stay fully clipped inside their avatar shapes in every list. */
 .contact-avatar.has-photo{position:relative;overflow:hidden;padding:0;isolation:isolate}
 .contact-avatar.has-photo>img{position:absolute;inset:0;width:100%;height:100%;min-width:0;min-height:0;display:block;object-fit:cover;object-position:center;border-radius:inherit}
+
+/* Small, WeChat-style inline translation beneath KakaoTalk message bubbles */
+.kakao-inline-translate{display:block;margin:3px 2px 2px;padding:0;border:0;background:transparent;color:#6c8298;font-size:11px;line-height:1.4;text-align:left;cursor:pointer}
+.kakao-chat .chat-line .kakao-inline-translate{max-width:82%;}
