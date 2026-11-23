@@ -472,13 +472,43 @@ body { min-height: 100vh; min-height: 100dvh; }
 .contact-avatar.has-photo i,.chat-nav-avatar.has-photo i{display:none}
 .chat-nav-person{display:flex;align-items:center;gap:9px;min-width:0}.chat-nav-avatar{width:32px;height:32px;flex:0 0 32px;border-radius:50%;background:#dce9f8;display:grid;place-items:center;overflow:hidden;font-style:normal}.chat-nav-avatar img{width:100%;height:100%;object-fit:cover}
 
-
-/* Contacts app: clean iOS-style header with a single add (+) control. */
-.contacts-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 2px 16px;padding:0 2px;}
-.contacts-title{display:flex;flex-direction:column;gap:3px;min-width:0;}
-.contacts-title>strong{font-size:23px;font-weight:750;letter-spacing:-.5px;color:#171719;}
-.contacts-title>span{font-size:12px;color:#8e8e93;}
-.contact-add-button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#e8f2ff;color:#087cff;font-size:28px;font-weight:400;line-height:1;display:grid;place-items:center;padding:0;cursor:pointer;}
-.contact-add-button:active{background:#d5e8ff;transform:scale(.96);}
-.contact-list-row{cursor:default;}
-.contact-list-row>span{min-width:0;}
+/* Native-style iOS Phone app tabs */
+.app-content:has(.phone-app){padding:0;overflow:hidden;display:flex;min-height:0}
+.phone-app{width:100%;height:100%;min-height:0;display:flex;flex-direction:column;background:#fff;color:#111;}
+.phone-tab-content{flex:1;min-height:0;overflow-y:auto;padding:22px 18px 18px;overscroll-behavior:contain}
+.phone-page-heading{display:flex;align-items:center;justify-content:space-between;margin:4px 0 18px}
+.phone-page-heading h2{font-size:30px;letter-spacing:-.7px;margin:0;font-weight:750}
+.phone-edit,.phone-add{border:0;background:transparent;color:#007aff;font-size:16px;padding:8px 4px}
+.phone-add{font-size:30px;line-height:24px;font-weight:300}
+.phone-filter{display:flex;gap:0;background:#e9e9eb;border-radius:9px;padding:2px;margin-bottom:12px}
+.phone-filter span{width:50%;text-align:center;padding:6px;font-size:13px;color:#333}
+.phone-filter .selected{background:#fff;border-radius:7px;font-weight:600;box-shadow:0 1px 3px #00000018}
+.phone-list{border-top:1px solid #e5e5ea}
+.phone-row{display:flex;align-items:center;gap:12px;min-height:72px;border-bottom:1px solid #e5e5ea;padding:9px 0}
+.phone-avatar{width:43px;height:43px;border-radius:50%;flex:0 0 43px;background:#d9d9de;display:grid;place-items:center;font-size:18px;overflow:hidden;color:#555}
+.phone-avatar img,.phone-fav-avatar img{width:100%;height:100%;object-fit:cover}
+.phone-row-main{display:flex;flex-direction:column;gap:5px;min-width:0;flex:1}
+.phone-row-main b,.phone-contact-row span{font-size:16px;font-weight:550}
+.phone-row-main small{font-size:13px;color:#8e8e93}.phone-row-main small.missed{color:#ff3b30}
+.phone-row-side{display:flex;align-items:center;gap:13px;color:#8e8e93}.phone-row-side small{font-size:12px;white-space:nowrap}.phone-row-side button{border:1.5px solid #007aff;color:#007aff;background:transparent;border-radius:50%;width:22px;height:22px;font-size:14px;line-height:18px}
+.phone-tabbar{height:66px;flex:0 0 66px;background:#f8f8fa;border-top:1px solid #d8d8dc;display:flex;justify-content:space-around;align-items:center;padding:4px 2px max(4px,env(safe-area-inset-bottom))}
+.phone-tabbar button{border:0;background:transparent;color:#8e8e93;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;flex:1;height:100%;padding:0}
+.phone-tabbar button span{font-size:23px;line-height:25px}.phone-tabbar button small{font-size:10px;white-space:nowrap}.phone-tabbar button.active{color:#007aff}
+.phone-favorites-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 10px;padding:10px 2px}
+.phone-favorite{border:0;background:transparent;display:flex;align-items:center;flex-direction:column;gap:5px;color:inherit}
+.phone-fav-avatar{width:62px;height:62px;border-radius:50%;background:#dedee3;display:grid;place-items:center;overflow:hidden;font-size:25px}
+.phone-favorite b{font-size:13px;font-weight:550}.phone-favorite small{font-size:11px;color:#8e8e93}
+.phone-search{width:100%;border:0;border-radius:10px;background:#eeeef0;padding:10px 12px;margin:0 0 12px;font-size:15px;outline:0}
+.phone-contact-row{display:flex;align-items:center;gap:12px;width:100%;min-height:62px;border:0;border-bottom:1px solid #e5e5ea;background:transparent;text-align:left;color:inherit;padding:8px 0}
+.phone-contact-row span{flex:1}.phone-contact-row small{font-size:22px;color:#c7c7cc;padding-right:4px}
+.phone-keypad-wrap{max-width:300px;margin:20px auto 0;text-align:center}
+.phone-number-field{display:flex;align-items:center;min-height:52px;border-bottom:1px solid #d1d1d6;margin:0 0 20px;padding:0 2px}
+.phone-number-field input{flex:1;min-width:0;border:0;outline:0;background:transparent;text-align:center;font-size:26px;color:inherit;letter-spacing:1px}
+.phone-number-field input::placeholder{font-size:16px;color:#c7c7cc;letter-spacing:0}
+.phone-number-field button{border:0;background:transparent;color:#8e8e93;font-size:22px;padding:8px}
+.phone-keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 24px;max-width:260px;margin:0 auto 18px}
+.phone-keypad button{width:68px;height:68px;border:0;border-radius:50%;background:#e5e5ea;color:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:auto}
+.phone-keypad button b{font-size:29px;font-weight:400;line-height:31px}.phone-keypad button small{font-size:9px;letter-spacing:1.5px;min-height:11px}
+.phone-call-button{width:66px;height:54px;border:0;border-radius:28px;background:#34c759;color:#fff;font-size:27px}
+.phone-voicemail-empty{height:65%;display:flex;align-items:center;justify-content:center;flex-direction:column;color:#8e8e93;text-align:center;gap:10px}.phone-voicemail-empty div{font-size:42px;color:#c7c7cc}.phone-voicemail-empty b{font-size:17px;color:#555}.phone-voicemail-empty p,.phone-empty{font-size:13px;color:#8e8e93}
+@media(max-width:420px){.phone-tab-content{padding:20px 16px 12px}.phone-tabbar{height:68px;flex-basis:68px}.phone-keypad{gap:10px 18px}}
