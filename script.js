@@ -176,6 +176,11 @@ function field(label,id,value='',placeholder=''){return `<label class="sim-field
 function emptyState(icon,title,desc=''){return `<div class="sim-empty"><div>${icon}</div><strong>${title}</strong><p>${desc}</p></div>`}
 let activeChat=null;
 const kakaoChinese={'오늘 뭐 해? 사진 보내줄게.':'今天在做什么？我给你发照片。','집 도착하면 알려줘!':'到家告诉我！','주말에 같이 밥 먹을래?':'周末一起吃饭吗？','ㅋㅋㅋ 방금 영상 진짜 웃겨':'哈哈，刚才的视频真的好好笑。','사진 너무 잘 나왔다!':'照片拍得真好！','밥 잘 챙겨 먹어.':'好好吃饭。','시간 되면 전화해 줘.':'有空给我打电话。','오늘 밤 게임할래?':'今晚一起打游戏吗？','링크 보냈어! 확인해 봐.':'我发链接了！看一下。','요즘 추우니까 따뜻하게 입어.':'最近冷，穿暖一点。','사진 보내줄게.':'我给你发照片。','같이 밥 먹을래?':'一起吃饭吗？','방금 영상 진짜 웃겨':'刚才的视频真的好好笑。','전화해 줘.':'给我打电话。','게임할래?':'要一起打游戏吗？','링크 보냈어!':'我发链接了！','따뜻하게 입어.':'穿暖一点。'};
+const chineseToKorean={'今天在做什么？我给你发照片。':'오늘 뭐 해? 사진 보내줄게.','到家告诉我！':'집 도착하면 알려줘!','周末一起吃饭吗？':'주말에 같이 밥 먹을래?','哈哈，刚才的视频真的好好笑。':'ㅋㅋㅋ 방금 영상 진짜 웃겨','照片拍得真好！':'사진 너무 잘 나왔다!','好好吃饭。':'밥 잘 챙겨 먹어.','有空给我打电话。':'시간 되면 전화해 줘.','今晚一起打游戏吗？':'오늘 밤 게임할래?','我发链接了！看一下。':'링크 보냈어! 확인해 봐.','最近冷，穿暖一点。':'요즘 추우니까 따뜻하게 입어.','我给你发照片。':'사진 보내줄게.','一起吃饭吗？':'같이 밥 먹을래?','给我打电话。':'전화해 줘.','要一起打游戏吗？':'게임할래?','我发链接了！':'링크 보냈어!','穿暖一点。':'따뜻하게 입어.','你好':'안녕','你在干嘛？':'뭐 하고 있어?','在吗？':'있어?','我想你了':'보고 싶어','晚安':'잘 자','早安':'좋은 아침','谢谢':'고마워','对不起':'미안해','好':'응','嗯嗯':'응응','哈哈':'ㅋㅋㅋ','哈哈哈':'ㅋㅋㅋㅋ','知道了':'알겠어','等一下':'잠깐만','我到了':'도착했어','我马上到':'금방 갈게','吃饭了吗？':'밥 먹었어?','今天辛苦了':'오늘 수고했어','明天见':'내일 봐','没关系':'괜찮아','可以':'좋아','不要':'싫어'};
+const familyContactNames=new Set(['爸爸','妈妈','弟弟','小弟','姐姐']);
+const kakaoContactNames=new Set(canonicalContacts.filter(([name])=>!familyContactNames.has(name)).map(([name])=>name));
+function outgoingLanguage(app,person){if(app==='kakaotalk')return 'ko';if(app==='wechat')return 'zh';if(app==='messages')return kakaoContactNames.has(person)?'ko':'zh';return 'zh';}
+function translateToKoreanLocal(text){return chineseToKorean[text]||text;}
 function renderChatThread(app,person){
  activeChat=person;
  const isKakao=app==='kakaotalk', isWechat=app==='wechat';
@@ -434,7 +439,7 @@ appContent.addEventListener('click',async e=>{
   if(act==='open-chat'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
   if(act==='chat-back'){activeChat=null;renderApp(currentApp);return}
   if(act==='open-chat-settings'){renderSocialChatSettings(currentApp,activeChat||'');return}
-  if(act==='send-chat'){const input=$('#chatInput'),text=input?.value.trim();if(!text||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();if(currentApp==='kakaotalk')updateLockKakaoNotification();renderChatThread(currentApp,activeChat);return}
+  if(act==='send-chat'){const input=$('#chatInput'),typed=input?.value.trim();if(!typed||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;const lang=outgoingLanguage(currentApp,activeChat),text=lang==='ko'?translateToKoreanLocal(typed):typed;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();if(currentApp==='kakaotalk')updateLockKakaoNotification();renderChatThread(currentApp,activeChat);return}
   if(act==='x-tab'){saved.xTab=e.target.closest('[data-tab]')?.dataset.tab||'for-you';saved.xSection='home';persist();renderApp('x');return}
   if(act==='x-section'){saved.xSection=e.target.closest('[data-section]')?.dataset.section||'home';persist();renderApp('x');return}
   if(act==='x-reply'||act==='x-repost'){toast(act==='x-reply'?'回复功能已打开（演示）':'已模拟转发');return}
