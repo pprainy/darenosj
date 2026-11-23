@@ -682,3 +682,60 @@ body { min-height: 100vh; min-height: 100dvh; }
 .phone-app .phone-row.is-editing .phone-row-open{gap:9px}
 .phone-app .phone-empty{padding:30px 20px;text-align:center;color:#8e8e93;font-size:14px}
 .phone-app .phone-tabbar{flex-basis:68px;height:68px;padding-bottom:max(5px,env(safe-area-inset-bottom))}
+
+
+/* WeChat + KakaoTalk: app-specific conversation lists and chat surfaces. */
+.sim-app.kakaotalk,.sim-app.wechat{height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.sim-app.kakaotalk{background:#fff;color:#222}
+.sim-app.wechat{background:#f7f7f7;color:#191919}
+.social-chat-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 12px;flex:0 0 auto}
+.social-chat-top h2{font-size:25px;line-height:1.2;font-weight:750;letter-spacing:-.5px;margin:0}
+.social-chat-top small{display:block;color:#929292;font-size:11px;margin-top:4px}
+.social-chat-tools{display:flex;align-items:center;gap:14px}
+.social-chat-tools button{border:0;background:transparent;color:#222;font-size:23px;min-width:27px;padding:4px}
+.kakaotalk .social-chat-tools button{font-weight:500}
+.wechat .social-chat-tools button{font-weight:500}
+.social-chat-search{height:36px;margin:2px 14px 9px;padding:0 11px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;gap:8px;color:#999;flex:0 0 auto}
+.social-chat-search span{font-size:20px;line-height:1}
+.social-chat-search input{border:0;outline:0;background:transparent;min-width:0;flex:1;font-size:13px;color:#222}
+.social-message-list{flex:1;min-height:0;overflow-y:auto;margin:0!important;padding:0 0 12px;border-radius:0!important}
+.social-message-list .message-row{display:flex;align-items:center;gap:11px;min-height:72px;padding:10px 15px;border:0;border-bottom:1px solid #f0f0f0;background:transparent;text-align:left;width:100%;border-radius:0}
+.social-message-list .message-row:active{background:#f3f3f3}
+.social-message-list .contact-avatar{width:49px;height:49px;flex:0 0 49px;border-radius:11px;display:grid;place-items:center;font-size:18px;font-weight:650}
+.social-message-list .kakao-list-avatar{border-radius:13px;background:#fee500;color:#3b3320}
+.social-message-list .wechat-list-avatar{border-radius:8px;background:#d9f4e3;color:#16884d}
+.social-message-list .message-row-copy{display:flex;flex-direction:column;gap:6px;flex:1;min-width:0;text-align:left}
+.social-message-list .message-row-copy b{font-size:15px;font-weight:600;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.social-message-list .message-row-copy small{font-size:12px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.social-message-list .message-row-meta{align-self:flex-start;flex:0 0 auto;margin-left:auto}
+.social-message-list .message-time{font-size:10px!important;color:#aaa;margin:3px 0 0!important;white-space:nowrap}
+.kakaotalk .social-chat-top{padding-top:17px}
+.kakaotalk .social-message-list .message-row{min-height:75px}
+.wechat .social-chat-top{background:#f7f7f7}
+.wechat .social-message-list .message-row{background:#fff}
+.wechat .social-chat-search{background:#ededed}
+.chat-nav-tools{display:flex;align-items:center;gap:9px}
+.chat-nav-tools button{font-size:20px;min-width:28px}
+.kakao-chat{background:#b2c7da!important}
+.kakao-chat .chat-history{background:#b2c7da}
+.kakao-chat .chat-day{color:#526575}
+.kakao-chat .chat-nav{background:#b2c7da;border-color:#9fb5c8}
+.kakao-chat .chat-nav button{color:#222}
+.kakao-chat .chat-compose{background:#f7f7f7}
+.kakao-chat .chat-compose input{background:#fff;border:0;border-radius:18px}
+.kakao-chat .chat-compose button[data-action="send-chat"]{background:#fee500;color:#222;border-radius:15px;padding:8px 12px}
+.wechat-chat{background:#ededed!important}
+.wechat-chat .chat-history{background:#ededed}
+.wechat-chat .chat-nav{background:#ededed;border-color:#d9d9d9}
+.wechat-chat .chat-nav button{color:#222}
+.wechat-chat .chat-compose{background:#f7f7f7}
+.wechat-chat .chat-compose input{background:#fff;border:0;border-radius:6px}
+.wechat-chat .chat-compose button[data-action="send-chat"]{background:#07c160;color:#fff;border-radius:5px;padding:8px 12px}
+.wechat-chat .chat-line.mine .chat-bubble{background:#95ec69;color:#1b1b1b}
+.wechat-chat .chat-line.theirs .chat-bubble{background:#fff}
+.chat-attach{font-size:22px!important;color:#555!important}
+@media(max-width:420px){
+ .social-chat-top{padding-left:14px;padding-right:14px}
+ .social-message-list .message-row{padding-left:12px;padding-right:12px}
+ .social-message-list .contact-avatar{width:45px;height:45px;flex-basis:45px}
+}
