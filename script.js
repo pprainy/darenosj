@@ -62,7 +62,15 @@ const conversationSeeds=[
 ];
 for(const key of ['messages','kakaotalk']){
  const old=Array.isArray(saved[key])?saved[key]:[];
- saved[key]=conversationSeeds.map(([to,body,date,last],i)=>{const prior=old.find(x=>x.to===to)||old[i]||{};return {...prior,to,body:prior.body||body,date:prior.date||date,thread:Array.isArray(prior.thread)&&prior.thread.length?prior.thread:[{from:'them',text:body,date}]}});
+ // 只按联系人姓名匹配旧会话，绝不按数组序号套用别人的消息。
+ saved[key]=conversationSeeds.map(([to,body,date,last])=>{
+  const prior=old.find(x=>x.to===to)||{};
+  const thread=Array.isArray(prior.thread)&&prior.thread.length
+    ? prior.thread
+    : [{from:'them',text:prior.body||body,date:prior.date||date}];
+  const latest=thread[thread.length-1]||{};
+  return {...prior,to,thread,body:latest.text||prior.body||body,date:latest.date||prior.date||date};
+ });
 }
 // 搜索历史默认四条；显式清空后不自动补回。
 if(!Array.isArray(saved.xhsSearchHistory))saved.xhsSearchHistory=[];
@@ -181,19 +189,26 @@ function renderApp(name){
  if(name==='messages'||name==='mail'||name==='kakaotalk'){
   const isMail=name==='mail', isKakao=name==='kakaotalk', label=isMail?'收件箱':isKakao?'채팅':'信息';
   const items=saved[name]||[];
-  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':isKakao?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>`<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}"><span class="contact-avatar">${esc((m.to||'聊').slice(0,1))}</span><span><b>${esc(m.to||'新对话')}</b><small>${esc(m.body||'点击进入聊天')}</small></span><small class="message-time">${esc(m.date||'刚刚')}</small><span class="message-chevron">›</span></button>`).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
+  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':isKakao?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}"><span class="contact-avatar">${esc((m.to||'聊').slice(0,1))}</span><span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
  }
  if(name==='instagram'){
   const posts=saved.posts_instagram||[];
   c.innerHTML=wrap(`<div class="ig-topbar"><strong>Instagram</strong><div><button aria-label="通知">♡</button><button aria-label="私信">➤</button></div></div><div class="ig-stories"><div class="ig-story"><span class="ig-story-avatar own">＋</span><small>你的动态</small></div>${[['小雨','🌷'],['智敏','🌙'],['阿哲','☕'],['朋友','🌤️']].map(([n,em])=>`<div class="ig-story"><span class="ig-story-avatar">${em}</span><small>${n}</small></div>`).join('')}</div><div id="postEditor"></div><div class="ig-feed">${posts.map((p,i)=>`<article class="ig-post"><div class="ig-post-head"><span class="ig-avatar">${i%2?'🌙':'📷'}</span><div><b>${i%2?'slow.days':'daily.moments'}</b><small>${i%2?'城市散步':'日常记录'}</small></div><button class="ig-more" aria-label="更多">•••</button></div>${p.image?`<img class="ig-post-image" src="${esc(p.image)}" alt="动态照片" data-action="open-post-image" data-index="${i}">`:`<div class="ig-post-art ig-art-${i%3}"><span>${i%2?'☁️':'🌿'}</span><b>${esc(p.title||'最近的日常')}</b><small>${esc(p.body)}</small></div>`}<div class="ig-post-actions"><button data-action="like-post" data-index="${i}">♡</button><button aria-label="评论">▢</button><button aria-label="分享">➤</button><button class="ig-bookmark" aria-label="收藏">♧</button></div><b class="ig-likes">${p.likes||24} 次赞</b><p class="ig-caption"><b>${i%2?'slow.days':'daily.moments'}</b> ${esc(p.body)}</p><small class="ig-comments">查看全部评论 · 昨天</small></article>`).join('')}</div><div class="ig-bottom"><span>⌂</span><span>⌕</span><button data-action="new-post">＋</button><span>♡</span><span>◉</span></div>`,'');return;
  }
  if(name==='x'){
-  const posts=saved.posts_x||[];const tab=saved.xTab||'for-you';
+  const posts=saved.posts_x||[];const tab=saved.xTab||'for-you';const section=saved.xSection||'home';
   const tabs=[['for-you','为你推荐'],['following','正在关注']];
-  const feed=posts.map((p,i)=>`<article class="x-post"><div class="x-avatar">${i%2?'☁':'雨'}</div><div class="x-post-main"><div class="x-post-meta"><b>${i%2?'慢慢来':'momo'}</b><span>@${i%2?'slowly_today':'momo_daily'} · ${i?'3小时':'1小时'}</span><button aria-label="更多">•••</button></div><p>${esc(p.body||p.title)}</p>${p.image?`<img class="x-post-image" src="${esc(p.image)}" alt="帖子图片" data-action="open-post-image" data-index="${i}">`:''}<div class="x-post-stats"><button data-action="x-reply" data-index="${i}">▢ <span>${i?3:2}</span></button><button data-action="x-repost" data-index="${i}">🔁 <span>${i?5:8}</span></button><button data-action="like-post" data-index="${i}">♡ <span>${p.likes||8}</span></button><button>▥ <span>${i?'126':'248'}</span></button><button>↥</button></div></div></article>`).join('');
-  c.innerHTML=wrap(`<div class="x-shell"><div class="x-topbar"><strong>𝕏</strong><button class="x-premium">升级 Premium</button></div><div class="x-tabs">${tabs.map(([k,t])=>`<button class="${tab===k?'active':''}" data-action="x-tab" data-tab="${k}">${t}</button>`).join('')}</div><div class="x-compose"><div class="x-avatar">m</div><div class="x-compose-body"><textarea id="xQuickPost" rows="2" placeholder="有什么新鲜事？"></textarea><div class="x-compose-actions"><span>◎　▧　☷</span><button data-action="publish-x-quick">发帖</button></div></div></div><div class="x-feed">${feed||emptyState('𝕏','暂时没有帖子','发布一条动态开始分享')}</div><div class="x-bottom"><button data-action="x-tab" data-tab="home">⌂</button><button data-action="x-tab" data-tab="search">⌕</button><button data-action="x-tab" data-tab="communities">◎</button><button data-action="x-tab" data-tab="notifications">♡</button><button data-action="x-tab" data-tab="profile">♙</button></div></div>`,'');return;
+  const feed=posts.map((p,i)=>`<article class="x-post"><div class="x-avatar">${i%2?'☁':'雨'}</div><div class="x-post-main"><div class="x-post-meta"><b>${i%2?'慢慢来':'momo'}</b><span>@${i%2?'slowly_today':'momo_daily'} · ${i?'3小时':'1小时'}</span><button aria-label="更多">•••</button></div><p>${esc(p.body||p.title)}</p>${p.image?`<img class="x-post-image" src="${esc(p.image)}" alt="帖子图片" data-action="open-post-image" data-index="${i}">`:''}<div class="x-post-stats"><button data-action="x-reply" data-index="${i}">▢ <span>${i?3:2}</span></button><button data-action="x-repost" data-index="${i}">🔁 <span>${i?5:8}</span></button><button data-action="like-post" data-index="${i}">♡ <span>${p.likes||8}</span></button><button>▤ <span>${i?'126':'248'}</span></button><button>↥</button></div></div></article>`).join('');
+  let sectionBody='';
+  if(section==='home') sectionBody=`<div class="x-tabs">${tabs.map(([k,t])=>`<button class="${tab===k?'active':''}" data-action="x-tab" data-tab="${k}">${t}</button>`).join('')}</div><div class="x-compose"><div class="x-avatar">m</div><div class="x-compose-body"><textarea id="xQuickPost" rows="2" placeholder="有什么新鲜事？"></textarea><div class="x-compose-actions"><span>◎　▧　☷</span><button data-action="publish-x-quick">发帖</button></div></div></div><div class="x-feed">${feed||emptyState('𝕏','暂时没有帖子','发布一条动态开始分享')}</div>`;
+  else if(section==='search') sectionBody=`<div class="x-section-page"><h2>搜索</h2><input class="x-search-input" placeholder="搜索 X"><h3>发生了什么</h3><p>探索热门话题、账号和最新动态</p><div class="x-trend"><small>日本 · 趋势</small><b># 今日の話題</b><small>正在讨论 · 更多帖子</small></div><div class="x-trend"><small>娱乐 · 趋势</small><b>韩国流行音乐</b><small>热门讨论</small></div></div>`;
+  else if(section==='communities') sectionBody=`<div class="x-section-page"><h2>社群</h2><p>加入感兴趣的社群，和大家交流。</p><div class="x-trend"><b>摄影与日常</b><small>分享照片、灵感和生活碎片</small></div><div class="x-trend"><b>K-POP 讨论区</b><small>聊聊喜欢的音乐和舞台</small></div></div>`;
+  else if(section==='notifications') sectionBody=`<div class="x-section-page"><h2>通知</h2><div class="x-notice"><b>欢迎来到 X</b><p>点赞、回复和关注动态会显示在这里。</p></div></div>`;
+  else sectionBody=`<div class="x-section-page x-profile-page"><div class="x-cover"></div><div class="x-profile-avatar">雨</div><h2>momo</h2><p>@momo_daily</p><p>记录日常、照片和喜欢的事。</p><div class="x-profile-stats"><b>0 <small>正在关注</small></b><b>0 <small>关注者</small></b></div><button class="x-edit-profile">编辑个人资料</button><div class="x-tabs"><button class="active">帖子</button><button>回复</button><button>媒体</button></div>${feed}</div>`;
+  const nav=[['home','⌂','首页'],['search','⌕','搜索'],['communities','◎','社群'],['notifications','♡','通知'],['profile','♙','个人资料']];
+  c.innerHTML=wrap(`<div class="x-shell"><div class="x-topbar"><strong>𝕏</strong><button class="x-premium">升级 Premium</button></div><div class="x-content">${sectionBody}</div><div class="x-bottom">${nav.map(([k,ico,t])=>`<button class="${section===k?'active':''}" aria-label="${t}" data-action="x-section" data-section="${k}">${ico}</button>`).join('')}</div></div>`,'');return;
  }
-if(name==='xiaohongshu'){
+ if(name==='xiaohongshu'){
   const tab=saved.xhsTab||'home';
   const following=saved.xhsFollowing||(saved.xhsFollowing=Math.floor(Math.random()*240+30));
   const profileTab=saved.xhsProfileTab||'notes';
@@ -294,7 +309,8 @@ appContent.addEventListener('click',async e=>{
   if(act==='open-chat'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
   if(act==='chat-back'){activeChat=null;renderApp(currentApp);return}
   if(act==='send-chat'){const input=$('#chatInput'),text=input?.value.trim();if(!text||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();renderChatThread(currentApp,activeChat);return}
-  if(act==='x-tab'){saved.xTab=e.target.closest('[data-tab]')?.dataset.tab||'for-you';persist();renderApp('x');return}
+  if(act==='x-tab'){saved.xTab=e.target.closest('[data-tab]')?.dataset.tab||'for-you';saved.xSection='home';persist();renderApp('x');return}
+  if(act==='x-section'){saved.xSection=e.target.closest('[data-section]')?.dataset.section||'home';persist();renderApp('x');return}
   if(act==='x-reply'||act==='x-repost'){toast(act==='x-reply'?'回复功能已打开（演示）':'已模拟转发');return}
   if(act==='new-note')editorNote();
   if(act==='edit-note')editorNote(index);
