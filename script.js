@@ -200,7 +200,7 @@ function renderSocialLanding(app,tab){
  let body='';
  if(tab==='chats'){
   const rows=chats.map(m=>{const t=Array.isArray(m.thread)?m.thread:[],last=t[t.length-1];return '<button class="social-row" data-action="open-chat" data-person="'+esc(m.to)+'">'+avatarMarkup(m.to,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(m.to)+'</b><small>'+esc(last?.text||m.body||'点击进入聊天')+'</small></span><time>'+esc(last?.date||m.date||'刚刚')+'</time></button>'}).join('');
-  body='<label class="social-chat-search"><span>⌕</span><input id="chatListSearch" type="search" placeholder="'+(isKakao?'搜索聊天':'搜索')+'"></label><div class="social-list">'+(rows||emptyState('💬','还没有聊天','选择联系人开始聊天'))+'</div>';
+  body='<label class="social-chat-search"><span>⌕</span><input id="chatListSearch" type="search" placeholder="'+(isKakao?'搜索聊天':'搜索')+'"></label><div id="messageEditor"></div><div class="social-list">'+(rows||emptyState('💬','还没有聊天','选择联系人开始聊天'))+'</div>';
  }else if(tab==='friends'||tab==='contacts'){
   const rows=people.map(p=>'<button class="social-row" data-action="open-social-contact" data-person="'+esc(p.name)+'">'+avatarMarkup(p.name,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.note||p.phone||'查看联系人资料')+'</small></span><span>›</span></button>').join('');
   body='<label class="social-chat-search"><span>⌕</span><input id="socialContactSearch" type="search" placeholder="搜索联系人"></label><div class="social-list">'+(rows||emptyState('♙','暂无联系人','联系人会显示在这里'))+'</div>';
@@ -415,7 +415,7 @@ appContent.addEventListener('click',async e=>{
   if(act==='open-social-contact'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderSocialContact(currentApp,person);return}
   if(act==='social-detail-back'){renderSocialLanding(currentApp,saved[currentApp+'Tab']||'chats');return}
   if(act==='social-contact-message'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
-  if(act==='open-chat-settings'){renderSocialChatSettings(currentApp,activeChat||'');return}
+  if(act==='open-chat-settings'||act==='open-social-chat-settings'){renderSocialChatSettings(currentApp,activeChat||e.target.closest('[data-person]')?.dataset.person||'');return}
   if(act==='social-more'){renderSocialMore(currentApp);return}
   if(act==='social-feature'){toast((e.target.closest('[data-feature]')?.dataset.feature||'功能')+'（模拟入口）');return}
   if(act==='clear-chat-history'){const person=e.target.closest('[data-person]')?.dataset.person,item=(saved[currentApp]||[]).find(x=>x.to===person);if(item){item.thread=[];item.body='';persist();renderSocialChatSettings(currentApp,person);toast('聊天记录已清空')}return}
