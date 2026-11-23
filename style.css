@@ -599,3 +599,61 @@ body { min-height: 100vh; min-height: 100dvh; }
   background: url('icons/icon_wechat.png') center / cover no-repeat, linear-gradient(145deg,#18c86b,#06a94f) !important;
   color:#fff !important; font-size:0 !important;
 }
+
+/* Phone app width/layout regression fix: keep the app and its list full-width
+   inside the flex-based app view, and prevent rows from shrinking into columns. */
+.app-content:has(.sim-app.phone-app) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+.app-content:has(.sim-app.phone-app) > .sim-app.phone-app {
+  display: flex;
+  flex: 1 1 100%;
+  align-self: stretch;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.sim-app.phone-app .phone-tab-content {
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.sim-app.phone-app .phone-list {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.sim-app.phone-app .phone-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.sim-app.phone-app .phone-row-main {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+.sim-app.phone-app .phone-row-side {
+  flex: 0 0 auto;
+  max-width: 48%;
+  white-space: nowrap;
+}
+.sim-app.phone-app .phone-row-side small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
