@@ -64,7 +64,7 @@ saved.contacts=canonicalContacts.map(([name,phone,note])=>{
 });
 saved.contacts.push(...oldContacts.filter(contact=>contact?.name&&!canonicalNames.has(contact.name)));
 const conversationSeeds=[
- ['申惟哥哥','今天有空吗？想和你分享一张照片。','刚刚','今天有空吗？'],['道勋哥','到家了吗？路上注意安全。','10:42','到家了吗？'],['英宰哥','周末一起出去玩吗？','昨天','周末一起出去玩吗？'],['志薰🪼','ㅋㅋㅋ 这个真的太好笑了','昨天','这个真的太好笑了'],['炅潣','照片拍得很好看！','周一','照片拍得很好看！'],['爸爸','记得按时吃饭。','周日','记得按时吃饭。'],['妈妈','有空给家里打个电话呀。','周日','有空给家里打个电话呀。'],['弟弟','游戏晚上一起吗？','周六','游戏晚上一起吗？'],['小弟','我把链接发你了。','周五','我把链接发你了。'],['姐姐','最近天气变冷了，注意保暖。','周四','注意保暖。']
+ ['申惟哥哥','오늘 뭐 해? 사진 보내줄게.','刚刚','사진 보내줄게.'],['道勋哥','집 도착하면 알려줘!','10:42','집 도착하면 알려줘!'],['英宰哥','주말에 같이 밥 먹을래?','昨天','같이 밥 먹을래?'],['志薰🪼','ㅋㅋㅋ 방금 영상 진짜 웃겨','昨天','방금 영상 진짜 웃겨'],['炅潣','사진 너무 잘 나왔다!','周一','사진 너무 잘 나왔다!'],['爸爸','밥 잘 챙겨 먹어.','周日','밥 잘 챙겨 먹어.'],['妈妈','시간 되면 전화해 줘.','周日','전화해 줘.'],['弟弟','오늘 밤 게임할래?','周六','게임할래?'],['小弟','링크 보냈어! 확인해 봐.','周五','링크 보냈어!'],['姐姐','요즘 추우니까 따뜻하게 입어.','周四','따뜻하게 입어.']
 ];
 for(const key of ['messages','kakaotalk']){
  const old=Array.isArray(saved[key])?saved[key]:[];
@@ -183,12 +183,12 @@ function renderChatThread(app,person){
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
  const bubbles=item.thread.map((m,i)=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}"><div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
- const navTitle=isKakao?'채팅':isWechat?'聊天':person;
+ const navTitle=isKakao?person:isWechat?person:person;
  const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
-  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(person)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
+  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
   <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
-  <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'메시지 보내기':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'전송':isWechat?'发送':'发送'}</button></div>
+  <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'메시지를 입력하세요':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'전송':isWechat?'发送':'发送'}</button></div>
  </div>`;
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
