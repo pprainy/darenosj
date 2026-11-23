@@ -194,7 +194,7 @@ function renderChatThread(app,person){
 }
 function renderSocialLanding(app,tab){
  const isKakao=app==='kakaotalk',key=app+'Tab',people=saved.contacts||[],chats=saved[app]||[];
- tab=tab||'chats';saved[key]=tab;
+ tab=tab||'chats';saved[key]=tab;persist();
  const tabs=isKakao?[['friends','好友','♙'],['chats','聊天','▢'],['open','开放聊天','◉'],['more','更多','•••']]:[['chats','微信','◉'],['contacts','通讯录','♙'],['discover','发现','⌕'],['me','我','☺']];
  const title=isKakao?({friends:'好友',chats:'聊天',open:'开放聊天',more:'更多'}[tab]||'KakaoTalk'):({chats:'微信',contacts:'通讯录',discover:'发现',me:'我'}[tab]||'微信');
  let body='';
