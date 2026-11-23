@@ -471,3 +471,14 @@ body { min-height: 100vh; min-height: 100dvh; }
 .contact-avatar img,.chat-nav-avatar img{width:100%;height:100%;display:block;object-fit:cover;border-radius:inherit}
 .contact-avatar.has-photo i,.chat-nav-avatar.has-photo i{display:none}
 .chat-nav-person{display:flex;align-items:center;gap:9px;min-width:0}.chat-nav-avatar{width:32px;height:32px;flex:0 0 32px;border-radius:50%;background:#dce9f8;display:grid;place-items:center;overflow:hidden;font-style:normal}.chat-nav-avatar img{width:100%;height:100%;object-fit:cover}
+
+
+/* Contacts app: clean iOS-style header with a single add (+) control. */
+.contacts-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 2px 16px;padding:0 2px;}
+.contacts-title{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.contacts-title>strong{font-size:23px;font-weight:750;letter-spacing:-.5px;color:#171719;}
+.contacts-title>span{font-size:12px;color:#8e8e93;}
+.contact-add-button{width:36px;height:36px;flex:0 0 36px;border:0;border-radius:50%;background:#e8f2ff;color:#087cff;font-size:28px;font-weight:400;line-height:1;display:grid;place-items:center;padding:0;cursor:pointer;}
+.contact-add-button:active{background:#d5e8ff;transform:scale(.96);}
+.contact-list-row{cursor:default;}
+.contact-list-row>span{min-width:0;}
