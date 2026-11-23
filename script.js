@@ -56,7 +56,13 @@ const canonicalContacts=[
  ['爸爸','010-2301-0006','家人'],['妈妈','010-2301-0007','家人'],['弟弟','010-2301-0008','家人'],['小弟','010-2301-0009','家人'],['姐姐','010-2301-0010','家人']
 ];
 const oldContacts=Array.isArray(saved.contacts)?saved.contacts:[];
-saved.contacts=canonicalContacts.map(([name,phone,note],i)=>({...oldContacts[i],name,phone:oldContacts[i]?.phone||phone,note}));
+const canonicalNames=new Set(canonicalContacts.map(([name])=>name));
+// Match legacy contacts by name rather than array position, and retain user-created contacts.
+saved.contacts=canonicalContacts.map(([name,phone,note])=>{
+ const prior=oldContacts.find(contact=>contact?.name===name)||{};
+ return {...prior,name,phone:prior.phone||phone,note:prior.note||note};
+});
+saved.contacts.push(...oldContacts.filter(contact=>contact?.name&&!canonicalNames.has(contact.name)));
 const conversationSeeds=[
  ['申惟哥哥','今天有空吗？想和你分享一张照片。','刚刚','今天有空吗？'],['道勋哥','到家了吗？路上注意安全。','10:42','到家了吗？'],['英宰哥','周末一起出去玩吗？','昨天','周末一起出去玩吗？'],['志薰🪼','ㅋㅋㅋ 这个真的太好笑了','昨天','这个真的太好笑了'],['炅潣','照片拍得很好看！','周一','照片拍得很好看！'],['爸爸','记得按时吃饭。','周日','记得按时吃饭。'],['妈妈','有空给家里打个电话呀。','周日','有空给家里打个电话呀。'],['弟弟','游戏晚上一起吗？','周六','游戏晚上一起吗？'],['小弟','我把链接发你了。','周五','我把链接发你了。'],['姐姐','最近天气变冷了，注意保暖。','周四','注意保暖。']
 ];
