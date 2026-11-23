@@ -193,7 +193,7 @@ function renderChatThread(app,person){
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
 function renderSocialLanding(app,tab){
- const isKakao=app==='kakaotalk',key=app+'Tab',people=saved.contacts||[],chats=saved[app]||[];
+ const isKakao=app==='kakaotalk',key=app+'Tab',allPeople=saved.contacts||[],familySet=new Set(familyNames),people=isKakao?allPeople.filter(p=>!familySet.has(p.name)):allPeople.filter(p=>familySet.has(p.name)),chats=saved[app]||[];
  tab=tab||'chats';saved[key]=tab;persist();
  const tabs=isKakao?[['friends','好友','♙'],['chats','聊天','▢'],['open','开放聊天','◉'],['more','更多','•••']]:[['chats','微信','◉'],['contacts','通讯录','♙'],['discover','发现','⌕'],['me','我','☺']];
  const title=isKakao?({friends:'好友',chats:'聊天',open:'开放聊天',more:'更多'}[tab]||'KakaoTalk'):({chats:'聊天',contacts:'通讯录',discover:'发现',me:'我'}[tab]||'微信');
@@ -202,7 +202,7 @@ function renderSocialLanding(app,tab){
   const rows=[...chats].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)).map(m=>{const t=Array.isArray(m.thread)?m.thread:[],last=t[t.length-1];return '<button class="social-row" data-action="open-chat" data-person="'+esc(m.to)+'">'+avatarMarkup(m.to,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(m.to)+'</b><small>'+esc(last?.text||m.body||'点击进入聊天')+'</small></span><time>'+esc(last?.date||m.date||'刚刚')+'</time></button>'}).join('');
   body='<label class="social-chat-search"><span>⌕</span><input id="chatListSearch" type="search" placeholder="'+(isKakao?'搜索聊天':'搜索')+'"></label><div id="messageEditor"></div><div class="social-list">'+(rows||emptyState('💬','还没有聊天','选择联系人开始聊天'))+'</div>';
  }else if(tab==='friends'||tab==='contacts'){
-  const rows=people.map(p=>'<button class="social-row" data-action="open-social-contact" data-person="'+esc(p.name)+'">'+avatarMarkup(p.name,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(p.note||p.phone||'查看联系人资料')+'</small></span><span>›</span></button>').join('');
+  const rows=people.map(p=>{const remark=isKakao?(p.name==='申惟哥哥'||p.name==='申惟'?'哥哥':'朋友'):(p.note||p.phone||'查看联系人资料');return '<button class="social-row" data-action="open-social-contact" data-person="'+esc(p.name)+'">'+avatarMarkup(p.name,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(remark)+'</small></span><span>›</span></button>'}).join('');
   body='<label class="social-chat-search"><span>⌕</span><input id="socialContactSearch" type="search" placeholder="搜索联系人"></label><div class="social-list">'+(rows||emptyState('♙','暂无联系人','联系人会显示在这里'))+'</div>';
  }else if(tab==='discover'){
   body='<div class="social-feature-list"><button data-action="social-feature" data-feature="朋友圈"><span>◎</span><b>朋友圈</b><small>分享生活动态</small><i>›</i></button><button data-action="social-feature" data-feature="视频号"><span>▷</span><b>视频号</b><small>看看有趣的视频</small><i>›</i></button><button data-action="social-feature" data-feature="扫一扫"><span>▦</span><b>扫一扫</b><small>扫描二维码</small><i>›</i></button><button data-action="social-feature" data-feature="小程序"><span>▧</span><b>小程序</b><small>发现更多服务</small><i>›</i></button></div>';
