@@ -216,10 +216,36 @@ function renderApp(name){
   if(tab==='voicemail') body=`<div class="phone-page-heading"><h2>语音留言</h2><button class="phone-edit">编辑</button></div><div class="phone-voicemail-empty"><div>▣</div><b>没有语音留言</b><p>收到的语音留言会显示在这里。</p></div>`;
   c.innerHTML=`<div class="sim-app phone-app"><main class="phone-tab-content">${body}</main><nav class="phone-tabbar">${tabs.map(([k,ico,label])=>`<button class="${tab===k?'active':''}" data-action="phone-tab" data-tab="${k}"><span>${ico}</span><small>${label}</small></button>`).join('')}</nav></div>`;return;
  }
- if(name==='messages'||name==='mail'||name==='kakaotalk'||name==='wechat'){
-  const isMail=name==='mail', isKakao=name==='kakaotalk', isWechat=name==='wechat', label=isMail?'收件箱':isKakao?'채팅':isWechat?'微信':'信息';
+ if(name==='messages'||name==='mail'){
+  const isMail=name==='mail', label=isMail?'收件箱':'信息';
   const items=saved[name]||[];
-  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':(isKakao||isWechat)?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}">${avatarMarkup(m.to||'聊')}<span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
+  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}">${avatarMarkup(m.to||'聊')}<span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
+ }
+ if(name==='kakaotalk'){
+  const items=saved.kakaotalk||[];
+  const inner=`<div class="kakao-app">
+    <div class="kakao-topbar"><strong>채팅</strong><div class="kakao-top-actions"><button data-action="new-message" aria-label="新建聊天">＋</button><button aria-label="搜索">⌕</button></div></div>
+    <div id="messageEditor"></div>
+    <div class="kakao-chat-list">
+      ${items.length?items.map(m=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'';const stamp=latest?.date||m.date||'';return `<button class="kakao-chat-item" data-action="open-chat" data-person="${esc(m.to||'')}">${avatarMarkup(m.to||'聊天','kakao-avatar')}<div class="kakao-chat-info"><div class="kakao-chat-line1"><b>${esc(m.to||'聊天')}</b><small>${esc(stamp)}</small></div><p>${esc(preview)}</p></div></button>`}).join(''):emptyState('💬','还没有聊天','点击右上角开始新对话')}
+    </div>
+    <nav class="kakao-tabbar"><button><span>👤</span><small>친구</small></button><button class="active"><span>💬</span><small>채팅</small></button><button><span>🛍</span><small>쇼핑</small></button><button><span>⋯</span><small>더보기</small></button></nav>
+  </div>`;
+  c.innerHTML=`<div class="sim-app kakaotalk-app">${inner}</div>`;
+  return;
+ }
+ if(name==='wechat'){
+  const items=saved.wechat||[];
+  const inner=`<div class="wechat-app">
+    <div class="wechat-topbar"><strong>微信</strong><div class="wechat-top-actions"><button data-action="new-message" aria-label="新建聊天">＋</button></div></div>
+    <div id="messageEditor"></div>
+    <div class="wechat-chat-list">
+      ${items.length?items.map(m=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'';const stamp=latest?.date||m.date||'';return `<button class="wechat-chat-item" data-action="open-chat" data-person="${esc(m.to||'')}">${avatarMarkup(m.to||'聊天','wechat-avatar')}<div class="wechat-chat-info"><div class="wechat-chat-line1"><b>${esc(m.to||'聊天')}</b><small>${esc(stamp)}</small></div><p>${esc(preview)}</p></div></button>`}).join(''):emptyState('💬','还没有聊天','点击右上角开始新对话')}
+    </div>
+    <nav class="wechat-tabbar"><button class="active"><span>💬</span><small>微信</small></button><button><span>👤</span><small>通讯录</small></button><button><span>🧭</span><small>发现</small></button><button><span>👥</span><small>我</small></button></nav>
+  </div>`;
+  c.innerHTML=`<div class="sim-app wechat-app">${inner}</div>`;
+  return;
  }
  if(name==='instagram'){
   const posts=saved.posts_instagram||[];
