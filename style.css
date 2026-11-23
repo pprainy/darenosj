@@ -583,3 +583,19 @@ body { min-height: 100vh; min-height: 100dvh; }
   font-size: 0 !important;
   overflow: hidden;
 }
+
+
+/* 修复最近通话列表：按钮必须保持单行横向布局，避免联系人姓名被挤成竖排 */
+.sim-app.phone-app .phone-list { width:100%; min-width:0; }
+.sim-app.phone-app .phone-row { width:100%; min-width:0; box-sizing:border-box; }
+.sim-app.phone-app .phone-row-main { min-width:0; flex:1 1 auto; overflow:hidden; }
+.sim-app.phone-app .phone-row-main b { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.sim-app.phone-app .phone-row-side { flex:0 0 auto; gap:8px; min-width:0; }
+.sim-app.phone-app .phone-row-side small { white-space:nowrap; font-size:11px; }
+.sim-app.phone-app .phone-row-side span { flex:0 0 22px; }
+
+/* 微信图标优先显示项目内 PNG；即使图片尚未放入，也保留绿色气泡占位 */
+.wechat-app-icon {
+  background: url('icons/icon_wechat.png') center / cover no-repeat, linear-gradient(145deg,#18c86b,#06a94f) !important;
+  color:#fff !important; font-size:0 !important;
+}
