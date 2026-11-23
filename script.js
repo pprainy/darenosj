@@ -77,6 +77,8 @@ if(!Array.isArray(saved.xhsSearchHistory))saved.xhsSearchHistory=[];
 if(saved.xhsSearchHistory.length===0&&saved.xhsSearchHistoryCleared!==true){saved.xhsSearchHistory=['哥哥太受欢迎了不开心是正常的吗','韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];}
 persist();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const avatarFiles={'申惟哥哥':'shinyu.jpg','道勋哥':'dohoon.jpg','英宰哥':'youngjae.jpg','志薰🪼':'jihoon.jpg','炅潣':'kyungmin.jpg'};
+function avatarMarkup(name,cls='contact-avatar'){const file=avatarFiles[name];return file?`<span class="${cls} has-photo"><img src="avatars/${file}" alt="${esc(name)}" onerror="this.parentElement.classList.remove('has-photo');this.remove()"><i>${esc((name||'?').slice(0,1))}</i></span>`:`<span class="${cls}">${esc((name||'?').slice(0,1))}</span>`;}
 const appNames={messages:'信息',mail:'邮件',notes:'备忘录',camera:'相机',instagram:'Instagram',browser:'浏览器',settings:'设置',x:'X',kakaotalk:'KakaoTalk',phone:'电话',xiaohongshu:'小红书',voice:'语音备忘录',photos:'照片',contacts:'通讯录',calendar:'日历'};
 const icons={messages:'💬',mail:'✉️',notes:'📝',camera:'📷',instagram:'📸',browser:'🧭',settings:'⚙️',x:'𝕏',kakaotalk:'🟡',phone:'📞',xiaohongshu:'📕',voice:'🎙️',photos:'🌄',contacts:'👤',calendar:'📅'};
 let currentApp='', currentPasscode='';
@@ -153,7 +155,7 @@ function renderChatThread(app,person){
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
  const bubbles=item.thread.map(m=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}"><div class="chat-bubble">${esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
- appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':''}"><div class="chat-nav"><button data-action="chat-back">‹</button><strong>${esc(person)}</strong><button aria-label="更多">•••</button></div><div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div class="chat-compose"><button aria-label="添加">＋</button><input id="chatInput" placeholder="${isKakao?'메시지 보내기':'iMessage'}"><button data-action="send-chat">${isKakao?'전송':'发送'}</button></div></div>`;
+ appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':''}"><div class="chat-nav"><button data-action="chat-back">‹</button><span class="chat-nav-person">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(person)}</strong></span><button aria-label="更多">•••</button></div><div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div class="chat-compose"><button aria-label="添加">＋</button><input id="chatInput" placeholder="${isKakao?'메시지 보내기':'iMessage'}"><button data-action="send-chat">${isKakao?'전송':'发送'}</button></div></div>`;
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
 function renderApp(name){
@@ -183,13 +185,14 @@ function renderApp(name){
   const d=new Date();c.innerHTML=wrap(`<div class="calendar-hero"><div>${d.getFullYear()}年 ${d.getMonth()+1}月</div><strong>${d.getDate()}</strong><span>${['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][d.getDay()]}</span></div><div class="sim-card"><h3>日程安排</h3><p>今天暂时没有日程。给自己留一点自由时间吧。</p>${actionButton('＋ 添加日程','add-event')}</div><div id="eventList">${(saved.events||[]).map((e,i)=>`<div class="sim-list-row"><span>📅</span><span><b>${esc(e.title)}</b><small>${esc(e.date)}</small></span><button data-action="delete-event" data-index="${i}">删除</button></div>`).join('')}</div>`,'日程安排');return;
  }
  if(name==='phone'){
-  const calls=saved.calls||[{name:'小雨',number:'138 0000 1107',type:'呼入',time:'今天 21:08'},{name:'林同学',number:'138 0000 2024',type:'呼出',time:'今天 17:32'},{name:'妈妈',number:'138 0000 0001',type:'未接来电',time:'昨天 19:45'}];
-  c.innerHTML=wrap(`<div class="sim-card"><h3>最近通话</h3><div class="sim-list">${calls.map((p,i)=>`<div class="sim-list-row"><span class="contact-avatar">${p.type==='未接来电'?'↙':'☎'}</span><span><b>${esc(p.name)}</b><small>${esc(p.type)} · ${esc(p.time)}</small><small>${esc(p.number)}</small></span><button data-action="call-contact" data-index="${i}">拨打</button></div>`).join('')}</div></div><div class="sim-card"><h3>拨号键盘</h3><div class="dial-display" id="dialDisplay"></div><div class="dial-pad">${'123456789*0#'.split('').map(n=>`<button data-dial="${n}">${n}</button>`).join('')}</div><div class="dial-actions">${actionButton('⌫ 删除','dial-delete','secondary')}${actionButton('📞 模拟拨号','dial-call','green')}</div></div>`,'个人收藏');return;
+  if(!Array.isArray(saved.calls)){saved.calls=saved.contacts.slice(0,5).map((p,i)=>({name:p.name,number:p.phone,type:i===2?'未接来电':'呼入',time:['今天 21:18','今天 18:42','昨天 19:45','昨天 16:20','周一'][i]}));persist()}
+  const calls=saved.calls;
+  c.innerHTML=wrap(`<div class="phone-recent-card"><div class="phone-section-title"><h3>最近通话</h3><span>全部</span></div><div class="sim-list">${calls.map((p,i)=>`<div class="sim-list-row phone-call-row">${avatarMarkup(p.name)}<span><b>${esc(p.name)}</b><small>${esc(p.type)} · ${esc(p.time)}</small><small>${esc(p.number)}</small></span><button data-action="call-contact" data-index="${i}">拨打</button></div>`).join('')}</div></div><div class="phone-dialer-card"><h3>拨号</h3><label class="phone-number-field"><span>＋</span><input id="dialNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="输入电话号码" aria-label="电话号码"><button type="button" data-action="dial-delete" aria-label="删除号码">⌫</button></label><div class="phone-dial-actions"><button data-action="dial-call"><span>☎</span> 呼叫</button></div><p class="phone-dial-hint">点击号码输入框，使用设备键盘输入</p></div>`,'');return;
  }
  if(name==='messages'||name==='mail'||name==='kakaotalk'){
   const isMail=name==='mail', isKakao=name==='kakaotalk', label=isMail?'收件箱':isKakao?'채팅':'信息';
   const items=saved[name]||[];
-  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':isKakao?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}"><span class="contact-avatar">${esc((m.to||'聊').slice(0,1))}</span><span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
+  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':isKakao?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}">${avatarMarkup(m.to||'聊')}<span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
  }
  if(name==='instagram'){
   const posts=saved.posts_instagram||[];
@@ -283,7 +286,7 @@ if(name==='browser'){
  c.innerHTML=wrap(`<div class="sim-app-hero">${icons[name]||'📱'}</div><h2>${appNames[name]||name}</h2><p class="sim-muted">欢迎使用${appNames[name]||name}。</p><div class="sim-card"><h3>功能说明</h3><p>浏览并使用这里的功能。</p>${actionButton('返回桌面','go-home')}</div>`,'欢迎使用');
 }
 function openPhotoViewer(src,index=0){let viewer=$('#photoViewer');if(!viewer){viewer=document.createElement('div');viewer.id='photoViewer';viewer.className='photo-viewer';viewer.innerHTML='<button class="photo-viewer-close" aria-label="返回">‹</button><span class="photo-viewer-index"></span><img alt="照片大图">';$('.phone-frame').appendChild(viewer);viewer.addEventListener('click',e=>{if(e.target===viewer||e.target.closest('.photo-viewer-close'))viewer.classList.remove('open')})}viewer.querySelector('img').src=src;viewer.querySelector('.photo-viewer-index').textContent=String(index+1);viewer.classList.add('open')}
-function contactRow(p,i){return `<div class="sim-list-row"><span class="contact-avatar">${esc((p.name||'?').slice(0,1))}</span><span><b>${esc(p.name)}</b><small>${esc(p.phone)}</small><small>${esc(p.note||'')}</small></span><button data-action="delete-contact" data-index="${i}">删除</button></div>`}
+function contactRow(p,i){return `<div class="sim-list-row">${avatarMarkup(p.name)}<span><b>${esc(p.name)}</b><small>${esc(p.phone)}</small><small>${esc(p.note||'')}</small></span><button data-action="delete-contact" data-index="${i}">删除</button></div>`}
 function editorNote(index=null){const n=index===null?{title:'',body:''}:saved.notes[index];$('#noteEditor').innerHTML=`<div class="editor-card">${field('标题','noteTitle',n.title,'新备忘录')}<label class="sim-field">内容<textarea id="noteBody" rows="4" placeholder="开始输入...">${esc(n.body)}</textarea></label>${actionButton('保存','save-note')}${actionButton('取消','cancel-editor','secondary')}<input type="hidden" id="noteIndex" value="${index===null?'':index}"></div>`}
 function renderEditor(id,html){const el=$('#'+id);if(el)el.innerHTML=html}
 appContent.addEventListener('click',async e=>{
@@ -340,13 +343,12 @@ appContent.addEventListener('click',async e=>{
   if(act==='save-event'){const title=$('#eventTitle').value.trim(),date=$('#eventDate').value;if(!title){toast('请输入日程名称');return}saved.events=saved.events||[];saved.events.push({title,date:date||'未设置时间'});persist();renderApp('calendar')}
   if(act==='cancel-event')renderApp('calendar');
   if(act==='delete-event'){saved.events.splice(index,1);persist();renderApp('calendar')}
-  if(act==='dial-delete'){const d=$('#dialDisplay');d.textContent=d.textContent.slice(0,-1)}
-  if(act==='dial-call'){const number=$('#dialDisplay').textContent;if(!number){toast('请先输入号码');return}saved.calls=saved.calls||[];saved.calls.unshift({name:number,number,type:'呼出',time:new Date().toLocaleString()});persist();toast('模拟拨号：'+number+'（未拨出真实电话）')}
-  if(act==='call-contact'){const p=(saved.calls||[{name:'小雨',number:'138 0000 1107'},{name:'林同学',number:'138 0000 2024'},{name:'妈妈',number:'138 0000 0001'}])[index];if(p){$('#dialDisplay').textContent=p.number||'';toast('已填入号码，可进行模拟拨号')}}
+  if(act==='dial-delete'){const d=$('#dialNumber');if(d){d.value=d.value.slice(0,-1);d.focus()}}
+  if(act==='dial-call'){const number=$('#dialNumber')?.value.trim();if(!number){toast('请先输入电话号码');$('#dialNumber')?.focus();return}const person=(saved.contacts||[]).find(p=>p.phone.replace(/\s/g,'')===number.replace(/\s/g,''));saved.calls=saved.calls||[];saved.calls.unshift({name:person?.name||number,number,type:'呼出',time:new Date().toLocaleString()});persist();toast('已记录模拟呼出：'+number)}
+  if(act==='call-contact'){const p=(saved.calls||[])[index];if(p){const d=$('#dialNumber');if(d){d.value=p.number||'';d.focus();d.setSelectionRange(d.value.length,d.value.length)}}}
   if(act==='record-start')startRecording();
   if(act==='record-stop')stopRecording();
  }
- const dial=e.target.closest('[data-dial]');if(dial)$('#dialDisplay').textContent+=dial.dataset.dial;
  const shortcut=e.target.closest('[data-url]');if(shortcut)window.open(shortcut.dataset.url,'_blank','noopener');
 });
 appContent.addEventListener('keydown',e=>{if(e.target.id==='chatInput'&&e.key==='Enter'){e.preventDefault();const b=appContent.querySelector('[data-action="send-chat"]');b?.click()}});

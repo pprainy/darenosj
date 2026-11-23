@@ -156,10 +156,11 @@ body { background: #000; display: flex; justify-content: center; align-items: ce
 .calendar-hero { padding:20px; border-radius:20px; color:#fff; background:linear-gradient(140deg,#ff6961,#ff3b30); display:flex; flex-direction:column; align-items:flex-start; }
 .calendar-hero strong { font-size:68px; line-height:1.1; }
 .calendar-hero span { font-size:14px; }
-.dial-display { min-height:64px; text-align:center; font-size:28px; padding:15px; overflow-wrap:anywhere; }
-.dial-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:270px; margin:0 auto; }
-.dial-pad button { border:0; border-radius:50%; width:62px; height:62px; justify-self:center; background:#e5e5ea; font-size:24px; color:#1c1c1e; }
-.dial-actions { text-align:center; margin:16px; }
+.phone-recent-card,.phone-dialer-card{background:#fff;border-radius:20px;margin:12px 14px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.045)}
+.phone-section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.phone-section-title h3,.phone-dialer-card h3{font-size:19px;font-weight:700}.phone-section-title span{font-size:13px;color:#007aff}
+.phone-call-row{padding:12px 0}.phone-call-row>button{border:0;background:#f2f2f7;color:#007aff;border-radius:9px;padding:7px 12px;font-size:13px}
+.phone-number-field{display:flex;align-items:center;gap:10px;margin:24px 0 14px;border-bottom:1px solid #d1d1d6;padding:10px 2px}.phone-number-field>span{font-size:22px;color:#8e8e93}.phone-number-field input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:#1c1c1e;font-size:27px;text-align:center;user-select:text;-webkit-user-select:text;letter-spacing:1px}.phone-number-field input::placeholder{font-size:17px;color:#c7c7cc;letter-spacing:0}.phone-number-field>button{border:0;background:transparent;color:#8e8e93;font-size:23px;padding:4px 8px}
+.phone-dial-actions{display:flex;justify-content:center;margin:12px 0}.phone-dial-actions button{width:64px;height:54px;border:0;border-radius:28px;background:#34c759;color:#fff;font-size:14px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}.phone-dial-actions button span{font-size:20px}.phone-dial-hint{text-align:center;color:#8e8e93;font-size:12px;margin-top:12px}
 .browser-form { display:flex; gap:8px; align-items:center; background:#fff; border-radius:14px; padding:8px; }
 .browser-form input { flex:1; min-width:0; border:0; outline:0; font-size:14px; padding:8px; user-select:text; }
 .browser-form button { border:0; background:#007aff; color:#fff; border-radius:10px; padding:9px; }
@@ -464,3 +465,9 @@ body { min-height: 100vh; min-height: 100dvh; }
 .x-edit-profile{border:1px solid #cfd9de;border-radius:22px;background:#fff;padding:8px 16px;font-weight:700;margin:4px 0 14px}
 .x-profile-page .x-tabs{position:static}
 @media(max-width:420px){.chat-app{width:calc(100% + 24px);margin:-12px -12px 0}.x-shell{margin:-12px -12px 0}.app-content:has(.sim-app.x){padding:12px 12px 0}}
+
+/* 联系人真实头像：所有应用共用 avatars 文件夹中的同一张照片 */
+.contact-avatar.has-photo,.chat-nav-avatar.has-photo{overflow:hidden;padding:0;position:relative}
+.contact-avatar img,.chat-nav-avatar img{width:100%;height:100%;display:block;object-fit:cover;border-radius:inherit}
+.contact-avatar.has-photo i,.chat-nav-avatar.has-photo i{display:none}
+.chat-nav-person{display:flex;align-items:center;gap:9px;min-width:0}.chat-nav-avatar{width:32px;height:32px;flex:0 0 32px;border-radius:50%;background:#dce9f8;display:grid;place-items:center;overflow:hidden;font-style:normal}.chat-nav-avatar img{width:100%;height:100%;object-fit:cover}
