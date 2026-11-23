@@ -176,19 +176,20 @@ function actionButton(label,action,cls=''){return `<button class="sim-btn ${cls}
 function field(label,id,value='',placeholder=''){return `<label class="sim-field">${label}<input id="${id}" value="${esc(value)}" placeholder="${esc(placeholder)}"></label>`}
 function emptyState(icon,title,desc=''){return `<div class="sim-empty"><div>${icon}</div><strong>${title}</strong><p>${desc}</p></div>`}
 let activeChat=null;
+const kakaoChinese={'오늘 뭐 해? 사진 보내줄게.':'今天在做什么？我给你发照片。','집 도착하면 알려줘!':'到家告诉我！','주말에 같이 밥 먹을래?':'周末一起吃饭吗？','ㅋㅋㅋ 방금 영상 진짜 웃겨':'哈哈，刚才的视频真的好好笑。','사진 너무 잘 나왔다!':'照片拍得真好！','밥 잘 챙겨 먹어.':'好好吃饭。','시간 되면 전화해 줘.':'有空给我打电话。','오늘 밤 게임할래?':'今晚一起打游戏吗？','링크 보냈어! 확인해 봐.':'我发链接了！看一下。','요즘 추우니까 따뜻하게 입어.':'最近冷，穿暖一点。','사진 보내줄게.':'我给你发照片。','같이 밥 먹을래?':'一起吃饭吗？','방금 영상 진짜 웃겨':'刚才的视频真的好好笑。','전화해 줘.':'给我打电话。','게임할래?':'要一起打游戏吗？','링크 보냈어!':'我发链接了！','따뜻하게 입어.':'穿暖一点。'};
 function renderChatThread(app,person){
  activeChat=person;
  const isKakao=app==='kakaotalk', isWechat=app==='wechat';
  const all=saved[app]||[];let item=all.find(x=>x.to===person);
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
- const bubbles=item.thread.map((m,i)=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}"><div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
+ const bubbles=item.thread.map((m,i)=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}"><div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(isKakao&&saved.kakaoTranslate?(kakaoChinese[m.text]||'（暂无这句的中文翻译）'):m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
  const navTitle=isKakao?person:isWechat?person:person;
  const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
-  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
+  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${isKakao?'<button type="button" data-action="kakao-translate">'+(saved.kakaoTranslate?'显示韩文':'翻译中文')+'</button>':''}${tools}</span></div>
   <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
-  <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'메시지를 입력하세요':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'전송':isWechat?'发送':'发送'}</button></div>
+  <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'输入消息…':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'发送':isWechat?'发送':'发送'}</button></div>
  </div>`;
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
@@ -411,6 +412,7 @@ appContent.addEventListener('click',async e=>{
   if(act==='xhs-profile-tab'){saved.xhsProfileTab=e.target.closest('[data-tab]')?.dataset.tab||'notes';saved.xhsTab='me';persist();renderApp('xiaohongshu');return}
   const index=Number(e.target.closest('[data-index]')?.dataset.index);
   if(act==='focus-chat-search'){$('#chatListSearch')?.focus();return}
+  if(act==='kakao-translate'){saved.kakaoTranslate=!saved.kakaoTranslate;persist();renderChatThread('kakaotalk',activeChat);return}
   if(act==='social-tab'){renderSocialLanding(currentApp,e.target.closest('[data-tab]')?.dataset.tab||'chats');return}
   if(act==='open-social-contact'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderSocialContact(currentApp,person);return}
   if(act==='social-detail-back'){renderSocialLanding(currentApp,saved[currentApp+'Tab']||'chats');return}
