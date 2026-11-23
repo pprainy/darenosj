@@ -555,7 +555,7 @@ body { min-height: 100vh; min-height: 100dvh; }
 /* Lock-screen KakaoTalk notification preview */
 .lock-kakao-notification{position:absolute;z-index:12;top:clamp(250px,39%,340px);left:14px;right:14px;width:calc(100% - 28px);display:flex;align-items:flex-start;gap:11px;padding:13px 14px;border:1px solid rgba(255,255,255,.22);border-radius:15px;background:rgba(245,245,248,.82);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);color:#171719;text-align:left;box-shadow:0 5px 18px rgba(0,0,0,.12);cursor:pointer}
 .lock-kakao-notification[hidden]{display:none}
-.lock-kakao-icon{width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#fee500;display:grid;place-items:center;font-size:20px}
+.lock-kakao-icon{width:42px;height:42px;flex:0 0 42px;border-radius:12px;background:#fee500;display:grid;place-items:center;position:relative}.lock-kakao-icon:before{content:'';width:24px;height:19px;border-radius:50%;background:#3b3020;display:block}.lock-kakao-icon:after{content:'';position:absolute;left:12px;bottom:8px;border-width:5px 5px 0 0;border-style:solid;border-color:#3b3020 transparent transparent transparent;transform:rotate(15deg}
 .lock-kakao-copy{min-width:0;flex:1;display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.35}
 .lock-kakao-head{display:flex;align-items:center;justify-content:space-between;color:#555;font-size:12px}
 .lock-kakao-head small{color:#777;font-size:11px;font-weight:400}
