@@ -72,6 +72,23 @@ for(const key of ['messages','kakaotalk']){
   return {...prior,to,thread,body:latest.text||prior.body||body,date:latest.date||prior.date||date};
  });
 }
+// 微信承接家庭联系人；从旧版 KakaoTalk 会话中迁移原有聊天记录，避免丢失。
+const familyNames=['爸爸','妈妈','弟弟','小弟'];
+const kakaoRows=Array.isArray(saved.kakaotalk)?saved.kakaotalk:[];
+const wechatRows=Array.isArray(saved.wechat)?saved.wechat:[];
+for(const name of familyNames){
+ const fromKakao=kakaoRows.find(x=>x.to===name);
+ const seed=conversationSeeds.find(x=>x[0]===name);
+ const existing=wechatRows.find(x=>x.to===name);
+ if(!existing){
+  const source=fromKakao||{};
+  const thread=Array.isArray(source.thread)&&source.thread.length?source.thread:[{from:'them',text:source.body||seed?.[1]||'你好',date:source.date||seed?.[2]||'今天'}];
+  const latest=thread[thread.length-1]||{};
+  wechatRows.push({...source,to:name,thread,body:latest.text||source.body||seed?.[1]||'',date:latest.date||source.date||seed?.[2]||'今天'});
+ }
+}
+saved.wechat=wechatRows;
+saved.kakaotalk=kakaoRows.filter(x=>!familyNames.includes(x.to));
 // 搜索历史默认四条；显式清空后不自动补回。
 if(!Array.isArray(saved.xhsSearchHistory))saved.xhsSearchHistory=[];
 if(saved.xhsSearchHistory.length===0&&saved.xhsSearchHistoryCleared!==true){saved.xhsSearchHistory=['哥哥太受欢迎了不开心是正常的吗','韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];}
@@ -79,9 +96,11 @@ persist();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const avatarFiles={'申惟哥哥':'shinyu.jpg','道勋哥':'dohoon.jpg','英宰哥':'youngjae.jpg','志薰🪼':'jihoon.jpg','炅潣':'kyungmin.jpg'};
 function avatarMarkup(name,cls='contact-avatar'){const file=avatarFiles[name];return file?`<span class="${cls} has-photo"><img src="avatars/${file}" alt="${esc(name)}" onerror="this.parentElement.classList.remove('has-photo');this.remove()"><i>${esc((name||'?').slice(0,1))}</i></span>`:`<span class="${cls}">${esc((name||'?').slice(0,1))}</span>`;}
-const appNames={messages:'信息',mail:'邮件',notes:'备忘录',camera:'相机',instagram:'Instagram',browser:'浏览器',settings:'设置',x:'X',kakaotalk:'KakaoTalk',phone:'电话',xiaohongshu:'小红书',voice:'语音备忘录',photos:'照片',contacts:'通讯录',calendar:'日历'};
-const icons={messages:'💬',mail:'✉️',notes:'📝',camera:'📷',instagram:'📸',browser:'🧭',settings:'⚙️',x:'𝕏',kakaotalk:'🟡',phone:'📞',xiaohongshu:'📕',voice:'🎙️',photos:'🌄',contacts:'👤',calendar:'📅'};
-let currentApp='', currentPasscode='';
+function updateLockKakaoNotification(){const list=saved.kakaotalk||[], item=list[0], thread=Array.isArray(item?.thread)?item.thread:[], latest=thread[thread.length-1], sender=item?.to||'KakaoTalk', preview=latest?.text||item?.body||'你有一条新消息';const nameEl=$('#lockKakaoSender'),previewEl=$('#lockKakaoPreview');if(nameEl)nameEl.textContent=sender;if(previewEl)previewEl.textContent=preview;const card=$('#lockKakaoNotification');if(card)card.hidden=!item;}
+updateLockKakaoNotification();
+const appNames={messages:'信息',mail:'邮件',notes:'备忘录',camera:'相机',instagram:'Instagram',browser:'浏览器',settings:'设置',x:'X',kakaotalk:'KakaoTalk',wechat:'微信',phone:'电话',xiaohongshu:'小红书',voice:'语音备忘录',photos:'照片',contacts:'通讯录',calendar:'日历'};
+const icons={messages:'💬',mail:'✉️',notes:'📝',camera:'📷',instagram:'📸',browser:'🧭',settings:'⚙️',x:'𝕏',kakaotalk:'🟡',wechat:'🟢',phone:'📞',xiaohongshu:'📕',voice:'🎙️',photos:'🌄',contacts:'👤',calendar:'📅'};
+let currentApp='', currentPasscode='', pendingLockKakaoOpen=false;
 const correctPasscode='1107';
 function showPasscode(){
  if(!lockScreen.classList.contains('active') || passcodeOverlay.classList.contains('show')) return;
@@ -114,11 +133,12 @@ lockScreen.addEventListener('pointerup',e=>{
 });
 $('.lock-content')?.addEventListener('click',e=>{if(!e.target.closest('.lock-hint')) showPasscode()});
 $('.lock-hint')?.addEventListener('click',showPasscode);
+$('#lockKakaoNotification')?.addEventListener('click',e=>{e.stopPropagation();pendingLockKakaoOpen=true;showPasscode()});
 $('#btnFlashlight')?.addEventListener('click',e=>{e.stopPropagation();toast('手电筒快捷入口（网页无法控制真实闪光灯）')});
 $('#btnCamera')?.addEventListener('click',e=>{e.stopPropagation();openApp('camera')});
 keypad?.addEventListener('click',e=>{const b=e.target.closest('.key');if(!b||b.classList.contains('key-empty'))return;if(b.id==='keyDelete')currentPasscode=currentPasscode.slice(0,-1);else if(currentPasscode.length<4)currentPasscode+=b.dataset.key;updateDots();if(currentPasscode.length===4)setTimeout(checkPasscode,180)});
 function updateDots(){[...passcodeDots].forEach((d,i)=>d.classList.toggle('filled',i<currentPasscode.length))}
-function checkPasscode(){if(currentPasscode===correctPasscode){hidePasscode();lockScreen.classList.remove('active');homeScreen.classList.add('active')}else{passcodeError.classList.add('show');keypad.classList.add('shake');setTimeout(()=>{passcodeError.classList.remove('show');keypad.classList.remove('shake');resetPasscode()},650)}}
+function checkPasscode(){if(currentPasscode===correctPasscode){hidePasscode();lockScreen.classList.remove('active');homeScreen.classList.add('active');if(pendingLockKakaoOpen){pendingLockKakaoOpen=false;setTimeout(()=>openApp('kakaotalk'),120)}}else{passcodeError.classList.add('show');keypad.classList.add('shake');setTimeout(()=>{passcodeError.classList.remove('show');keypad.classList.remove('shake');resetPasscode()},650)}}
 function toast(message){let t=$('#simToast');if(!t){t=document.createElement('div');t.id='simToast';t.className='sim-toast';document.body.append(t)}t.textContent=message;t.classList.add('show');clearTimeout(window.__toastTimer);window.__toastTimer=setTimeout(()=>t.classList.remove('show'),2200)}
 let currentPage=0;const totalPages=2;
 function updatePageIndicator(){pagesContainer.style.transform=`translateX(-${currentPage*50}%)`;dots.forEach((d,i)=>d.classList.toggle('active',i===currentPage))}
@@ -150,12 +170,12 @@ function emptyState(icon,title,desc=''){return `<div class="sim-empty"><div>${ic
 let activeChat=null;
 function renderChatThread(app,person){
  activeChat=person;
- const isKakao=app==='kakaotalk';
+ const isKakao=app==='kakaotalk', isWechat=app==='wechat';
  const all=saved[app]||[];let item=all.find(x=>x.to===person);
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
  const bubbles=item.thread.map(m=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}"><div class="chat-bubble">${esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
- appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':''}"><div class="chat-nav"><button data-action="chat-back">‹</button><span class="chat-nav-person">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(person)}</strong></span><button aria-label="更多">•••</button></div><div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div class="chat-compose"><button aria-label="添加">＋</button><input id="chatInput" placeholder="${isKakao?'메시지 보내기':'iMessage'}"><button data-action="send-chat">${isKakao?'전송':'发送'}</button></div></div>`;
+ appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}"><div class="chat-nav"><button data-action="chat-back">‹</button><span class="chat-nav-person">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(person)}</strong></span><button aria-label="更多">•••</button></div><div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div class="chat-compose"><button aria-label="添加">＋</button><input id="chatInput" placeholder="${isKakao?'메시지 보내기':isWechat?'发送消息':'iMessage'}"><button data-action="send-chat">${isKakao?'전송':isWechat?'发送':'发送'}</button></div></div>`;
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
 function renderApp(name){
@@ -189,17 +209,17 @@ function renderApp(name){
   const tab=saved.phoneTab||'recent', calls=saved.calls||[], contacts=saved.contacts||[];
   const tabs=[['favorites','☆','个人收藏'],['recent','◷','最近通话'],['contacts','♙','通讯录'],['keypad','▦','拨号键盘'],['voicemail','▣','语音留言']];
   let body='';
-  if(tab==='recent') body=`<div class="phone-page-heading"><h2>最近通话</h2><button class="phone-edit" data-action="phone-clear-recent">编辑</button></div><div class="phone-filter"><span class="selected">全部</span><span>未接来电</span></div><div class="phone-list">${calls.map((p,i)=>`<div class="phone-row">${avatarMarkup(p.name,'phone-avatar')}<div class="phone-row-main"><b>${esc(p.name)}</b><small class="${p.type==='未接来电'?'missed':''}">${p.type==='呼出'?'↗':p.type==='未接来电'?'↙':'↙'} ${esc(p.type||'呼入')}</small></div><div class="phone-row-side"><small>${esc(p.time||'最近')}</small><button data-action="phone-call-row" data-index="${i}" aria-label="拨打电话">ⓘ</button></div></div>`).join('')||'<p class="phone-empty">暂无通话记录</p>'}</div>`;
+  if(tab==='recent'){const filter=saved.phoneFilter||'all', visibleCalls=calls.map((p,i)=>({...p,_index:i})).filter(p=>filter==='missed'?p.type==='未接来电':true);body=`<div class="phone-page-heading"><h2>最近通话</h2><button class="phone-edit" data-action="phone-clear-recent">编辑</button></div><div class="phone-filter"><button type="button" class="${filter==='all'?'selected':''}" data-action="phone-filter" data-filter="all">全部</button><button type="button" class="${filter==='missed'?'selected':''}" data-action="phone-filter" data-filter="missed">未接来电</button></div><div class="phone-list">${visibleCalls.map(p=>`<button type="button" class="phone-row phone-row-clickable" data-action="phone-call-row" data-index="${p._index}">${avatarMarkup(p.name,'phone-avatar')}<div class="phone-row-main"><b>${esc(p.name)}</b><small class="${p.type==='未接来电'?'missed':''}">${p.type==='呼出'?'↗':p.type==='未接来电'?'↙':'↙'} ${esc(p.type||'呼入')}</small></div><div class="phone-row-side"><small>${esc(p.time||'最近')}</small><span aria-hidden="true">ⓘ</span></div></div>`).join('')||'<p class="phone-empty">暂无未接来电</p>'}</div>`;}
   if(tab==='favorites') body=`<div class="phone-page-heading"><h2>个人收藏</h2><button class="phone-edit" data-action="phone-add-favorite">＋</button></div><div class="phone-favorites-grid">${['申惟哥哥'].map(n=>{const p=contacts.find(x=>x.name===n)||{name:n,phone:''};return `<button class="phone-favorite" data-action="phone-contact-call" data-person="${esc(p.name)}">${avatarMarkup(p.name,'phone-fav-avatar')}<b>${esc(p.name)}</b><small>电话</small></button>`}).join('')}</div>`;
   if(tab==='contacts') body=`<div class="phone-page-heading"><h2>通讯录</h2><button class="phone-add" data-action="new-contact" aria-label="添加联系人">＋</button></div><div id="contactEditor"></div><input class="phone-search" id="contactSearch" placeholder="搜索"><div class="phone-list">${contacts.map(p=>`<button class="phone-contact-row" data-action="phone-contact-call" data-person="${esc(p.name)}">${avatarMarkup(p.name,'phone-avatar')}<span>${esc(p.name)}</span><small>›</small></button>`).join('')}</div>`;
   if(tab==='keypad') body=`<div class="phone-keypad-wrap"><div class="phone-number-field"><input id="dialNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="输入电话号码" aria-label="电话号码" value="${esc(saved.phoneDialNumber||'')}"><button type="button" data-action="phone-backspace" aria-label="删除号码">⌫</button></div><div class="phone-keypad">${[['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['*',''],['0','+'],['#','']].map(([n,l])=>`<button data-action="phone-key" data-key="${n}"><b>${n}</b><small>${l}</small></button>`).join('')}</div><button class="phone-call-button" data-action="dial-call" aria-label="呼叫">☎</button></div>`;
   if(tab==='voicemail') body=`<div class="phone-page-heading"><h2>语音留言</h2><button class="phone-edit">编辑</button></div><div class="phone-voicemail-empty"><div>▣</div><b>没有语音留言</b><p>收到的语音留言会显示在这里。</p></div>`;
   c.innerHTML=`<div class="sim-app phone-app"><main class="phone-tab-content">${body}</main><nav class="phone-tabbar">${tabs.map(([k,ico,label])=>`<button class="${tab===k?'active':''}" data-action="phone-tab" data-tab="${k}"><span>${ico}</span><small>${label}</small></button>`).join('')}</nav></div>`;return;
  }
- if(name==='messages'||name==='mail'||name==='kakaotalk'){
-  const isMail=name==='mail', isKakao=name==='kakaotalk', label=isMail?'收件箱':isKakao?'채팅':'信息';
+ if(name==='messages'||name==='mail'||name==='kakaotalk'||name==='wechat'){
+  const isMail=name==='mail', isKakao=name==='kakaotalk', isWechat=name==='wechat', label=isMail?'收件箱':isKakao?'채팅':isWechat?'微信':'信息';
   const items=saved[name]||[];
-  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':isKakao?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}">${avatarMarkup(m.to||'聊')}<span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
+  c.innerHTML=wrap(`<div class="message-heading"><b>${label}</b>${actionButton(isMail?'＋ 写邮件':(isKakao||isWechat)?'＋ 新聊天':'＋ 新信息','new-message')}</div><div id="messageEditor"></div><div class="sim-list message-list">${items.length?items.map((m,i)=>{const thread=Array.isArray(m.thread)?m.thread:[];const latest=thread[thread.length-1];const preview=latest?.text||m.body||'点击进入聊天';const stamp=latest?.date||m.date||'刚刚';return `<button class="sim-list-row message-row" data-action="open-chat" data-person="${esc(m.to||'新对话')}">${avatarMarkup(m.to||'聊')}<span><b>${esc(m.to||'新对话')}</b><small>${esc(preview)}</small></span><small class="message-time">${esc(stamp)}</small><span class="message-chevron">›</span></button>`}).join(''):emptyState(isMail?'✉️':'💬',isMail?'收件箱是空的':'还没有对话','点击上方按钮，创建一条模拟消息')}</div>`,'');return;
  }
  if(name==='instagram'){
   const posts=saved.posts_instagram||[];
@@ -321,7 +341,7 @@ appContent.addEventListener('click',async e=>{
   const index=Number(e.target.closest('[data-index]')?.dataset.index);
   if(act==='open-chat'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
   if(act==='chat-back'){activeChat=null;renderApp(currentApp);return}
-  if(act==='send-chat'){const input=$('#chatInput'),text=input?.value.trim();if(!text||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();renderChatThread(currentApp,activeChat);return}
+  if(act==='send-chat'){const input=$('#chatInput'),text=input?.value.trim();if(!text||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();if(currentApp==='kakaotalk')updateLockKakaoNotification();renderChatThread(currentApp,activeChat);return}
   if(act==='x-tab'){saved.xTab=e.target.closest('[data-tab]')?.dataset.tab||'for-you';saved.xSection='home';persist();renderApp('x');return}
   if(act==='x-section'){saved.xSection=e.target.closest('[data-section]')?.dataset.section||'home';persist();renderApp('x');return}
   if(act==='x-reply'||act==='x-repost'){toast(act==='x-reply'?'回复功能已打开（演示）':'已模拟转发');return}
@@ -354,6 +374,7 @@ appContent.addEventListener('click',async e=>{
   if(act==='cancel-event')renderApp('calendar');
   if(act==='delete-event'){saved.events.splice(index,1);persist();renderApp('calendar')}
   if(act==='phone-tab'){saved.phoneTab=e.target.closest('[data-tab]')?.dataset.tab||'recent';persist();renderApp('phone');return}
+  if(act==='phone-filter'){saved.phoneFilter=e.target.closest('[data-filter]')?.dataset.filter||'all';persist();renderApp('phone');return}
   if(act==='phone-key'){const d=$('#dialNumber');if(d){d.value+=e.target.closest('[data-key]').dataset.key;saved.phoneDialNumber=d.value;persist()}}
   if(act==='phone-backspace'){const d=$('#dialNumber');if(d){d.value=d.value.slice(0,-1);saved.phoneDialNumber=d.value;persist()}}
   if(act==='phone-contact-call'){const name=e.target.closest('[data-person]')?.dataset.person,p=(saved.contacts||[]).find(x=>x.name===name);if(p)startPhoneCall(p.phone,p.name);return}
