@@ -928,3 +928,8 @@ body { min-height: 100vh; min-height: 100dvh; }
 /* Small, WeChat-style inline translation beneath KakaoTalk message bubbles */
 .kakao-inline-translate{display:block;margin:3px 2px 2px;padding:0;border:0;background:transparent;color:#6c8298;font-size:11px;line-height:1.4;text-align:left;cursor:pointer}
 .kakao-chat .chat-line .kakao-inline-translate{max-width:82%;}
+
+/* Long-press message actions are attached directly beneath the selected bubble. */
+.chat-line .chat-message-actions{position:relative;align-self:inherit;z-index:6;display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:4px 0 2px;padding:6px;width:max-content;max-width:min(92vw,340px);box-sizing:border-box}
+.chat-line.mine .chat-message-actions{align-self:flex-end}
+.chat-line.theirs .chat-message-actions{align-self:flex-start}
