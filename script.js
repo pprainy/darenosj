@@ -182,12 +182,12 @@ function renderChatThread(app,person){
  const all=saved[app]||[];let item=all.find(x=>x.to===person);
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
- const bubbles=item.thread.map(m=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}"><div class="chat-bubble">${esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
+ const bubbles=item.thread.map((m,i)=>`<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}"><div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(m.text)}</div><small>${esc(m.date||'')}</small></div>`).join('');
  const navTitle=isKakao?'채팅':isWechat?'聊天':person;
- const tools=isKakao?'<button type="button" aria-label="搜索">⌕</button><button type="button" aria-label="更多">☰</button>':isWechat?'<button type="button" aria-label="语音通话">⌕</button><button type="button" aria-label="更多">•••</button>':'<button type="button" aria-label="更多">•••</button>';
+ const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
-  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><span class="chat-nav-person">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(person)}</strong></span><span class="chat-nav-tools">${tools}</span></div>
-  <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div>
+  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(person)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
+  <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
   <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'메시지 보내기':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'전송':isWechat?'发送':'发送'}</button></div>
  </div>`;
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
@@ -411,8 +411,27 @@ appContent.addEventListener('click',async e=>{
   if(act==='xhs-profile-tab'){saved.xhsProfileTab=e.target.closest('[data-tab]')?.dataset.tab||'notes';saved.xhsTab='me';persist();renderApp('xiaohongshu');return}
   const index=Number(e.target.closest('[data-index]')?.dataset.index);
   if(act==='focus-chat-search'){$('#chatListSearch')?.focus();return}
+  if(act==='social-tab'){renderSocialLanding(currentApp,e.target.closest('[data-tab]')?.dataset.tab||'chats');return}
+  if(act==='open-social-contact'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderSocialContact(currentApp,person);return}
+  if(act==='social-detail-back'){renderSocialLanding(currentApp,saved[currentApp+'Tab']||'chats');return}
+  if(act==='social-contact-message'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
+  if(act==='open-chat-settings'){renderSocialChatSettings(currentApp,activeChat||'');return}
+  if(act==='social-more'){renderSocialMore(currentApp);return}
+  if(act==='social-feature'){toast((e.target.closest('[data-feature]')?.dataset.feature||'功能')+'（模拟入口）');return}
+  if(act==='clear-chat-history'){const person=e.target.closest('[data-person]')?.dataset.person,item=(saved[currentApp]||[]).find(x=>x.to===person);if(item){item.thread=[];item.body='';persist();renderSocialChatSettings(currentApp,person);toast('聊天记录已清空')}return}
+  if(act==='social-contact-call'){toast('语音通话为界面演示，暂不连接真实通话');return}
+  if(act==='message-copy'||act==='message-recall'||act==='message-delete'){
+   const row=e.target.closest('.chat-message-actions'),idx=Number(row?.dataset.messageIndex),item=(saved[currentApp]||[]).find(x=>x.to===activeChat),msg=item?.thread?.[idx];
+   if(!msg)return;
+   if(act==='message-copy'){const value=msg.text||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(value).then(()=>toast('已复制消息')).catch(()=>toast('复制失败，请检查浏览器权限'));else{const ta=document.createElement('textarea');ta.value=value;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove();toast('已复制消息')}}
+   if(act==='message-recall'){if(msg.from!=='me'){toast('只能撤回自己发送的消息');return}msg.recalled=true;msg.text='';persist();renderChatThread(currentApp,activeChat);toast('已撤回消息')}
+   if(act==='message-delete'){item.thread.splice(idx,1);persist();renderChatThread(currentApp,activeChat);toast('已删除消息')}
+   return;
+  }
+  if(act==='message-menu-close'){$('#chatActionHost')?.replaceChildren();return}
   if(act==='open-chat'){const person=e.target.closest('[data-person]')?.dataset.person;if(person)renderChatThread(currentApp,person);return}
   if(act==='chat-back'){activeChat=null;renderApp(currentApp);return}
+  if(act==='open-chat-settings'){renderSocialChatSettings(currentApp,activeChat||'');return}
   if(act==='send-chat'){const input=$('#chatInput'),text=input?.value.trim();if(!text||!activeChat)return;const item=(saved[currentApp]||[]).find(x=>x.to===activeChat);if(!item)return;item.thread=item.thread||[];item.thread.push({from:'me',text,date:new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})});item.body=text;item.date='刚刚';persist();if(currentApp==='kakaotalk')updateLockKakaoNotification();renderChatThread(currentApp,activeChat);return}
   if(act==='x-tab'){saved.xTab=e.target.closest('[data-tab]')?.dataset.tab||'for-you';saved.xSection='home';persist();renderApp('x');return}
   if(act==='x-section'){saved.xSection=e.target.closest('[data-section]')?.dataset.section||'home';persist();renderApp('x');return}
@@ -464,8 +483,14 @@ appContent.addEventListener('click',async e=>{
  }
  const shortcut=e.target.closest('[data-url]');if(shortcut)window.open(shortcut.dataset.url,'_blank','noopener');
 });
+let chatPressTimer=null;
+appContent.addEventListener('pointerdown',e=>{const line=e.target.closest('.chat-line[data-message-index]');if(!line)return;clearTimeout(chatPressTimer);chatPressTimer=setTimeout(()=>{const host=$('#chatActionHost');if(!host)return;const idx=Number(line.dataset.messageIndex),msg=(saved[currentApp]||[]).find(x=>x.to===activeChat)?.thread?.[idx];if(!msg)return;host.innerHTML='<div class="chat-message-actions" data-message-index="'+idx+'"><button data-action="message-copy">复制</button>'+(msg.from==='me'&&!msg.recalled?'<button data-action="message-recall">撤回</button>':'')+'<button data-action="message-delete">删除</button><button data-action="message-menu-close">取消</button></div>';},520)});
+appContent.addEventListener('pointerup',()=>clearTimeout(chatPressTimer));
+appContent.addEventListener('pointercancel',()=>clearTimeout(chatPressTimer));
+appContent.addEventListener('contextmenu',e=>{const line=e.target.closest('.chat-line[data-message-index]');if(!line)return;e.preventDefault();clearTimeout(chatPressTimer);const host=$('#chatActionHost'),idx=Number(line.dataset.messageIndex),msg=(saved[currentApp]||[]).find(x=>x.to===activeChat)?.thread?.[idx];if(!host||!msg)return;host.innerHTML='<div class="chat-message-actions" data-message-index="'+idx+'"><button data-action="message-copy">复制</button>'+(msg.from==='me'&&!msg.recalled?'<button data-action="message-recall">撤回</button>':'')+'<button data-action="message-delete">删除</button><button data-action="message-menu-close">取消</button></div>';});
 appContent.addEventListener('keydown',e=>{if(e.target.id==='chatInput'&&e.key==='Enter'){e.preventDefault();const b=appContent.querySelector('[data-action="send-chat"]');b?.click()}});
 appContent.addEventListener('change',e=>{
+ if(e.target.matches('[data-chat-setting]')){const person=e.target.dataset.person;let item=(saved[currentApp]||[]).find(x=>x.to===person);if(!item){item={to:person,thread:[]};saved[currentApp].push(item)}if(e.target.dataset.chatSetting==='mute')item.muted=e.target.checked;if(e.target.dataset.chatSetting==='pinned')item.pinned=e.target.checked;if(e.target.dataset.chatSetting==='saved')item.savedContact=e.target.checked;persist();toast('聊天设置已保存')}
  if(e.target.matches('[data-setting]')){saved.settings=saved.settings||{};saved.settings[e.target.dataset.setting]=e.target.checked;persist();document.body.classList.toggle('sim-dark',!!saved.settings.dark);toast('设置已保存')}
  if(e.target.id==='cameraUpload'){const files=[...e.target.files];files.forEach(file=>{const reader=new FileReader();reader.onload=()=>{$('#cameraPreview').innerHTML=`<img class="camera-result" src="${reader.result}"><p>已拍摄并保存</p>`;saved.photos=saved.photos||[];saved.photos.unshift({data:reader.result});persist();toast('照片已保存到相册')};reader.readAsDataURL(file)})}
 });
@@ -478,6 +503,7 @@ appContent.addEventListener('submit',e=>{
 appContent.addEventListener('input',e=>{
  if(e.target.id==='contactSearch'){const q=e.target.value.toLowerCase();$('#contactList .sim-list-row').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(q)?'':'none')}
  if(e.target.id==='chatListSearch'){const q=e.target.value.trim().toLowerCase();$('.social-message-list .message-row').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(q)?'':'none')}
+ if(e.target.id==='socialContactSearch'){const q=e.target.value.trim().toLowerCase();$('.social-list .social-row').forEach(row=>row.style.display=row.textContent.toLowerCase().includes(q)?'':'none')}
 });
 let mediaRecorder=null,recordChunks=[];
 async function startRecording(){try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('浏览器不支持麦克风录音');const stream=await navigator.mediaDevices.getUserMedia({audio:true});recordChunks=[];mediaRecorder=new MediaRecorder(stream);mediaRecorder.ondataavailable=e=>{if(e.data.size)recordChunks.push(e.data)};mediaRecorder.onstop=()=>{const blob=new Blob(recordChunks,{type:mediaRecorder.mimeType||'audio/webm'});const reader=new FileReader();reader.onload=()=>{saved.recordings=saved.recordings||[];saved.recordings.unshift({name:'录音 '+new Date().toLocaleTimeString(),date:new Date().toLocaleString(),data:reader.result});persist();if(currentApp==='voice')renderApp('voice');toast('录音已保存')};reader.readAsDataURL(blob);stream.getTracks().forEach(t=>t.stop())};mediaRecorder.start();$('#recordStatus').textContent='正在录音…';toast('录音开始')}catch(err){toast('无法录音：请使用 HTTPS 并允许麦克风权限')}}
