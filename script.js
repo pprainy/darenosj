@@ -93,6 +93,14 @@ for(const name of familyNames){
  }
 }
 saved.wechat=wechatRows;
+// 微信家人的收到消息统一显示中文；只转换对方发来的内容，不碰用户自己发出的消息或 KakaoTalk。
+for(const item of saved.wechat){
+ if(!familyNames.includes(item.to))continue;
+ if(!Array.isArray(item.thread))item.thread=[];
+ item.thread.forEach(msg=>{if(msg.from==='them'&&kakaoChinese[msg.text])msg.text=kakaoChinese[msg.text]});
+ const latest=item.thread[item.thread.length-1];
+ if(latest)item.body=latest.text||item.body;
+}
 saved.kakaotalk=kakaoRows.filter(x=>!familyNames.includes(x.to));
 // 搜索历史默认四条；显式清空后不自动补回。
 if(!Array.isArray(saved.xhsSearchHistory))saved.xhsSearchHistory=[];
