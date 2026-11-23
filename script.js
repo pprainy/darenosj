@@ -57,7 +57,7 @@ const canonicalNames=new Set(canonicalContacts.map(([name])=>name));
 // Match legacy contacts by name rather than array position, and retain user-created contacts.
 saved.contacts=canonicalContacts.map(([name,phone,note])=>{
  const prior=oldContacts.find(contact=>contact?.name===name)||{};
- return {...prior,name,phone:prior.phone||phone,note:prior.note||note};
+ return {...prior,name,phone:prior.phone||phone,note:name==='申惟哥哥'?'哥哥':prior.note||note};
 });
 saved.contacts.push(...oldContacts.filter(contact=>contact?.name&&!canonicalNames.has(contact.name)&&!['小雨','阿哲','林同学'].includes(contact.name)));
 // Remove unintended placeholder people from legacy seeded data, too.
@@ -202,7 +202,7 @@ function renderSocialLanding(app,tab){
   const rows=[...chats].sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)).map(m=>{const t=Array.isArray(m.thread)?m.thread:[],last=t[t.length-1];return '<button class="social-row" data-action="open-chat" data-person="'+esc(m.to)+'">'+avatarMarkup(m.to,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(m.to)+'</b><small>'+esc(last?.text||m.body||'点击进入聊天')+'</small></span><time>'+esc(last?.date||m.date||'刚刚')+'</time></button>'}).join('');
   body='<label class="social-chat-search"><span>⌕</span><input id="chatListSearch" type="search" placeholder="'+(isKakao?'搜索聊天':'搜索')+'"></label><div id="messageEditor"></div><div class="social-list">'+(rows||emptyState('💬','还没有聊天','选择联系人开始聊天'))+'</div>';
  }else if(tab==='friends'||tab==='contacts'){
-  const rows=people.map(p=>{const remark=isKakao?'朋友':(p.note||p.phone||'查看联系人资料');return '<button class="social-row" data-action="open-social-contact" data-person="'+esc(p.name)+'">'+avatarMarkup(p.name,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(remark)+'</small></span><span>›</span></button>'}).join('');
+  const rows=people.map(p=>{const remark=isKakao?(p.name==='申惟哥哥'?'哥哥':'朋友'):(p.note||p.phone||'查看联系人资料');return '<button class="social-row" data-action="open-social-contact" data-person="'+esc(p.name)+'">'+avatarMarkup(p.name,isKakao?'contact-avatar kakao-list-avatar':'contact-avatar wechat-list-avatar')+'<span class="social-row-copy"><b>'+esc(p.name)+'</b><small>'+esc(remark)+'</small></span><span>›</span></button>'}).join('');
   body='<label class="social-chat-search"><span>⌕</span><input id="socialContactSearch" type="search" placeholder="搜索联系人"></label><div class="social-list">'+(rows||emptyState('♙','暂无联系人','联系人会显示在这里'))+'</div>';
  }else if(tab==='discover'){
   body='<div class="social-feature-list"><button data-action="social-feature" data-feature="朋友圈"><span>◎</span><b>朋友圈</b><small>分享生活动态</small><i>›</i></button><button data-action="social-feature" data-feature="视频号"><span>▷</span><b>视频号</b><small>看看有趣的视频</small><i>›</i></button><button data-action="social-feature" data-feature="扫一扫"><span>▦</span><b>扫一扫</b><small>扫描二维码</small><i>›</i></button><button data-action="social-feature" data-feature="小程序"><span>▧</span><b>小程序</b><small>发现更多服务</small><i>›</i></button></div>';
