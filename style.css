@@ -1235,3 +1235,13 @@ body { min-height: 100vh; min-height: 100dvh; }
 .wechat-chat .chat-compose{background:#ededed!important;border-top:1px solid #d9d9d9!important;padding:8px 10px!important;gap:8px!important}
 .wechat-chat .chat-compose input{height:38px!important;background:#fff!important;border:0!important;border-radius:6px!important;font-size:16px!important}
 .wechat-chat .chat-compose .chat-attach{color:#181818!important}
+
+
+/* KakaoTalk: keep timestamps docked beside their own bubbles. */
+.kakao-chat .chat-history>.chat-line .chat-message-row{display:flex!important;flex-flow:row nowrap!important;align-items:flex-end!important;gap:6px!important;min-width:0!important}
+.kakao-chat .chat-history>.chat-line.theirs .chat-message-row{justify-content:flex-start!important}
+.kakao-chat .chat-history>.chat-line.mine .chat-message-row{justify-content:flex-end!important;padding-right:12px!important;box-sizing:border-box!important}
+.kakao-chat .chat-history>.chat-line .chat-message-body{margin:0!important;flex:0 1 auto!important;width:auto!important;min-width:0!important;max-width:min(82%,calc(100% - 48px))!important}
+.kakao-chat .chat-history>.chat-line .chat-time{position:static!important;display:block!important;flex:0 0 auto!important;align-self:flex-end!important;order:0!important;float:none!important;transform:none!important;margin:0!important;padding:0 0 3px!important;white-space:nowrap!important;line-height:1!important}
+.kakao-chat .chat-history>.chat-line.theirs .chat-time{order:1!important}
+.kakao-chat .chat-history>.chat-line.mine .chat-time{order:0!important}
