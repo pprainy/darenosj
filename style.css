@@ -1297,3 +1297,11 @@ body { min-height: 100vh; min-height: 100dvh; }
 .x-following-list span{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:48px}
 .x-following-list i{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#eff3f4;font-style:normal}
 .x-following-list small{font-size:10px;color:#536471}
+
+
+/* Reuse the exact KakaoTalk contact photos in Instagram story rings and feed headers. */
+.ig-story-avatar{overflow:hidden!important;display:grid!important;place-items:center!important}
+.ig-story-avatar .ig-friend-avatar{width:100%!important;height:100%!important;border-radius:50%!important;overflow:hidden!important;display:block!important}
+.ig-story-avatar .ig-friend-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;border-radius:50%!important}
+.ig-avatar{width:34px!important;height:34px!important;min-width:34px!important;display:block!important;overflow:hidden!important;border-radius:50%!important;flex:0 0 34px!important}
+.ig-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;border-radius:50%!important}
