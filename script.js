@@ -236,13 +236,14 @@ function renderChatThread(app,person){
  appContent.querySelectorAll('.kakao-voice-audio').forEach(audio=>{
   const bubble=audio.closest('.kakao-voice-bubble'),duration=bubble?.querySelector('.kakao-voice-duration'),play=bubble?.querySelector('.kakao-voice-play');
   const fmt=n=>{if(!Number.isFinite(n))return '0:00';const m=Math.floor(n/60),sec=Math.floor(n%60);return m+':'+String(sec).padStart(2,'0')};
-  const enablePlayback=()=>{if(audio.readyState>=2&&play){play.disabled=false;play.setAttribute('aria-label','播放语音')}};
+  const fullyBuffered=()=>audio.duration>0&&audio.buffered.length>0&&audio.buffered.end(audio.buffered.length-1)>=audio.duration-.15;
+  const enablePlayback=()=>{if((audio.readyState>=4||fullyBuffered())&&play){play.disabled=false;play.setAttribute('aria-label','播放语音')}};
   audio.preload='auto';audio.load();
   audio.addEventListener('loadedmetadata',()=>{if(duration)duration.textContent=fmt(audio.duration);enablePlayback()});
-  audio.addEventListener('canplay',enablePlayback);
   audio.addEventListener('canplaythrough',enablePlayback);
+  audio.addEventListener('progress',enablePlayback);
   audio.addEventListener('error',()=>{if(play){play.disabled=false;play.setAttribute('aria-label','重新加载语音')}});
-  if(audio.readyState>=2)enablePlayback();
+  if(audio.readyState>=4||fullyBuffered())enablePlayback();
   audio.addEventListener('ended',()=>{if(play)play.textContent='▶';if(duration)duration.textContent=fmt(audio.duration)});
   audio.addEventListener('pause',()=>{if(play)play.textContent='▶'});
   audio.addEventListener('play',()=>{if(play)play.textContent='Ⅱ'});
@@ -495,7 +496,7 @@ appContent.addEventListener('click',async e=>{
   if(act==='social-feature'){toast((e.target.closest('[data-feature]')?.dataset.feature||'功能')+'（模拟入口）');return}
   if(act==='clear-chat-history'){const person=e.target.closest('[data-person]')?.dataset.person,item=(saved[currentApp]||[]).find(x=>x.to===person);if(item){item.thread=[];item.body='';persist();renderSocialChatSettings(currentApp,person);toast('聊天记录已清空')}return}
   if(act==='social-contact-call'){const person=e.target.closest('[data-person]')?.dataset.person||activeChat||'联系人';startKakaoVoiceCall(person);return}if(act==='kakao-call-end'){finishKakaoVoiceCall();return}
-  if(act==='voice-play'){const button=e.target.closest('.kakao-voice-play'),bubble=button?.closest('.kakao-voice-bubble'),audio=bubble?.querySelector('audio');if(!audio||!button)return;if(audio.paused){if(audio.readyState<2){button.disabled=true;button.setAttribute('aria-label','语音加载中');audio.load();return}document.querySelectorAll('.kakao-voice-audio').forEach(other=>{if(other!==audio)other.pause()});const result=audio.play();if(result&&typeof result.catch==='function')result.catch(()=>{button.textContent='▶';toast('语音播放失败')});}else audio.pause();return}
+  if(act==='voice-play'){const button=e.target.closest('.kakao-voice-play'),bubble=button?.closest('.kakao-voice-bubble'),audio=bubble?.querySelector('audio');if(!audio||!button)return;if(audio.paused){if(audio.readyState<4&&!(audio.duration>0&&audio.buffered.length>0&&audio.buffered.end(audio.buffered.length-1)>=audio.duration-.15)){button.disabled=true;button.setAttribute('aria-label','语音加载中');audio.load();return}document.querySelectorAll('.kakao-voice-audio').forEach(other=>{if(other!==audio)other.pause()});const result=audio.play();if(result&&typeof result.catch==='function')result.catch(()=>{button.textContent='▶';toast('语音播放失败')});}else audio.pause();return}
   if(act==='message-copy'||act==='message-recall'||act==='message-delete'||act==='message-transcribe'){
    const row=e.target.closest('.chat-message-actions'),idx=Number(row?.dataset.messageIndex),item=(saved[currentApp]||[]).find(x=>x.to===activeChat),msg=item?.thread?.[idx];
    if(!msg)return;
