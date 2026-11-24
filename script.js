@@ -219,7 +219,7 @@ function renderChatThread(app,person){
   const bubble=m.type==='voice'?
    '<div class="chat-bubble kakao-voice-message"><audio controls preload="metadata" src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
    '<div class="chat-bubble">'+(m.recalled?'你撤回了一条消息':esc(displayText))+'</div>';
-  const translation=isKakao&&m.type!=='voice'&&m.translation?'<div class="kakao-message-translation">'+esc(m.translation)+'</div>':'';
+  const translation=isKakao&&((m.type!=='voice'&&m.translation)||(m.type==='voice'&&m.showTranscript&&m.transcript))?'<div class="kakao-message-translation">'+esc(m.type==='voice'?m.transcript:m.translation)+'</div>':'';
   const timestamp=m.type==='voice'?'':'<small>'+esc(m.date||'')+'</small>';
   return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+'" data-message-index="'+i+'">'+bubble+translation+timestamp+'</div>';
  }).join('');
