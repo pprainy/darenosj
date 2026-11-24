@@ -47,13 +47,19 @@ const demoData={
  photos:[1,2,3,4,5,6,7].map(n=>({data:`photos/${n}.jpg`,demo:true}))
 };
 Object.entries(demoData).forEach(([key,value])=>{if(!Object.prototype.hasOwnProperty.call(saved,key))saved[key]=value});
- // Add the requested birthday to the calendar without duplicating it on later launches.
+ // Add requested calendar events once, without duplicating them on later launches.
  saved.events=saved.events||[];
  if(!saved.events.some(ev=>ev.id==='brother-birthday-2026'||(ev.title==='哥哥生日💝'&&(ev.date||'').slice(0,10)==='2026-11-07'))){
   saved.events.push({id:'brother-birthday-2026',title:'哥哥生日💝',date:'2026-11-07'});
  }
- saved.calendarMonth='2026-11';
- saved.calendarSelected='2026-11-07';
+ if(!saved.events.some(ev=>ev.id==='new-year-birthday-2027'||(ev.title==='又大一岁🎂'&&(ev.date||'').slice(0,10)==='2027-01-05'))){
+  saved.events.push({id:'new-year-birthday-2027',title:'又大一岁🎂',date:'2027-01-05'});
+ }
+ if(!saved.calendarFocusBirthday2027){
+  saved.calendarMonth='2027-01';
+  saved.calendarSelected='2027-01-05';
+  saved.calendarFocusBirthday2027=true;
+ }
  persist();
 // 统一所有应用使用的十位联系人；已有的号码和备注尽量保留。
 const canonicalContacts=[
