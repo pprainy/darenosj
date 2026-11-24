@@ -936,6 +936,8 @@ body { min-height: 100vh; min-height: 100dvh; }
 
 
 /* KakaoTalk voice-call mock screen; intentionally silent, with explicit answer and hang-up controls. */
+/* Hide app navigation during outgoing system phone calls as well. */
+.app-view:has(.phone-call-overlay) .app-header{display:none}
 /* Hide the app navigation while a KakaoTalk call is in progress; hang-up remains on the call screen. */
 .app-view:has(#kakaoVoiceCallOverlay) .app-header{display:none}
 .kakao-voice-call-overlay{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:76px 24px max(42px,env(safe-area-inset-bottom));box-sizing:border-box;background:linear-gradient(180deg,#303640 0%,#111318 75%);color:#fff}
