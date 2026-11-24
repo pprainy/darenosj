@@ -104,6 +104,38 @@ for(const name of familyNames){
 }
 saved.wechat=wechatRows;
 saved.kakaotalk=kakaoRows.filter(x=>!familyNames.includes(x.to));
+
+/* Keep Shinyu's latest reference conversation in sync before lock-screen and chat-list previews render. */
+{
+ const shinyu=(saved.kakaotalk||[]).find(x=>x.to==='申惟哥哥');
+ if(shinyu&&shinyu.demoHistoryVersion!==7){
+  shinyu.thread=[
+   {from:'me',text:'형 오늘 몇 시에 집에 가요?',translation:'哥哥你今天几点回家？',date:'16:13'},
+   {from:'them',text:'여섯 시 조금 넘어서? 왜?',translation:'六点多吧，怎么了？',date:'16:14'},
+   {from:'me',text:'내가 데리러 갈게!',translation:'我去接你吧！',date:'16:14'},
+   {from:'them',text:'ㅋㅋㅋ 갑자기 왜?',translation:'ㅋㅋㅋ怎么突然',date:'16:14'},
+   {from:'them',text:'형 보고 싶었어?',translation:'想哥哥了？',date:'16:14'},
+   {from:'me',text:'응, 형 너무 보고 싶어🥺',translation:'对呀好想哥哥🥺',date:'16:16'},
+   {from:'me',text:'하루 못 봤다고 삼 년 같아',translation:'一日不见如隔三秋',date:'16:16'},
+   {from:'them',text:'한진……',translation:'韩振……',date:'16:17'},
+   {from:'them',text:'헤어진 지 12시간도 안 됐는데',translation:'分开都没有12小时呢',date:'16:17'},
+   {from:'them',text:'오늘 수업 없어?',translation:'今天没课了？',date:'16:17'},
+   {from:'me',text:'응응',translation:'嗯嗯',date:'16:18'},
+   {from:'me',text:'회사 건물 아래에서 보자~ (｡-.-｡)',translation:'你公司楼下见～(｡-.-｡)',date:'16:18'},
+   {from:'me',text:'사랑해',translation:'爱你',date:'16:19'},
+   {from:'them',text:'응',translation:'好',date:'16:19'},
+   {from:'them',text:'나도 사랑해',translation:'我也爱你',date:'16:19'},
+   {from:'me',text:'내가 더 사랑해!',translation:'我更爱你！',date:'16:19'},
+   {from:'them',text:'……',translation:'……',date:'16:19'},
+   {from:'them',type:'voice',text:'语音消息',date:'16:19',src:'assets/kakaotalk/voice/chat-voice-01.mp3',transcript:'就这么喜欢哥哥吗？真是疯了。'}
+  ];
+  shinyu.demoHistoryVersion=7;
+  const last=shinyu.thread[shinyu.thread.length-1];
+  shinyu.body=last.text;shinyu.date=last.date;
+  persist();
+ }
+}
+
 // 搜索历史默认四条；显式清空后不自动补回。
 if(!Array.isArray(saved.xhsSearchHistory))saved.xhsSearchHistory=[];
 if(saved.xhsSearchHistory.length===0&&saved.xhsSearchHistoryCleared!==true){saved.xhsSearchHistory=['哥哥太受欢迎了不开心是正常的吗','韩国打卡地点推荐','礼山','太喜欢哥哥了怎么办'];}
@@ -111,7 +143,7 @@ persist();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const avatarFiles={'申惟哥哥':'shinyu.jpg','道勋哥':'dohoon.jpg','英宰哥':'youngjae.jpg','志薰🪼':'jihoon.jpg','炅潣':'kyungmin.jpg'};
 function avatarMarkup(name,cls='contact-avatar'){const file=avatarFiles[name];return file?`<span class="${cls} has-photo"><img src="avatars/${file}" alt="${esc(name)}" onerror="this.parentElement.classList.remove('has-photo');this.remove()"><i>${esc((name||'?').slice(0,1))}</i></span>`:`<span class="${cls}">${esc((name||'?').slice(0,1))}</span>`;}
-function updateLockKakaoNotification(){const list=saved.kakaotalk||[], item=list[0], thread=Array.isArray(item?.thread)?item.thread:[], latest=thread[thread.length-1], sender=item?.to||'KakaoTalk', preview=latest?.text||item?.body||'你有一条新消息';const nameEl=$('#lockKakaoSender'),previewEl=$('#lockKakaoPreview');if(nameEl)nameEl.textContent=sender;if(previewEl)previewEl.textContent=preview;const card=$('#lockKakaoNotification');if(card)card.hidden=!item;}
+function updateLockKakaoNotification(){const list=saved.kakaotalk||[], item=list.find(x=>x.to==='申惟哥哥')||list[0], thread=Array.isArray(item?.thread)?item.thread:[], latest=[...thread].reverse().find(m=>m&&m.text), sender=item?.to||'KakaoTalk', preview=latest?.type==='voice'?'语音消息':latest?.text||item?.body||'你有一条新消息';const nameEl=$('#lockKakaoSender'),previewEl=$('#lockKakaoPreview');if(nameEl)nameEl.textContent=sender;if(previewEl)previewEl.textContent=preview;const card=$('#lockKakaoNotification');if(card)card.hidden=!item;}
 updateLockKakaoNotification();
 const appNames={messages:'信息',mail:'邮件',notes:'备忘录',camera:'相机',instagram:'Instagram',browser:'浏览器',settings:'设置',x:'X',kakaotalk:'KakaoTalk',wechat:'微信',phone:'电话',xiaohongshu:'小红书',voice:'语音备忘录',photos:'照片',contacts:'通讯录',calendar:'日历'};
 const icons={messages:'💬',mail:'✉️',notes:'📝',camera:'📷',instagram:'📸',browser:'🧭',settings:'⚙️',x:'𝕏',kakaotalk:'🟡',wechat:'🟢',phone:'📞',xiaohongshu:'📕',voice:'🎙️',photos:'🌄',contacts:'👤',calendar:'📅'};
@@ -260,6 +292,7 @@ function renderChatThread(app,person){
   audio.addEventListener('pause',()=>{if(play)play.textContent='▶'});
   audio.addEventListener('play',()=>{if(play)play.textContent='Ⅱ'});
  });
+ updateLockKakaoNotification();
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
 function renderSocialLanding(app,tab){
