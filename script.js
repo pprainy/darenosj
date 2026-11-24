@@ -198,7 +198,7 @@ function renderChatThread(app,person){
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
  // 申惟哥哥聊天演示记录：只初始化一次，后续用户真实内容不会被覆盖。
- if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==3){
+ if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==4){
   const demoHistory=[
    {from:'me',text:'오빠 오늘 뭐 해요? 😊',translation:'哥哥今天在做什么呀？',date:'11月22日 19:42'},
    {from:'them',text:'방금 퇴근했어. 이제 집에 가려고 ㅋㅋ',translation:'刚刚下班，现在准备回家ㅋㅋ',date:'11月22日 19:45'},
@@ -209,17 +209,19 @@ function renderChatThread(app,person){
    {from:'them',type:'voice',text:'语音消息',date:'11月22日 19:53',src:'assets/kakaotalk/voice/chat-voice-01.mp3'},
    {from:'me',text:'ㅋㅋㅋㅋ 다행이다! 맛있게 먹어요 💗',translation:'哈哈哈那就好！要好好享用哦💗',date:'11月22日 19:54'}
   ];
-  if(item.demoHistoryV1){const demoDates=new Set(demoHistory.map(m=>m.date));item.thread=item.thread.map(m=>demoDates.has(m.date)?{...m,...demoHistory.find(d=>d.date===m.date)}:m);}
+  if(item.demoHistoryV1){item.thread=item.thread.map(m=>{const match=demoHistory.find(d=>(m.date&&d.date===m.date)||(m.text&&d.text===m.text));return match?{...m,...match}:m;});}
   else{item.thread=[...demoHistory,...item.thread];item.demoHistoryV1=true;}
-  item.demoHistoryVersion=3;persist();
+  item.demoHistoryVersion=4;persist();
   const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||item.body;item.date=latest.date||item.date;persist();
  }
  const bubbles=item.thread.map((m,i)=>{
   const displayText=isWechat&&m.from==='them'?(kakaoChinese[m.text]||m.text):m.text;
   const bubble=m.type==='voice'?
-   '<div class="chat-bubble kakao-voice-message"><audio controls preload="metadata" src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
+   '<div class="kakao-voice-bubble"><button type="button" class="kakao-voice-play" data-action="voice-play" aria-label="播放语音">▶</button><span class="kakao-voice-duration">0:00</span><audio class="kakao-voice-audio" preload="metadata" src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
    '<div class="chat-bubble">'+(m.recalled?'你撤回了一条消息':esc(displayText))+'</div>';
-  const translation=isKakao&&((m.type!=='voice'&&m.translation)||(m.type==='voice'&&m.showTranscript&&m.transcript))?'<div class="kakao-message-translation">'+esc(m.type==='voice'?m.transcript:m.translation)+'</div>':'';
+  const demoTranslation={'오빠 오늘 뭐 해요? 😊':'哥哥今天在做什么呀？','방금 퇴근했어. 이제 집에 가려고 ㅋㅋ':'刚刚下班，现在准备回家ㅋㅋ','오늘도 수고했어요! 밥은 먹었어요?':'今天也辛苦啦！吃饭了吗？','아직 안 먹었어. 너는 먹었어?':'我还没吃呢。你吃了吗？','저는 먹었어요~ 오빠도 꼭 챙겨 먹어요!':'我已经吃过啦～哥哥也一定要记得吃饭！','알겠어ㅎㅎ 이따가 맛있는 거 먹을게':'知道啦ㅎㅎ 我等会儿去吃点好吃的。','ㅋㅋㅋㅋ 다행이다! 맛있게 먹어요 💗':'哈哈哈哈那就好！要好好享用哦💗'};
+  const translationText=m.translation||demoTranslation[m.text]||'';
+  const translation=isKakao&&m.type!=='voice'&&translationText?'<div class="kakao-message-translation">'+esc(translationText)+'</div>':(isKakao&&m.type==='voice'&&m.showTranscript&&m.transcript?'<div class="kakao-message-translation">'+esc(m.transcript)+'</div>':'');
   const timestamp=m.type==='voice'?'':'<small>'+esc(m.date||'')+'</small>';
   return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+'" data-message-index="'+i+'">'+bubble+translation+timestamp+'</div>';
  }).join('');
@@ -230,6 +232,14 @@ function renderChatThread(app,person){
   <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
   <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'输入消息…':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'发送':isWechat?'发送':'发送'}</button></div>
  </div>`;
+ appContent.querySelectorAll('.kakao-voice-audio').forEach(audio=>{
+  const bubble=audio.closest('.kakao-voice-bubble'),duration=bubble?.querySelector('.kakao-voice-duration'),play=bubble?.querySelector('.kakao-voice-play');
+  const fmt=n=>{if(!Number.isFinite(n))return '0:00';const m=Math.floor(n/60),sec=Math.floor(n%60);return m+':'+String(sec).padStart(2,'0')};
+  audio.addEventListener('loadedmetadata',()=>{if(duration)duration.textContent=fmt(audio.duration)});
+  audio.addEventListener('ended',()=>{if(play)play.textContent='▶';if(duration)duration.textContent=fmt(audio.duration)});
+  audio.addEventListener('pause',()=>{if(play)play.textContent='▶'});
+  audio.addEventListener('play',()=>{if(play)play.textContent='Ⅱ'});
+ });
  const history=$('#chatHistory');if(history)history.scrollTop=history.scrollHeight;
 }
 function renderSocialLanding(app,tab){
@@ -478,10 +488,11 @@ appContent.addEventListener('click',async e=>{
   if(act==='social-feature'){toast((e.target.closest('[data-feature]')?.dataset.feature||'功能')+'（模拟入口）');return}
   if(act==='clear-chat-history'){const person=e.target.closest('[data-person]')?.dataset.person,item=(saved[currentApp]||[]).find(x=>x.to===person);if(item){item.thread=[];item.body='';persist();renderSocialChatSettings(currentApp,person);toast('聊天记录已清空')}return}
   if(act==='social-contact-call'){const person=e.target.closest('[data-person]')?.dataset.person||activeChat||'联系人';startKakaoVoiceCall(person);return}if(act==='kakao-call-end'){finishKakaoVoiceCall();return}
+  if(act==='voice-play'){const bubble=e.target.closest('.kakao-voice-bubble'),audio=bubble?.querySelector('audio');if(!audio)return;if(audio.paused){audio.play().catch(()=>toast('语音播放失败'));e.target.textContent='Ⅱ';}else{audio.pause();e.target.textContent='▶';}return}
   if(act==='message-copy'||act==='message-recall'||act==='message-delete'||act==='message-transcribe'){
    const row=e.target.closest('.chat-message-actions'),idx=Number(row?.dataset.messageIndex),item=(saved[currentApp]||[]).find(x=>x.to===activeChat),msg=item?.thread?.[idx];
    if(!msg)return;
-   if(act==='message-transcribe'){if(msg.type!=='voice')return;if(msg.transcript){msg.showTranscript=true;persist();renderChatThread(currentApp,activeChat)}else toast('这条语音还没有可显示的转写文本');return}
+   if(act==='message-transcribe'){if(msg.type!=='voice')return;if(msg.transcript){msg.showTranscript=true;persist();renderChatThread(currentApp,activeChat)}else toast('这条语音尚未生成识别文本');return}
    if(act==='message-copy'){const value=msg.text||'';if(navigator.clipboard?.writeText)navigator.clipboard.writeText(value).then(()=>toast('已复制消息')).catch(()=>toast('复制失败，请检查浏览器权限'));else{const ta=document.createElement('textarea');ta.value=value;document.body.append(ta);ta.select();document.execCommand('copy');ta.remove();toast('已复制消息')}}
    if(act==='message-recall'){if(msg.from!=='me'){toast('只能撤回自己发送的消息');return}msg.recalled=true;msg.text='';item.body='你撤回了一条消息';persist();renderChatThread(currentApp,activeChat);toast('已撤回消息')}
    if(act==='message-delete'){item.thread.splice(idx,1);const latest=item.thread[item.thread.length-1];item.body=latest?.text||'';item.date=latest?.date||'刚刚';persist();renderChatThread(currentApp,activeChat);toast('已删除消息')}
