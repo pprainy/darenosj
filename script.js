@@ -55,11 +55,7 @@ Object.entries(demoData).forEach(([key,value])=>{if(!Object.prototype.hasOwnProp
  if(!saved.events.some(ev=>ev.id==='new-year-birthday-2027'||(ev.title==='又大一岁🎂'&&(ev.date||'').slice(0,10)==='2027-01-05'))){
   saved.events.push({id:'new-year-birthday-2027',title:'又大一岁🎂',date:'2027-01-05'});
  }
- if(!saved.calendarFocusBirthday2027){
-  saved.calendarMonth='2027-01';
-  saved.calendarSelected='2027-01-05';
-  saved.calendarFocusBirthday2027=true;
- }
+ // Keep the calendar on its normal current-date default; do not jump to the new event.
  persist();
 // 统一所有应用使用的十位联系人；已有的号码和备注尽量保留。
 const canonicalContacts=[
