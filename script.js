@@ -214,6 +214,7 @@ function renderChatThread(app,person){
   item.demoHistoryVersion=4;persist();
   const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||item.body;item.date=latest.date||item.date;persist();
  }
+ if(isKakao&&person==='申惟哥哥'){const voice=item.thread.find(m=>m.type==='voice'&&m.src==='assets/kakaotalk/voice/chat-voice-01.mp3');if(voice&&voice.transcript!=='就这么喜欢哥哥吗？真是疯了。'){voice.transcript='就这么喜欢哥哥吗？真是疯了。';persist();}}
  const bubbles=item.thread.map((m,i)=>{
   const displayText=isWechat&&m.from==='them'?(kakaoChinese[m.text]||m.text):m.text;
   const bubble=m.type==='voice'?
