@@ -1125,3 +1125,41 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.chat-app .chat-history{flex:1 1 0!important;min-height:0!important;overflow-y:auto!important}
 .sim-app.chat-app #chatActionHost{flex:0 0 auto!important}
 .sim-app.chat-app .chat-compose{position:relative!important;z-index:3!important;flex:0 0 auto!important;min-height:64px!important;padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))!important}
+
+
+/* KakaoTalk conversation skin matched to the supplied reference. */
+.kakao-chat{background:#aec4d4!important;color:#222!important}
+.kakao-chat .chat-nav{height:58px!important;min-height:58px!important;flex:0 0 58px!important;display:flex!important;align-items:center!important;gap:8px!important;padding:0 14px!important;background:#aec4d4!important;border:0!important}
+.kakao-chat .chat-nav>button:first-child{flex:0 0 34px!important;min-width:34px!important;width:34px!important;color:#222!important;font-size:34px!important;font-weight:300!important}
+.kakao-chat .chat-nav-person{flex:1 1 auto!important;display:flex!important;justify-content:center!important;align-items:center!important;min-width:0!important;height:100%!important;padding:0!important;background:transparent!important;color:#222!important}
+.kakao-chat .chat-nav-person .chat-nav-avatar{display:none!important}
+.kakao-chat .chat-nav-person strong{font-size:22px!important;font-weight:600!important;color:#222!important;max-width:none!important;line-height:1.2!important}
+.kakao-chat .chat-nav-tools{display:flex!important;align-items:center!important;gap:10px!important;flex:0 0 auto!important}
+.kakao-chat .chat-nav-tools button{min-width:30px!important;padding:0!important;color:#222!important;font-size:28px!important;font-weight:300!important}
+.kakao-chat .chat-history{background:#aec4d4!important;gap:9px!important;padding:12px 15px 18px!important}
+.kakao-chat .chat-line{display:flex!important;flex-direction:column!important;gap:3px!important;max-width:86%!important;width:max-content!important}
+.kakao-chat .chat-line.theirs{align-self:flex-start!important;align-items:stretch!important}
+.kakao-chat .chat-line.mine{align-self:flex-end!important;align-items:stretch!important}
+.kakao-chat .chat-sender{position:relative!important;margin-left:46px!important;height:24px!important;display:flex!important;align-items:center!important;color:#536875!important;font-size:14px!important}
+.kakao-chat .chat-sender-avatar{position:absolute!important;left:-46px!important;top:0!important;width:38px!important;height:38px!important;border-radius:50%!important;overflow:hidden!important;display:block!important;flex:0 0 38px!important}
+.kakao-chat .chat-sender-avatar img{width:100%!important;height:100%!important;object-fit:cover!important}
+.kakao-chat .chat-sender-avatar i{display:none!important}
+.kakao-chat .chat-sender strong{font-size:14px!important;font-weight:500!important}
+.kakao-chat .chat-message-row{display:flex!important;align-items:flex-end!important;gap:6px!important;width:100%!important}
+.kakao-chat .chat-line.theirs .chat-message-row{margin-left:46px!important}
+.kakao-chat .chat-line.mine .chat-message-row{justify-content:flex-end!important}
+.kakao-chat .chat-message-body{display:flex!important;flex-direction:column!important;align-items:stretch!important;min-width:0!important;max-width:calc(100% - 34px)!important}
+.kakao-chat .chat-bubble{padding:11px 14px!important;border:0!important;border-radius:22px!important;font-size:17px!important;line-height:1.42!important;box-shadow:none!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important}
+.kakao-chat .chat-line.theirs .chat-bubble{background:#fff!important;color:#222!important;border-bottom-left-radius:20px!important}
+.kakao-chat .chat-line.mine .chat-bubble{background:#fee500!important;color:#222!important;border-bottom-right-radius:20px!important}
+.kakao-chat .chat-time{flex:0 0 auto!important;font-size:11px!important;color:#526775!important;padding:0 0 3px!important;white-space:nowrap!important}
+.kakao-chat .kakao-message-translation{padding:3px 3px 0!important;font-size:12px!important;line-height:1.35!important;color:#596f7b!important;white-space:normal!important}
+.kakao-chat .chat-line.grouped:not(:has(.chat-sender)){margin-top:-3px!important}
+.kakao-chat .chat-line.grouped .chat-message-row{margin-left:46px!important}
+.kakao-chat .kakao-voice-bubble{width:116px!important;height:44px!important;padding:0 11px!important;gap:12px!important;border-radius:22px!important;background:#fff!important}
+.kakao-chat .kakao-voice-play{font-size:22px!important}
+.kakao-chat .kakao-voice-duration{font-size:16px!important}
+.kakao-chat .chat-compose{background:#f7f7f7!important;border-top:1px solid rgba(0,0,0,.08)!important;padding:9px 10px calc(9px + env(safe-area-inset-bottom,0px))!important;min-height:62px!important}
+.kakao-chat .chat-compose .chat-attach{font-size:25px!important;color:#333!important}
+.kakao-chat .chat-compose input{height:42px!important;background:#fff!important;border:0!important;border-radius:22px!important;padding:0 14px!important;font-size:15px!important}
+.kakao-chat .chat-compose button[data-action="send-chat"]{background:#fee500!important;color:#222!important;border-radius:14px!important;padding:9px 14px!important;font-size:14px!important}
