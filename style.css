@@ -1045,7 +1045,7 @@ body { min-height: 100vh; min-height: 100dvh; }
 .browser-privacy>span{font-size:23px}.browser-privacy div{display:flex;flex-direction:column;gap:4px}
 .browser-privacy b{font-size:12px}.browser-privacy small{font-size:10px;line-height:1.5;color:#8e8e93}
 .browser-bottom{display:flex;justify-content:space-around;margin-top:auto;padding:18px 0 3px;color:#7c7c82}
-.browser-bottom button{border:0;background:transparent;color:inherit;font-size:22px}
+.browser-bottom span{color:inherit;font-size:22px}
 .kakao-call-avatar{position:relative!important;width:112px!important;height:112px!important;min-width:112px!important;min-height:112px!important;flex:0 0 112px!important;display:block!important;border-radius:50%!important;overflow:hidden!important;isolation:isolate;line-height:0!important}
 .kakao-call-avatar img{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border:0!important;border-radius:50%!important}
 .kakao-call-avatar i{display:none!important}
