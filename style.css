@@ -1081,3 +1081,12 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-chat .chat-line:has(.kakao-voice-message){max-width:78%;gap:0}
 .kakao-chat .chat-line .kakao-voice-message{display:block;width:220px;max-width:70vw;margin:0;padding:0;background:transparent;color:inherit;border:0;border-radius:0;box-shadow:none}
 .kakao-chat .kakao-voice-message audio{display:block;width:100%;height:34px;max-width:100%;margin:0}
+
+
+/* KakaoTalk voice memo: compact native-looking play-and-duration bubble. */
+.kakao-chat .chat-line:has(.kakao-voice-bubble){max-width:78%;gap:0}
+.kakao-chat .kakao-voice-bubble{display:flex;align-items:center;gap:15px;width:132px;height:44px;box-sizing:border-box;padding:0 13px;background:#fff;border:0;border-radius:10px 10px 10px 3px;box-shadow:none;color:#222}
+.kakao-chat .chat-line.mine .kakao-voice-bubble{margin-left:auto;border-radius:10px 10px 3px 10px}
+.kakao-chat .kakao-voice-play{display:grid;place-items:center;flex:0 0 22px;width:22px;height:26px;padding:0;border:0;background:transparent;color:#222;font-size:19px;line-height:1;cursor:pointer}
+.kakao-chat .kakao-voice-duration{font-size:14px;line-height:1;font-variant-numeric:tabular-nums;color:#222;white-space:nowrap}
+.kakao-chat .kakao-voice-audio{display:none!important}
