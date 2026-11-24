@@ -1439,3 +1439,18 @@ body { min-height: 100vh; min-height: 100dvh; }
 .x-empty-messages>span{font-size:42px;line-height:1}
 .x-empty-messages>b{font-size:19px;color:#0f1419}
 .x-empty-messages>small{font-size:13px;line-height:1.5}
+
+
+/* Reference-matched social iconography: clean outlined SVGs, not text glyph substitutes. */
+.ig-post-actions button,.x-post-stats button,.ig-bottom button,.x-bottom button{display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:5px!important;color:#53616a!important}
+.ig-post-actions button svg{width:25px!important;height:25px!important;display:block!important}
+.ig-bottom button{width:42px!important;height:42px!important;border:0!important;border-radius:0!important;background:transparent!important;color:#111!important;padding:7px!important;font-size:0!important}
+.ig-bottom button svg{width:29px!important;height:29px!important;display:block!important}
+.ig-bottom button:last-child{padding:3px!important}
+.ig-bottom .ig-nav-avatar{width:29px!important;height:29px!important;border-radius:50%!important;overflow:hidden!important}
+.ig-bottom .ig-nav-avatar img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
+.x-post-stats{align-items:center!important}
+.x-post-stats button{min-width:30px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;font-size:11px!important}
+.x-post-stats button svg{width:19px!important;height:19px!important;display:block!important}
+.x-bottom button{height:46px!important;border:0!important;background:transparent!important;padding:8px!important;font-size:0!important;color:#0f1419!important}
+.x-bottom button svg{width:27px!important;height:27px!important;display:block!important}
