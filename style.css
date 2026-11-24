@@ -1258,3 +1258,42 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-chat .chat-history>.chat-line .chat-message-body{order:0!important}
 .kakao-chat .chat-history>.chat-line.mine .chat-message-body{margin-left:0!important}
 .kakao-chat .chat-history>.chat-line.theirs .chat-message-body{margin-right:0!important}
+
+
+/* Instagram and X refresh: consistent social account rows and friend identity. */
+.sim-app.instagram{background:#fff;color:#171717}
+.ig-topbar{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 4px;border-bottom:1px solid #f0f0f0}
+.ig-topbar strong{font-family:Georgia,serif;font-size:25px;font-style:italic;letter-spacing:-1px}
+.ig-topbar button{font-size:23px!important;margin-left:12px!important}
+.ig-stories{gap:13px!important;padding:14px 3px 13px!important}
+.ig-story{min-width:62px!important;gap:6px!important}
+.ig-story-avatar{width:54px!important;height:54px!important;font-size:22px!important}
+.ig-story small{font-size:10px!important;color:#262626!important}
+.ig-following-label{font-size:12px;font-weight:700;color:#262626;padding:10px 2px 0;border-top:1px solid #f2f2f2}
+.ig-post{padding:13px 0 16px!important}
+.ig-post-head{gap:10px!important}
+.ig-avatar{font-size:19px;border:1px solid #eee}
+.ig-post-head div b{font-size:12px}
+.ig-post-head div small{font-size:10px}
+.ig-post-art{aspect-ratio:1/0.92!important;border-radius:2px}
+.ig-post-actions button{font-size:23px!important}
+.ig-caption{font-size:12px!important}
+.sim-app.x{background:#fff;color:#0f1419}
+.x-topbar{justify-content:space-between!important;border-bottom:1px solid #eff3f4}
+.x-topbar strong{font-size:26px!important}
+.x-tabs{display:flex;justify-content:space-around;border-bottom:1px solid #eff3f4}
+.x-tabs button{flex:1;min-height:46px;border:0;background:transparent;color:#536471;font-weight:600}
+.x-tabs button.active{color:#0f1419;border-bottom:3px solid #1d9bf0}
+.x-post{padding:15px 13px!important;gap:11px!important}
+.x-avatar{width:42px!important;height:42px!important;flex-basis:42px!important;border-radius:50%!important;font-size:18px!important}
+.x-post-meta{gap:7px!important;flex-wrap:wrap}
+.x-post-meta b{font-size:13px!important;color:#0f1419}
+.x-post-meta span{font-size:11px!important}
+.x-post-main p{font-size:14px!important;line-height:1.5!important;margin:7px 0 12px!important}
+.x-translation{display:block;color:#536471;font-size:11px;margin-top:4px}
+.x-post-stats{padding-top:9px!important}
+.x-following-list{margin:12px 0 16px;padding:12px 0;border-top:1px solid #eff3f4;border-bottom:1px solid #eff3f4}
+.x-following-list>div{display:flex;gap:12px;overflow-x:auto;padding-top:10px}
+.x-following-list span{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:48px}
+.x-following-list i{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#eff3f4;font-style:normal}
+.x-following-list small{font-size:10px;color:#536471}
