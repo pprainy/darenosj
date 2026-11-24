@@ -198,7 +198,7 @@ function renderChatThread(app,person){
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
  // 申惟哥哥聊天演示记录：只初始化一次，后续用户真实内容不会被覆盖。
- if(isKakao&&person==='申惟哥哥'&&!item.demoHistoryV1){
+ if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==2){
   const demoHistory=[
    {from:'me',text:'오빠 오늘 뭐 해요? 😊',translation:'哥哥今天在做什么呀？',date:'11月22日 19:42'},
    {from:'them',text:'방금 퇴근했어. 이제 집에 가려고 ㅋㅋ',translation:'刚刚下班，现在准备回家ㅋㅋ',date:'11月22日 19:45'},
@@ -211,7 +211,7 @@ function renderChatThread(app,person){
   ];
   if(item.demoHistoryV1){const demoDates=new Set(demoHistory.map(m=>m.date));item.thread=item.thread.map(m=>demoDates.has(m.date)?{...m,...demoHistory.find(d=>d.date===m.date)}:m);}
   else{item.thread=[...demoHistory,...item.thread];item.demoHistoryV1=true;}
-  persist();
+  item.demoHistoryVersion=2;persist();
   const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||item.body;item.date=latest.date||item.date;persist();
  }
  const bubbles=item.thread.map((m,i)=>{
