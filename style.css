@@ -1512,3 +1512,37 @@ body { min-height: 100vh; min-height: 100dvh; }
 .x-compose-tools>button,.x-compose-tool{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:30px!important;height:38px!important;border:0!important;background:transparent!important;color:#55acd5!important;font-size:22px!important;font-weight:700!important}
 .x-compose-tools small{font-size:8px!important;position:absolute!important;top:5px!important;left:5px!important;background:#55acd5!important;color:#fff!important;padding:1px 2px!important;border-radius:2px!important}
 .x-compose-tool{font-size:27px!important;cursor:pointer!important}
+
+
+/* X composer toolbar: uniform icon boxes and consistent stroke weight. */
+.x-compose-tools{display:grid!important;grid-template-columns:repeat(8,minmax(0,1fr))!important;align-items:center!important;justify-items:center!important;gap:0!important;height:64px!important;padding:0 8px!important;box-sizing:border-box!important}
+.x-compose-tools>button,.x-compose-tool{width:100%!important;min-width:0!important;height:48px!important;max-width:44px!important;display:flex!important;align-items:center!important;justify-content:center!important;position:relative!important;padding:0!important;border:0!important;background:transparent!important;color:#55acd5!important;box-sizing:border-box!important;font-size:15px!important;line-height:1!important}
+.x-compose-tools svg{display:block!important;width:23px!important;height:23px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.9!important;stroke-linecap:round!important;stroke-linejoin:round!important;flex:0 0 23px!important}
+.x-compose-tools .x-gif-tool{font-size:14px!important;font-weight:800!important;letter-spacing:-.5px!important}
+.x-compose-tools small{font-size:7px!important;top:9px!important;left:50%!important;transform:translateX(-50%)!important;padding:1px 3px!important;white-space:nowrap!important}
+.x-compose-tool input{display:none!important}
+/* Settings app: native-style grouped cards, search and account header. */
+.sim-app.settings{background:#f2f2f7!important;padding:12px 14px 24px!important}
+.settings-page{width:100%!important;max-width:100%!important;box-sizing:border-box!important}
+.settings-heading{padding:5px 2px 13px!important}
+.settings-heading h1{font-size:30px!important;line-height:1.15!important;letter-spacing:-.6px!important;font-weight:750!important;margin:0 0 14px!important;color:#111!important}
+.settings-search{height:36px!important;border-radius:11px!important;background:#e5e5ea!important;display:flex!important;align-items:center!important;gap:7px!important;padding:0 10px!important;color:#8e8e93!important;box-sizing:border-box!important}
+.settings-search>span{font-size:21px!important;line-height:1!important}
+.settings-search input{border:0!important;outline:0!important;background:transparent!important;min-width:0!important;flex:1!important;font:14px -apple-system,BlinkMacSystemFont,sans-serif!important;color:#1c1c1e!important;padding:0!important;box-shadow:none!important}
+.settings-profile{width:100%!important;box-sizing:border-box!important;border:0!important;text-align:left!important;min-height:82px!important;margin:0 0 18px!important;padding:14px!important;border-radius:16px!important;background:linear-gradient(110deg,#fff,#fafaff)!important;box-shadow:0 1px 4px #0000000a!important}
+.settings-profile .profile-avatar{width:54px!important;height:54px!important;flex:0 0 54px!important;border-radius:50%!important;background:linear-gradient(145deg,#dce8f8,#b8c8df)!important;color:#fff!important;font-size:28px!important}
+.settings-account-copy{flex:1!important;min-width:0!important}
+.settings-account-copy b{font-size:16px!important;color:#1c1c1e!important}
+.settings-account-copy p{font-size:11px!important;line-height:1.4!important;margin:5px 0 0!important;color:#8e8e93!important}
+.settings-profile>span{font-size:24px!important;color:#c7c7cc!important}
+.settings-group{border-radius:15px!important;background:#fff!important;box-shadow:0 1px 3px #00000008!important;margin:0 0 18px!important;overflow:hidden!important}
+.settings-section-title{padding:13px 15px 7px!important;font-size:12px!important;font-weight:650!important;letter-spacing:.1px!important;color:#8e8e93!important}
+.settings-group .setting-row{min-height:51px!important;box-sizing:border-box!important;padding:10px 15px!important;gap:11px!important;font-size:14px!important;background:#fff!important}
+.settings-group .setting-row:not(:last-child){border-bottom:1px solid #f0f0f2!important}
+.settings-icon{width:28px!important;height:28px!important;flex:0 0 28px!important;display:grid!important;place-items:center!important;border-radius:8px!important;background:#f2f2f7!important;font-size:16px!important}
+.settings-label{font-size:14px!important;color:#1c1c1e!important}
+.settings-group .setting-row input{width:42px!important;height:25px!important;accent-color:#34c759!important}
+.settings-action{width:100%!important;box-sizing:border-box!important;margin:0!important;padding:14px 15px!important;min-height:48px!important;border-bottom:1px solid #f0f0f2!important;font-size:14px!important}
+.settings-action:last-child{border-bottom:0!important}
+.settings-action.danger{color:#ff3b30!important}
+.settings-footnote{font-size:10px!important;line-height:1.55!important;color:#8e8e93!important;padding:2px 18px 12px!important}
