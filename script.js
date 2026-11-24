@@ -264,9 +264,10 @@ function renderChatThread(app,person){
   const translationText=m.translation||demoTranslation[m.text]||kakaoChinese[m.text]||'';
   const translation=isKakao&&m.type!=='voice'&&translationText?'<div class="kakao-message-translation">'+esc(translationText)+'</div>':(isKakao&&m.type==='voice'&&m.showTranscript&&m.transcript?'<div class="kakao-message-translation">'+esc(m.transcript)+'</div>':'');
   const prev=item.thread[i-1],showSender=m.from==='them'&&(!prev||prev.from!=='them');
+  const next=item.thread[i+1],showTime=!isKakao||!next||next.from!==m.from;
   const sender=isWechat?'':(showSender?'<div class="chat-sender">'+avatarMarkup(person,'chat-sender-avatar')+'<strong>'+esc(person)+'</strong></div>':'');
   const body='<div class="chat-message-body">'+bubble+translation+'</div>';
-  const time='<small class="chat-time">'+esc(m.date||'')+'</small>';
+  const time=showTime?'<small class="chat-time">'+esc(m.date||'')+'</small>':'';
   const wechatAvatar=isWechat&&m.from==='them'?'<span class="wechat-message-avatar">'+avatarMarkup(person,'')+'</span>':'';
   const row=isWechat?(m.from==='me'?'<div class="chat-message-row">'+body+'</div>':'<div class="chat-message-row">'+wechatAvatar+body+'</div>'):(m.from==='me'?'<div class="chat-message-row">'+time+body+'</div>':'<div class="chat-message-row">'+body+time+'</div>');
   return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+(m.from==='them'?' grouped':'')+'" data-message-index="'+i+'">'+sender+row+'</div>';
