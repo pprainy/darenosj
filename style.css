@@ -933,3 +933,16 @@ body { min-height: 100vh; min-height: 100dvh; }
 .chat-line .chat-message-actions{position:relative;align-self:inherit;z-index:6;display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:4px 0 2px;padding:6px;width:max-content;max-width:min(92vw,340px);box-sizing:border-box}
 .chat-line.mine .chat-message-actions{align-self:flex-end}
 .chat-line.theirs .chat-message-actions{align-self:flex-start}
+
+
+/* KakaoTalk voice-call mock screen; intentionally silent, with explicit answer and hang-up controls. */
+.kakao-voice-call-overlay{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:76px 24px max(42px,env(safe-area-inset-bottom));box-sizing:border-box;background:linear-gradient(180deg,#303640 0%,#111318 75%);color:#fff}
+.kakao-call-info{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:30px}
+.kakao-call-info>strong{font-size:27px;font-weight:550;margin-top:12px}
+.kakao-call-info>span{font-size:15px;color:#d6d8dc}
+.kakao-call-status{font-size:13px;color:#c7c9ce;margin-top:8px}
+.kakao-call-avatar{width:104px!important;height:104px!important;flex:0 0 104px!important;border-radius:50%!important;overflow:hidden;display:grid;place-items:center;background:#59616d;color:#fff;font-size:34px}
+.kakao-call-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.kakao-call-controls{width:100%;display:flex;align-items:center;justify-content:space-evenly;gap:28px}
+.kakao-call-answer{width:68px;height:68px;border:0;border-radius:50%;background:#34c759;color:#fff;font-size:14px;font-weight:650;box-shadow:0 5px 18px #0005}
+.kakao-call-controls .phone-hangup{flex:0 0 68px}
