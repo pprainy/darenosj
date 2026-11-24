@@ -264,16 +264,17 @@ function renderChatThread(app,person){
   const translationText=m.translation||demoTranslation[m.text]||kakaoChinese[m.text]||'';
   const translation=isKakao&&m.type!=='voice'&&translationText?'<div class="kakao-message-translation">'+esc(translationText)+'</div>':(isKakao&&m.type==='voice'&&m.showTranscript&&m.transcript?'<div class="kakao-message-translation">'+esc(m.transcript)+'</div>':'');
   const prev=item.thread[i-1],showSender=m.from==='them'&&(!prev||prev.from!=='them');
-  const sender=showSender?'<div class="chat-sender">'+avatarMarkup(person,'chat-sender-avatar')+'<strong>'+esc(person)+'</strong></div>':'';
+  const sender=isWechat?'':(showSender?'<div class="chat-sender">'+avatarMarkup(person,'chat-sender-avatar')+'<strong>'+esc(person)+'</strong></div>':'');
   const body='<div class="chat-message-body">'+bubble+translation+'</div>';
   const time='<small class="chat-time">'+esc(m.date||'')+'</small>';
-  const row=m.from==='me'?'<div class="chat-message-row">'+time+body+'</div>':'<div class="chat-message-row">'+body+time+'</div>';
+  const wechatAvatar=isWechat&&m.from==='them'?'<span class="wechat-message-avatar">'+avatarMarkup(person,'')+'</span>':'';
+  const row=isWechat?(m.from==='me'?'<div class="chat-message-row">'+body+'</div>':'<div class="chat-message-row">'+wechatAvatar+body+'</div>'):(m.from==='me'?'<div class="chat-message-row">'+time+body+'</div>':'<div class="chat-message-row">'+body+time+'</div>');
   return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+(m.from==='them'?' grouped':'')+'" data-message-index="'+i+'">'+sender+row+'</div>';
  }).join('');
  const navTitle=isKakao?person:isWechat?person:person;
  const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="搜索">⌕</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
-  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
+  <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><div class="chat-nav-person" ${isWechat?'':'role="button" data-action="open-social-contact" data-person="${esc(person)}"'}>${isWechat?'':avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></div><span class="chat-nav-tools">${tools}</span></div>
   <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
   <div class="chat-compose"><button type="button" class="chat-attach" aria-label="更多功能">＋</button><input id="chatInput" autocomplete="off" placeholder="${isKakao?'输入消息…':isWechat?'发送消息':'iMessage'}"><button type="button" data-action="send-chat">${isKakao?'发送':isWechat?'发送':'发送'}</button></div>
  </div>`;
