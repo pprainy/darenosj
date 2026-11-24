@@ -239,7 +239,7 @@ function renderChatThread(app,person){
   return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+(m.from==='them'?' grouped':'')+'" data-message-index="'+i+'">'+sender+row+'</div>';
  }).join('');
  const navTitle=isKakao?person:isWechat?person:person;
- const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
+ const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="搜索">⌕</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
   <div class="chat-nav"><button type="button" data-action="chat-back" aria-label="返回">‹</button><button type="button" class="chat-nav-person" data-action="open-social-contact" data-person="${esc(person)}">${avatarMarkup(person,'chat-nav-avatar')}<strong>${esc(navTitle)}</strong></button><span class="chat-nav-tools">${tools}</span></div>
   <div class="chat-history" id="chatHistory">${bubbles||'<div class="chat-day">今天</div>'}</div><div id="chatActionHost"></div>
