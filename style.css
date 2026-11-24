@@ -1090,3 +1090,15 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-chat .kakao-voice-play{display:grid;place-items:center;flex:0 0 22px;width:22px;height:26px;padding:0;border:0;background:transparent;color:#222;font-size:19px;line-height:1;cursor:pointer}
 .kakao-chat .kakao-voice-duration{font-size:14px;line-height:1;font-variant-numeric:tabular-nums;color:#222;white-space:nowrap}
 .kakao-chat .kakao-voice-audio{display:none!important}
+
+
+/* App chrome: remove the tall title strip and keep only a compact top-left back control. */
+.app-header{position:absolute!important;top:0;left:0;width:100%;height:0!important;min-height:0!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;backdrop-filter:none!important;z-index:120!important;pointer-events:none}
+.app-title{display:none!important}
+.app-header .back-btn{position:absolute;top:calc(env(safe-area-inset-top,0px) + 8px);left:14px;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.82);color:#222;font-size:27px;line-height:1;display:grid;place-items:center;pointer-events:auto;box-shadow:0 1px 5px rgba(0,0,0,.08)}
+.app-content{height:100%!important;padding-top:0!important}
+.app-view:has(.chat-app) #backBtn{display:none!important}
+
+/* Long-press action menu stays attached to the message and can always be dismissed. */
+.chat-message-actions{z-index:20!important;position:relative!important;pointer-events:auto!important}
+.chat-message-actions button{min-height:38px;touch-action:manipulation}
