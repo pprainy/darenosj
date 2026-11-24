@@ -1054,3 +1054,13 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-call-avatar img{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border:0!important;border-radius:50%!important}
 .kakao-call-avatar i{display:none!important}
 .kakao-call-avatar:not(.has-photo){display:grid!important;place-items:center!important;line-height:1!important}
+
+
+/* KakaoTalk voice message bubble for the Shinyu conversation. */
+.kakao-chat .chat-line.theirs .kakao-voice-message{display:flex;align-items:center;gap:9px;min-width:0;width:min(270px,70vw);padding:10px 11px}
+.kakao-voice-message .kakao-voice-icon{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:50%;background:#fee500;color:#252525;font-size:13px}
+.kakao-voice-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.kakao-voice-copy b{font-size:13px;font-weight:650}
+.kakao-voice-copy small{font-size:10px;color:#777}
+.kakao-voice-message audio{display:block;width:100%;max-width:100%;height:30px;flex:1 1 100%;min-width:0}
+.kakao-chat .chat-line.theirs:has(.kakao-voice-message){max-width:88%}
