@@ -1116,3 +1116,12 @@ body { min-height: 100vh; min-height: 100dvh; }
 .chat-nav-person{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important;height:100%!important;padding:0 4px!important}
 .chat-nav-avatar{width:42px!important;height:42px!important;flex:0 0 42px!important;object-fit:cover!important}
 .chat-nav-person strong{display:block!important;line-height:1.25!important;overflow:visible!important}
+
+
+/* Keep chat content within the app viewport so the composer remains visible. */
+.app-content:has(.sim-app.chat-app){display:flex!important;flex-direction:column!important;overflow:hidden!important;min-height:0!important;padding:0 15px 0!important}
+.sim-app.chat-app{height:100%!important;min-height:0!important;max-height:100%!important;flex:1 1 auto!important;margin:0 -15px!important;padding:0 0 env(safe-area-inset-bottom,0px)!important;overflow:hidden!important;box-sizing:border-box!important}
+.sim-app.chat-app .chat-nav{flex:0 0 68px!important}
+.sim-app.chat-app .chat-history{flex:1 1 0!important;min-height:0!important;overflow-y:auto!important}
+.sim-app.chat-app #chatActionHost{flex:0 0 auto!important}
+.sim-app.chat-app .chat-compose{position:relative!important;z-index:3!important;flex:0 0 auto!important;min-height:64px!important;padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))!important}
