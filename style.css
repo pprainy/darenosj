@@ -1484,3 +1484,31 @@ body { min-height: 100vh; min-height: 100dvh; }
 .x-reply-panel textarea{width:100%;box-sizing:border-box;border:1px solid #cfd9de;border-radius:10px;padding:9px;font:inherit;resize:vertical;background:#fff}
 .x-reply-panel>button{display:block;margin:8px 0 0 auto;border:0;border-radius:18px;background:#1d9bf0;color:#fff;padding:7px 16px;font-weight:650}
 .x-reply-list p{margin:4px 0 8px;font-size:13px;overflow-wrap:anywhere}
+
+
+/* Instagram profile tabs: four evenly spaced, reference-style icon controls. */
+.ig-profile-tabs{display:grid!important;grid-template-columns:repeat(4,1fr)!important;justify-items:center!important;align-items:stretch!important;height:58px!important;border-top:1px solid #eee!important;border-bottom:1px solid #eee!important}
+.ig-profile-tabs button{width:100%!important;height:100%!important;display:grid!important;place-items:center!important;border:0!important;background:transparent!important;color:#85898c!important;padding:0!important;position:relative!important}
+.ig-profile-tabs button svg{width:25px!important;height:25px!important;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.ig-profile-tabs button:first-child svg rect{fill:currentColor;stroke:none}
+.ig-profile-tabs button.active{color:#111!important}
+.ig-profile-tabs button.active:after{content:"";position:absolute;left:16%;right:16%;bottom:0;height:2.5px;background:#111}
+/* X compose is a dedicated full-screen page, not an inline home-feed editor. */
+.x-shell.x-composing{height:100%!important;min-height:100%!important;padding:0!important;overflow:hidden!important;background:#fff!important}
+.x-composing .x-content{height:100%!important;min-height:100%!important;padding:0!important;overflow:hidden!important;position:relative!important}
+.x-compose-page{height:100%!important;min-height:100%!important;box-sizing:border-box!important;background:#fff!important;color:#111!important;display:flex!important;flex-direction:column!important;position:relative!important;padding:0 16px!important}
+.x-compose-head{height:76px!important;flex:0 0 76px!important;display:flex!important;align-items:center!important;justify-content:space-between!important}
+.x-compose-head>button:first-child{border:0!important;background:transparent!important;color:#111!important;font-size:38px!important;font-weight:300!important;line-height:1!important;padding:0 8px!important}
+.x-compose-publish{border:0!important;border-radius:28px!important;background:#78c5e8!important;color:#fff!important;font-size:16px!important;font-weight:700!important;padding:10px 27px!important;min-width:88px!important}
+.x-compose-editor{display:flex!important;align-items:flex-start!important;gap:14px!important;padding:20px 0!important;flex:1 1 auto!important;min-height:0!important}
+.x-compose-avatar{width:78px!important;flex:0 0 78px!important}
+.x-compose-avatar .x-avatar{width:68px!important;height:68px!important;border-radius:50%!important;overflow:hidden!important;display:block!important}
+.x-compose-avatar .x-avatar img{width:100%!important;height:100%!important;object-fit:cover!important}
+.x-compose-editor textarea{flex:1!important;min-width:0!important;width:100%!important;min-height:130px!important;resize:none!important;border:0!important;outline:0!important;background:transparent!important;color:#111!important;font:400 21px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;padding:8px 0!important;user-select:text!important}
+.x-compose-editor textarea::placeholder{color:#65777d!important;opacity:1!important}
+.x-compose-bottom{flex:0 0 auto!important;margin:0 -16px!important;border-top:1px solid #eee!important;background:#fff!important}
+.x-reply-permission{height:60px!important;width:100%!important;text-align:left!important;padding:0 28px!important;border:0!important;border-bottom:1px solid #eee!important;background:#fff!important;color:#58a9d4!important;font-size:15px!important;font-weight:600!important}
+.x-compose-tools{height:62px!important;display:flex!important;align-items:center!important;justify-content:space-around!important;gap:3px!important;padding:0 10px!important;color:#55acd5!important}
+.x-compose-tools>button,.x-compose-tool{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;min-width:30px!important;height:38px!important;border:0!important;background:transparent!important;color:#55acd5!important;font-size:22px!important;font-weight:700!important}
+.x-compose-tools small{font-size:8px!important;position:absolute!important;top:5px!important;left:5px!important;background:#55acd5!important;color:#fff!important;padding:1px 2px!important;border-radius:2px!important}
+.x-compose-tool{font-size:27px!important;cursor:pointer!important}
