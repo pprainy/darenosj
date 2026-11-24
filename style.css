@@ -1191,3 +1191,19 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-chat .chat-line.theirs .chat-message-row{width:100%!important;max-width:100%!important;min-width:0!important}
 .kakao-chat .chat-line.theirs .chat-message-body{width:100%!important;max-width:100%!important;min-width:0!important;flex:0 1 100%!important}
 .kakao-chat .chat-line.theirs .chat-bubble{width:max-content!important;max-width:100%!important;word-break:keep-all!important;overflow-wrap:break-word!important}
+
+
+/* Definitive KakaoTalk message alignment reset: incoming left, outgoing right. */
+.kakao-chat .chat-history{display:flex!important;flex-direction:column!important;align-items:stretch!important}
+.kakao-chat .chat-history>.chat-line{display:flex!important;flex-direction:column!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;gap:3px!important}
+.kakao-chat .chat-history>.chat-line.theirs{align-self:stretch!important;align-items:flex-start!important}
+.kakao-chat .chat-history>.chat-line.mine{align-self:stretch!important;align-items:flex-end!important}
+.kakao-chat .chat-history>.chat-line .chat-message-row{display:flex!important;flex-direction:row!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;align-items:flex-end!important;gap:6px!important}
+.kakao-chat .chat-history>.chat-line.theirs .chat-message-row{justify-content:flex-start!important;padding-left:46px!important;margin:0!important}
+.kakao-chat .chat-history>.chat-line.mine .chat-message-row{justify-content:flex-end!important;padding-left:0!important;margin:0!important}
+.kakao-chat .chat-history>.chat-line .chat-message-body{display:flex!important;flex-direction:column!important;flex:0 1 auto!important;width:auto!important;min-width:0!important;max-width:82%!important;align-items:stretch!important}
+.kakao-chat .chat-history>.chat-line .chat-bubble{display:block!important;flex:0 1 auto!important;width:fit-content!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;text-align:left!important;white-space:normal!important;word-break:normal!important;overflow-wrap:anywhere!important}
+.kakao-chat .chat-history>.chat-line.theirs .chat-message-body{margin-right:auto!important}
+.kakao-chat .chat-history>.chat-line.mine .chat-message-body{margin-left:auto!important}
+.kakao-chat .chat-history>.chat-line.mine .chat-time{order:0!important}
+.kakao-chat .chat-history>.chat-line.theirs .chat-time{order:1!important}
