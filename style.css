@@ -1172,3 +1172,11 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-chat .chat-sender strong{font-size:12px!important}
 .kakao-chat .chat-nav-person strong{font-size:17px!important}
 .kakao-chat .kakao-voice-duration{font-size:14px!important}
+
+
+/* Match the reference chat bubble proportions: let messages use the available line width before wrapping. */
+.kakao-chat .chat-message-row{width:100%!important;min-width:0!important;gap:7px!important}
+.kakao-chat .chat-message-body{width:auto!important;flex:0 1 auto!important;min-width:0!important;max-width:min(82vw,430px)!important}
+.kakao-chat .chat-bubble{display:block!important;width:max-content!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;white-space:normal!important;overflow-wrap:break-word!important;word-break:normal!important}
+.kakao-chat .chat-line.theirs .chat-message-row{max-width:calc(100% - 46px)!important}
+.kakao-chat .chat-line.mine .chat-message-row{max-width:100%!important}
