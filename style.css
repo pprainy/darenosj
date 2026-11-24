@@ -1097,8 +1097,13 @@ body { min-height: 100vh; min-height: 100dvh; }
 .app-title{display:none!important}
 .app-header .back-btn{position:absolute;top:calc(env(safe-area-inset-top,0px) + 48px);left:14px;width:38px;height:38px;padding:0;border:0;border-radius:50%;background:rgba(255,255,255,.82);color:#222;font-size:27px;line-height:1;display:grid;place-items:center;pointer-events:auto;box-shadow:0 1px 5px rgba(0,0,0,.08)}
 .app-content{height:100%!important;padding-top:52px!important}
-.app-view:has(.chat-app) #backBtn{display:none!important}
+.app-view:has(.app-content [data-action$="-back"]) #backBtn{display:none!important}
+.app-view:has(.app-content [data-action$="-back"]) .app-content{padding-top:0!important}
 
 /* Long-press action menu stays attached to the message and can always be dismissed. */
 .chat-message-actions{z-index:20!important;position:relative!important;pointer-events:auto!important}
 .chat-message-actions button{min-height:38px;touch-action:manipulation}
+
+/* Voice audio: keep the play control unavailable until enough audio is buffered. */
+.kakao-chat .kakao-voice-play:disabled{opacity:.42;cursor:wait}
+.kakao-chat .kakao-voice-play:not(:disabled){opacity:1}
