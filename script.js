@@ -200,19 +200,28 @@ function renderChatThread(app,person){
  // 申惟哥哥聊天演示记录：只初始化一次，后续用户真实内容不会被覆盖。
  if(isKakao&&person==='申惟哥哥'&&!item.demoHistoryV1){
   const demoHistory=[
-   {from:'me',text:'오빠 오늘 뭐 해요? 😊',date:'11月22日 19:42'},
-   {from:'them',text:'刚下班，准备回家ㅋㅋ',date:'11月22日 19:45'},
-   {from:'me',text:'今天也辛苦啦！吃饭了吗？',date:'11月22日 19:46'},
-   {from:'them',text:'아직 안 먹었어. 너는?',date:'11月22日 19:48'},
-   {from:'me',text:'我吃过啦～哥哥记得好好吃饭！',date:'11月22日 19:49'},
-   {from:'them',text:'알겠어ㅎㅎ 이따가 맛있는 거 먹을게',date:'11月22日 19:51'},
-   {from:'them',type:'voice',text:'语音消息',date:'11月22日 19:53',src:'assets/kakaotalk/voice/chat-voice-01.mp3'},
-   {from:'me',text:'ㅋㅋㅋㅋ 收到！那我就放心啦',date:'11月22日 19:54'}
+   {from:'me',text:'오빠 오늘 뭐 해요? 😊',translation:'哥哥今天在做什么呀？',date:'11月22日 19:42'},
+   {from:'them',text:'방금 퇴근했어. 이제 집에 가려고 ㅋㅋ',translation:'刚刚下班，现在准备回家ㅋㅋ',date:'11月22日 19:45'},
+   {from:'me',text:'오늘도 수고했어요! 밥은 먹었어요?',translation:'今天也辛苦啦！吃饭了吗？',date:'11月22日 19:46'},
+   {from:'them',text:'아직 안 먹었어. 너는 먹었어?',translation:'我还没吃呢。你吃了吗？',date:'11月22日 19:48'},
+   {from:'me',text:'저는 먹었어요~ 오빠도 꼭 챙겨 먹어요!',translation:'我已经吃过啦～哥哥也一定要记得吃饭！',date:'11月22日 19:49'},
+   {from:'them',text:'알겠어ㅎㅎ 이따가 맛있는 거 먹을게',translation:'知道啦ㅎㅎ 我等会儿去吃点好吃的。',date:'11月22日 19:51'},
+   {from:'them',type:'voice',text:'语音消息',translation:'哥哥发来一条语音',date:'11月22日 19:53',src:'assets/kakaotalk/voice/chat-voice-01.mp3'},
+   {from:'me',text:'ㅋㅋㅋㅋ 다행이다! 맛있게 먹어요 💗',translation:'哈哈哈那就好！要好好享用哦💗',date:'11月22日 19:54'}
   ];
-  item.thread=[...demoHistory,...item.thread];item.demoHistoryV1=true;
+  if(item.demoHistoryV1){const demoDates=new Set(demoHistory.map(m=>m.date));item.thread=item.thread.map(m=>demoDates.has(m.date)?{...m,...demoHistory.find(d=>d.date===m.date)}:m);}
+  else{item.thread=[...demoHistory,...item.thread];item.demoHistoryV1=true;}
+  persist();
   const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||item.body;item.date=latest.date||item.date;persist();
  }
- const bubbles=item.thread.map((m,i)=>{const show=isKakao&&saved.kakaoTranslations?.[person+'_'+i];const tr=kakaoChinese[m.text];const displayText=isWechat&&m.from==='them'?(kakaoChinese[m.text]||m.text):m.text;const bubble=m.type==='voice'?`<div class="chat-bubble kakao-voice-message"><span class="kakao-voice-icon">▶</span><span class="kakao-voice-copy"><b>语音消息</b><small>点击播放 · 申惟哥哥</small></span><audio controls preload="metadata" src="${esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')}" aria-label="申惟哥哥的语音消息"></audio></div>`:`<div class="chat-bubble">${m.recalled?'你撤回了一条消息':esc(displayText)}</div>`;return `<div class="chat-line ${m.from==='me'?'mine':'theirs'}" data-message-index="${i}">${bubble}${isKakao&&tr?`<button class="kakao-inline-translate" data-action="kakao-inline-translate" data-person="${esc(person)}" data-index="${i}">${show?esc(tr):'翻译'}</button>`:''}<small>${esc(m.date||'')}</small></div>`}).join('');
+ const bubbles=item.thread.map((m,i)=>{
+  const displayText=isWechat&&m.from==='them'?(kakaoChinese[m.text]||m.text):m.text;
+  const bubble=m.type==='voice'?
+   '<div class="chat-bubble kakao-voice-message"><span class="kakao-voice-icon">♫</span><span class="kakao-voice-title">语音消息</span><audio controls preload="metadata" src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
+   '<div class="chat-bubble">'+(m.recalled?'你撤回了一条消息':esc(displayText))+'</div>';
+  const translation=isKakao&&m.translation?'<div class="kakao-message-translation">'+esc(m.translation)+'</div>':'';
+  return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+'" data-message-index="'+i+'">'+bubble+translation+'<small>'+esc(m.date||'')+'</small></div>';
+ }).join('');
  const navTitle=isKakao?person:isWechat?person:person;
  const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
  appContent.innerHTML=`<div class="sim-app chat-app ${isKakao?'kakao-chat':isWechat?'wechat-chat':''}">
