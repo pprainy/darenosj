@@ -47,6 +47,14 @@ const demoData={
  photos:[1,2,3,4,5,6,7].map(n=>({data:`photos/${n}.jpg`,demo:true}))
 };
 Object.entries(demoData).forEach(([key,value])=>{if(!Object.prototype.hasOwnProperty.call(saved,key))saved[key]=value});
+ // Add the requested birthday to the calendar without duplicating it on later launches.
+ saved.events=saved.events||[];
+ if(!saved.events.some(ev=>ev.id==='brother-birthday-2026'||(ev.title==='哥哥生日💝'&&(ev.date||'').slice(0,10)==='2026-11-07'))){
+  saved.events.push({id:'brother-birthday-2026',title:'哥哥生日💝',date:'2026-11-07'});
+ }
+ saved.calendarMonth='2026-11';
+ saved.calendarSelected='2026-11-07';
+ persist();
 // 统一所有应用使用的十位联系人；已有的号码和备注尽量保留。
 const canonicalContacts=[
  ['申惟哥哥','010-2301-0001','哥哥'],['道勋哥','010-2301-0002','哥哥'],['英宰哥','010-2301-0003','哥哥'],['志薰🪼','010-2301-0004','朋友'],['炅潣','010-2301-0005','朋友'],
