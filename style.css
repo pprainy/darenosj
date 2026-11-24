@@ -1473,3 +1473,14 @@ body { min-height: 100vh; min-height: 100dvh; }
 .x-post-stats button.social-like.is-liked svg{fill:#f91880!important;stroke:#f91880!important;transform:none!important;width:20px!important;height:20px!important}
 .x-post-stats button.social-like.is-liked svg path{fill:#f91880!important;stroke:#f91880!important}
 .x-menu-profile{font-size:17px!important;font-weight:650!important}
+
+
+/* X timeline composer: floating action button and inline reply thread. */
+.x-content{position:relative!important;padding-bottom:76px!important}
+.x-fab-compose{position:fixed!important;z-index:25!important;right:22px!important;bottom:calc(82px + env(safe-area-inset-bottom))!important;width:56px!important;height:56px!important;border:0!important;border-radius:50%!important;background:#1d9bf0!important;color:#fff!important;font-size:36px!important;font-weight:300!important;line-height:1!important;box-shadow:0 3px 12px #0003!important;display:grid!important;place-items:center!important}
+.x-compose-modal{margin:12px 0;padding:14px!important;border:1px solid #eff3f4!important;border-radius:14px!important;background:#fff!important}
+.x-compose-modal> b{font-size:18px!important}
+.x-reply-panel{margin:8px 0 0 0;padding:10px;border-left:2px solid #1d9bf0;background:#f7f9fa;border-radius:0 10px 10px 0}
+.x-reply-panel textarea{width:100%;box-sizing:border-box;border:1px solid #cfd9de;border-radius:10px;padding:9px;font:inherit;resize:vertical;background:#fff}
+.x-reply-panel>button{display:block;margin:8px 0 0 auto;border:0;border-radius:18px;background:#1d9bf0;color:#fff;padding:7px 16px;font-weight:650}
+.x-reply-list p{margin:4px 0 8px;font-size:13px;overflow-wrap:anywhere}
