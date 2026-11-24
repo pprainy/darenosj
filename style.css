@@ -946,3 +946,10 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakao-call-controls{width:100%;display:flex;align-items:center;justify-content:space-evenly;gap:28px}
 .kakao-call-answer{width:68px;height:68px;border:0;border-radius:50%;background:#34c759;color:#fff;font-size:14px;font-weight:650;box-shadow:0 5px 18px #0005}
 .kakao-call-controls .phone-hangup{flex:0 0 68px}
+
+
+/* Lock-screen notification time sits at the far right edge of the message bubble. */
+.lock-kakao-copy{position:relative;padding-right:48px}
+.lock-kakao-head{position:absolute;top:0;right:0;display:block}
+/* No fake answer/connected state: the outgoing call screen stays in ringing state until hang-up. */
+.kakao-call-controls{justify-content:center}
