@@ -197,34 +197,46 @@ function renderChatThread(app,person){
  const all=saved[app]||[];let item=all.find(x=>x.to===person);
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
- // 申惟哥哥聊天演示记录：只初始化一次，后续用户真实内容不会被覆盖。
- if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==5){
+ // 申惟哥哥聊天演示记录：按参考图初始化，后续版本不重复覆盖。
+ if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==6){
   const demoHistory=[
-   {from:'me',text:'오빠 오늘 뭐 해요? 😊',translation:'哥哥今天在做什么呀？',date:'11月22日 19:42'},
-   {from:'them',text:'방금 퇴근했어. 이제 집에 가려고 ㅋㅋ',translation:'刚刚下班，现在准备回家ㅋㅋ',date:'11月22日 19:45'},
-   {from:'me',text:'오늘도 수고했어요! 밥은 먹었어요?',translation:'今天也辛苦啦！吃饭了吗？',date:'11月22日 19:46'},
-   {from:'them',text:'아직 안 먹었어. 너는 먹었어?',translation:'我还没吃呢。你吃了吗？',date:'11月22日 19:48'},
-   {from:'me',text:'저는 먹었어요~ 오빠도 꼭 챙겨 먹어요!',translation:'我已经吃过啦～哥哥也一定要记得吃饭！',date:'11月22日 19:49'},
-   {from:'them',text:'알겠어ㅎㅎ 이따가 맛있는 거 먹을게',translation:'知道啦ㅎㅎ 我等会儿去吃点好吃的。',date:'11月22日 19:51'},
-   {from:'them',type:'voice',text:'语音消息',date:'11月22日 19:53',src:'assets/kakaotalk/voice/chat-voice-01.mp3'},
-   {from:'me',text:'ㅋㅋㅋㅋ 다행이다! 맛있게 먹어요 💗',translation:'哈哈哈那就好！要好好享用哦💗',date:'11月22日 19:54'}
+   {from:'me',text:'오빠 오늘 몇 시에 집에 가요?',translation:'哥哥你今天几点回家？',date:'16:13'},
+   {from:'them',text:'여섯 시 조금 넘어서? 왜?',translation:'六点多吧，怎么了？',date:'16:14'},
+   {from:'me',text:'내가 데리러 갈게!',translation:'我去接你吧！',date:'16:14'},
+   {from:'them',text:'ㅋㅋㅋ 갑자기 왜?',translation:'ㅋㅋㅋ怎么突然',date:'16:14'},
+   {from:'them',text:'오빠 보고 싶었어?',translation:'想哥哥了？',date:'16:14'},
+   {from:'me',text:'응, 오빠 너무 보고 싶어🥺',translation:'对呀好想哥哥🥺',date:'16:16'},
+   {from:'me',text:'하루 못 봤다고 삼 년 같아',translation:'一日不见如隔三秋',date:'16:16'},
+   {from:'them',text:'한진……',translation:'韩振……',date:'16:17'},
+   {from:'them',text:'헤어진 지 12시간도 안 됐는데',translation:'分开都没有12小时呢',date:'16:17'},
+   {from:'them',text:'오늘 수업 없어?',translation:'今天没课了？',date:'16:17'},
+   {from:'me',text:'응응',translation:'嗯嗯',date:'16:18'},
+   {from:'me',text:'회사 건물 아래에서 보자~ (｡-.-｡)',translation:'你公司楼下见～(｡-.-｡)',date:'16:18'},
+   {from:'me',text:'사랑해',translation:'爱你',date:'16:19'},
+   {from:'them',text:'응',translation:'好',date:'16:19'},
+   {from:'them',text:'나도 사랑해',translation:'我也爱你',date:'16:19'},
+   {from:'me',text:'내가 더 사랑해!',translation:'我更爱你！',date:'16:19'},
+   {from:'them',text:'……',translation:'……',date:'16:19'},
+   {from:'them',type:'voice',text:'语音消息',date:'16:19',src:'assets/kakaotalk/voice/chat-voice-01.mp3'}
   ];
-  if(item.demoHistoryV1){item.thread=item.thread.map(m=>{const match=demoHistory.find(d=>(m.text&&d.text===m.text)||(m.date&&d.date===m.date)||(m.translation&&d.translation===m.translation)||(m.text&&d.translation===m.text));return match?{...m,...match}:m;});}
-  else{item.thread=[...demoHistory,...item.thread];item.demoHistoryV1=true;}
-  item.demoHistoryVersion=5;persist();
-  const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||item.body;item.date=latest.date||item.date;persist();
+  item.thread=demoHistory;item.demoHistoryV1=true;item.demoHistoryVersion=6;
+  const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||'';item.date=latest.date||'16:19';persist();
  }
  if(isKakao&&person==='申惟哥哥'){const voice=item.thread.find(m=>m.type==='voice'&&m.src==='assets/kakaotalk/voice/chat-voice-01.mp3');if(voice&&voice.transcript!=='就这么喜欢哥哥吗？真是疯了。'){voice.transcript='就这么喜欢哥哥吗？真是疯了。';persist();}}
  const bubbles=item.thread.map((m,i)=>{
   const displayText=isWechat&&m.from==='them'?(kakaoChinese[m.text]||m.text):m.text;
   const bubble=m.type==='voice'?
-   '<div class="kakao-voice-bubble"><button type="button" class="kakao-voice-play" data-action="voice-play" aria-label="语音加载中" disabled>▶</button><span class="kakao-voice-duration">0:00</span><audio class="kakao-voice-audio" preload="auto" playsinline src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
+   '<div class="kakao-voice-bubble"><button type="button" class="kakao-voice-play" data-action="voice-play" aria-label="语音加载中" disabled>▶</button><span class="kakao-voice-duration">00:04</span><audio class="kakao-voice-audio" preload="auto" playsinline src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
    '<div class="chat-bubble">'+(m.recalled?'你撤回了一条消息':esc(displayText))+'</div>';
-  const demoTranslation={'오빠 오늘 뭐 해요? 😊':'哥哥今天在做什么呀？','방금 퇴근했어. 이제 집에 가려고 ㅋㅋ':'刚刚下班，现在准备回家ㅋㅋ','오늘도 수고했어요! 밥은 먹었어요?':'今天也辛苦啦！吃饭了吗？','아직 안 먹었어. 너는 먹었어?':'我还没吃呢。你吃了吗？','저는 먹었어요~ 오빠도 꼭 챙겨 먹어요!':'我已经吃过啦～哥哥也一定要记得吃饭！','알겠어ㅎㅎ 이따가 맛있는 거 먹을게':'知道啦ㅎㅎ 我等会儿去吃点好吃的。','ㅋㅋㅋㅋ 다행이다! 맛있게 먹어요 💗':'哈哈哈哈那就好！要好好享用哦💗'};
+  const demoTranslation={'오빠 오늘 몇 시에 집에 가요?':'哥哥你今天几点回家？','여섯 시 조금 넘어서? 왜?':'六点多吧，怎么了？','내가 데리러 갈게!':'我去接你吧！','ㅋㅋㅋ 갑자기 왜?':'ㅋㅋㅋ怎么突然','오빠 보고 싶었어?':'想哥哥了？','응, 오빠 너무 보고 싶어🥺':'对呀好想哥哥🥺','하루 못 봤다고 삼 년 같아':'一日不见如隔三秋','한진……':'韩振……','헤어진 지 12시간도 안 됐는데':'分开都没有12小时呢','오늘 수업 없어?':'今天没课了？','응응':'嗯嗯','회사 건물 아래에서 보자~ (｡-.-｡)':'你公司楼下见～(｡-.-｡)','사랑해':'爱你','응':'好','나도 사랑해':'我也爱你','내가 더 사랑해!':'我更爱你！','……':'……'};
   const translationText=m.translation||demoTranslation[m.text]||kakaoChinese[m.text]||'';
   const translation=isKakao&&m.type!=='voice'&&translationText?'<div class="kakao-message-translation">'+esc(translationText)+'</div>':(isKakao&&m.type==='voice'&&m.showTranscript&&m.transcript?'<div class="kakao-message-translation">'+esc(m.transcript)+'</div>':'');
-  const timestamp=m.type==='voice'?'':'<small>'+esc(m.date||'')+'</small>';
-  return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+'" data-message-index="'+i+'">'+bubble+translation+timestamp+'</div>';
+  const prev=item.thread[i-1],showSender=m.from==='them'&&(!prev||prev.from!=='them');
+  const sender=showSender?'<div class="chat-sender">'+avatarMarkup(person,'chat-sender-avatar')+'<strong>'+esc(person)+'</strong></div>':'';
+  const body='<div class="chat-message-body">'+bubble+translation+'</div>';
+  const time='<small class="chat-time">'+esc(m.date||'')+'</small>';
+  const row=m.from==='me'?'<div class="chat-message-row">'+time+body+'</div>':'<div class="chat-message-row">'+body+time+'</div>';
+  return '<div class="chat-line '+(m.from==='me'?'mine':'theirs')+(m.from==='them'?' grouped':'')+'" data-message-index="'+i+'">'+sender+row+'</div>';
  }).join('');
  const navTitle=isKakao?person:isWechat?person:person;
  const tools=isKakao?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⚙</button><button type="button" data-action="social-more" aria-label="更多">☰</button>':isWechat?'<button type="button" data-action="open-chat-settings" aria-label="聊天设置">⌕</button><button type="button" data-action="social-more" aria-label="更多">•••</button>':'<button type="button" data-action="social-more" aria-label="更多">•••</button>';
