@@ -1107,3 +1107,12 @@ body { min-height: 100vh; min-height: 100dvh; }
 /* Voice audio: keep the play control unavailable until enough audio is buffered. */
 .kakao-chat .kakao-voice-play:disabled{opacity:.42;cursor:wait}
 .kakao-chat .kakao-voice-play:not(:disabled){opacity:1}
+
+
+/* Chat header clearance: remove the decorative Dynamic Island and give contact identity a safe top inset. */
+.phone-frame>.dynamic-island{display:none!important}
+.chat-app{margin:0 -15px -34px!important}
+.chat-nav{height:68px!important;min-height:68px!important;flex:0 0 68px!important;padding:8px 14px 4px!important;box-sizing:border-box!important;overflow:visible!important}
+.chat-nav-person{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important;height:100%!important;padding:0 4px!important}
+.chat-nav-avatar{width:42px!important;height:42px!important;flex:0 0 42px!important;object-fit:cover!important}
+.chat-nav-person strong{display:block!important;line-height:1.25!important;overflow:visible!important}
