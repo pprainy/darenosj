@@ -306,7 +306,7 @@ function renderApp(name){
  }
  if(name==='mail'){
   const items=saved.mail||[];
-  const rows=items.map((m,i)=>{const subject=m.subject||((m.body||'').match(/^主题：([^\\n]+)/)?.[1])||'（无主题）',preview=(m.body||'').replace(/^主题：[^\\n]+\\n?/,'');return `<button class="mail-row" data-action="open-mail" data-index="${i}"><span class="mail-avatar">${esc((m.to||'收件人').slice(0,1))}</span><span class="mail-copy"><b>${esc(m.to||'未知发件人')}</b><strong>${esc(subject)}</strong><small>${esc(preview.slice(0,72))}</small></span><time>${esc(m.date||'')}</time></button>`}).join('');
+  const rows=items.map((m,i)=>{const subject=m.subject||((m.body||'').match(/^主题：([^\n]+)/)?.[1])||'（无主题）',preview=(m.body||'').replace(/^主题：[^\n]+\n?/,'');return `<button class="mail-row" data-action="open-mail" data-index="${i}"><span class="mail-avatar">${esc((m.to||'收件人').slice(0,1))}</span><span class="mail-copy"><b>${esc(m.to||'未知发件人')}</b><strong>${esc(subject)}</strong><small>${esc(preview.slice(0,72))}</small></span><time>${esc(m.date||'')}</time></button>`}).join('');
   c.innerHTML=wrap(`<div class="mail-toolbar"><div><strong>收件箱</strong><small>${items.length} 封邮件</small></div><button data-action="new-message" aria-label="写邮件">✎</button></div><div id="messageEditor"></div><div class="mail-list">${rows||emptyState('✉️','收件箱为空','点击右上角写一封邮件')}</div><div class="mail-bottom"><span>📥 收件箱</span><span>⭐ VIP</span><span>📤 已发送</span><span>🗂 邮箱</span></div>`,'邮件');return;
  }
  if(name==='messages'||name==='kakaotalk'||name==='wechat'){
