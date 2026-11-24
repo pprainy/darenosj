@@ -1608,3 +1608,8 @@ body { min-height: 100vh; min-height: 100dvh; }
 .phone-hangup .ui-icon{width:23px;height:23px;stroke:#fff}
 .sim-empty>div .ui-icon{width:34px;height:34px;stroke:currentColor;stroke-width:1.65}
 .widget-weather-icon svg{display:block;width:28px;height:28px}
+
+
+.xhs-mini-avatar{display:inline-flex!important;align-items:center!important;justify-content:center!important;font-size:12px!important;font-weight:650!important;color:#fff!important;background:#9aa6b2!important}
+.xhs-mini-avatar .ui-icon{width:16px;height:16px;stroke:#fff}
+.browser-form>span,.browser-privacy>span,.browser-compass{display:inline-flex;align-items:center;justify-content:center}
