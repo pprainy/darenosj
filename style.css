@@ -1588,3 +1588,23 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.settings .settings-action:last-child{border-bottom:0!important}
 .sim-app.settings .settings-action.danger{color:#ff3b30!important}
 .sim-app.settings .settings-footnote{font-size:10px!important;line-height:1.5!important;color:#8e8e93!important;padding:0 14px 12px!important;text-align:center!important}
+
+
+/* Unified monochrome vector icon treatment across native-style app interfaces. */
+.ui-icon{display:inline-block;width:21px;height:21px;flex:0 0 21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+.settings-page .setting-icon .ui-icon{width:19px;height:19px;stroke:#fff;stroke-width:1.9}
+.settings-page .settings-profile .profile-avatar .ui-icon{width:27px;height:27px;stroke:#fff;stroke-width:1.7}
+.settings-page .settings-connectivity .setting-row:nth-child(1) .setting-icon{background:#ff9f0a!important}
+.settings-page .settings-connectivity .setting-row:nth-child(2) .setting-icon{background:#1689f8!important}
+.settings-page .settings-connectivity .setting-row:nth-child(3) .setting-icon{background:#1689f8!important}
+.settings-page .settings-connectivity .setting-row:nth-child(4) .setting-icon{background:#1689f8!important}
+.settings-page .settings-connectivity .setting-row:nth-child(5) .setting-icon{background:#34c759!important}
+.settings-page .settings-group:not(.settings-connectivity) .setting-icon{background:#8e8e93!important}
+.notes-folder-icon .ui-icon{width:23px;height:23px;stroke:currentColor}
+.mail-bottom .ui-icon{width:18px;height:18px;stroke:currentColor}
+.x-reply-permission .ui-icon{width:19px;height:19px;stroke:currentColor}
+.browser-form>span .ui-icon,.browser-privacy>span .ui-icon,.browser-compass .ui-icon{width:26px;height:26px;stroke:currentColor}
+.camera-topbar .ui-icon{width:19px;height:19px;stroke:currentColor}
+.phone-hangup .ui-icon{width:23px;height:23px;stroke:#fff}
+.sim-empty>div .ui-icon{width:34px;height:34px;stroke:currentColor;stroke-width:1.65}
+.widget-weather-icon svg{display:block;width:28px;height:28px}
