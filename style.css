@@ -1305,3 +1305,13 @@ body { min-height: 100vh; min-height: 100dvh; }
 .ig-story-avatar .ig-friend-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;border-radius:50%!important}
 .ig-avatar{width:34px!important;height:34px!important;min-width:34px!important;display:block!important;overflow:hidden!important;border-radius:50%!important;flex:0 0 34px!important}
 .ig-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;border-radius:50%!important}
+
+
+/* Social likes are persistent local toggles; X uses the same KakaoTalk contact photos. */
+.social-like{cursor:pointer!important;transition:transform .12s ease,color .12s ease!important}
+.social-like:active{transform:scale(1.22)!important}
+.social-like.is-liked{color:#f91880!important}
+.x-avatar{overflow:hidden!important;display:block!important}
+.x-avatar img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:50%!important}
+.x-avatar i{display:none!important}
+.ig-post-head>div{display:flex!important;flex-direction:column!important;gap:0!important}
