@@ -198,14 +198,14 @@ function renderChatThread(app,person){
  if(!item){item={to:person,body:'',date:'刚刚',thread:[]};all.unshift(item);saved[app]=all;persist()}
  if(!Array.isArray(item.thread))item.thread=item.body?[{from:'them',text:item.body,date:item.date||'刚刚'}]:[];
  // 申惟哥哥聊天演示记录：按参考图初始化，后续版本不重复覆盖。
- if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==6){
+ if(isKakao&&person==='申惟哥哥'&&item.demoHistoryVersion!==7){
   const demoHistory=[
-   {from:'me',text:'오빠 오늘 몇 시에 집에 가요?',translation:'哥哥你今天几点回家？',date:'16:13'},
+   {from:'me',text:'형 오늘 몇 시에 집에 가요?',translation:'哥哥你今天几点回家？',date:'16:13'},
    {from:'them',text:'여섯 시 조금 넘어서? 왜?',translation:'六点多吧，怎么了？',date:'16:14'},
    {from:'me',text:'내가 데리러 갈게!',translation:'我去接你吧！',date:'16:14'},
    {from:'them',text:'ㅋㅋㅋ 갑자기 왜?',translation:'ㅋㅋㅋ怎么突然',date:'16:14'},
-   {from:'them',text:'오빠 보고 싶었어?',translation:'想哥哥了？',date:'16:14'},
-   {from:'me',text:'응, 오빠 너무 보고 싶어🥺',translation:'对呀好想哥哥🥺',date:'16:16'},
+   {from:'them',text:'형 보고 싶었어?',translation:'想哥哥了？',date:'16:14'},
+   {from:'me',text:'응, 형 너무 보고 싶어🥺',translation:'对呀好想哥哥🥺',date:'16:16'},
    {from:'me',text:'하루 못 봤다고 삼 년 같아',translation:'一日不见如隔三秋',date:'16:16'},
    {from:'them',text:'한진……',translation:'韩振……',date:'16:17'},
    {from:'them',text:'헤어진 지 12시간도 안 됐는데',translation:'分开都没有12小时呢',date:'16:17'},
@@ -219,7 +219,7 @@ function renderChatThread(app,person){
    {from:'them',text:'……',translation:'……',date:'16:19'},
    {from:'them',type:'voice',text:'语音消息',date:'16:19',src:'assets/kakaotalk/voice/chat-voice-01.mp3'}
   ];
-  item.thread=demoHistory;item.demoHistoryV1=true;item.demoHistoryVersion=6;
+  item.thread=demoHistory;item.demoHistoryV1=true;item.demoHistoryVersion=7;
   const latest=item.thread[item.thread.length-1]||{};item.body=latest.text||'';item.date=latest.date||'16:19';persist();
  }
  if(isKakao&&person==='申惟哥哥'){const voice=item.thread.find(m=>m.type==='voice'&&m.src==='assets/kakaotalk/voice/chat-voice-01.mp3');if(voice&&voice.transcript!=='就这么喜欢哥哥吗？真是疯了。'){voice.transcript='就这么喜欢哥哥吗？真是疯了。';persist();}}
@@ -228,7 +228,7 @@ function renderChatThread(app,person){
   const bubble=m.type==='voice'?
    '<div class="kakao-voice-bubble"><button type="button" class="kakao-voice-play" data-action="voice-play" aria-label="语音加载中" disabled>▶</button><span class="kakao-voice-duration">00:04</span><audio class="kakao-voice-audio" preload="auto" playsinline src="'+esc(m.src||'assets/kakaotalk/voice/chat-voice-01.mp3')+'" aria-label="申惟哥哥的语音消息"></audio></div>' :
    '<div class="chat-bubble">'+(m.recalled?'你撤回了一条消息':esc(displayText))+'</div>';
-  const demoTranslation={'오빠 오늘 몇 시에 집에 가요?':'哥哥你今天几点回家？','여섯 시 조금 넘어서? 왜?':'六点多吧，怎么了？','내가 데리러 갈게!':'我去接你吧！','ㅋㅋㅋ 갑자기 왜?':'ㅋㅋㅋ怎么突然','오빠 보고 싶었어?':'想哥哥了？','응, 오빠 너무 보고 싶어🥺':'对呀好想哥哥🥺','하루 못 봤다고 삼 년 같아':'一日不见如隔三秋','한진……':'韩振……','헤어진 지 12시간도 안 됐는데':'分开都没有12小时呢','오늘 수업 없어?':'今天没课了？','응응':'嗯嗯','회사 건물 아래에서 보자~ (｡-.-｡)':'你公司楼下见～(｡-.-｡)','사랑해':'爱你','응':'好','나도 사랑해':'我也爱你','내가 더 사랑해!':'我更爱你！','……':'……'};
+  const demoTranslation={'형 오늘 몇 시에 집에 가요?':'哥哥你今天几点回家？','여섯 시 조금 넘어서? 왜?':'六点多吧，怎么了？','내가 데리러 갈게!':'我去接你吧！','ㅋㅋㅋ 갑자기 왜?':'ㅋㅋㅋ怎么突然','형 보고 싶었어?':'想哥哥了？','응, 형 너무 보고 싶어🥺':'对呀好想哥哥🥺','하루 못 봤다고 삼 년 같아':'一日不见如隔三秋','한진……':'韩振……','헤어진 지 12시간도 안 됐는데':'分开都没有12小时呢','오늘 수업 없어?':'今天没课了？','응응':'嗯嗯','회사 건물 아래에서 보자~ (｡-.-｡)':'你公司楼下见～(｡-.-｡)','사랑해':'爱你','응':'好','나도 사랑해':'我也爱你','내가 더 사랑해!':'我更爱你！','……':'……'};
   const translationText=m.translation||demoTranslation[m.text]||kakaoChinese[m.text]||'';
   const translation=isKakao&&m.type!=='voice'&&translationText?'<div class="kakao-message-translation">'+esc(translationText)+'</div>':(isKakao&&m.type==='voice'&&m.showTranscript&&m.transcript?'<div class="kakao-message-translation">'+esc(m.transcript)+'</div>':'');
   const prev=item.thread[i-1],showSender=m.from==='them'&&(!prev||prev.from!=='them');
