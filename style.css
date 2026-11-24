@@ -968,3 +968,85 @@ body { min-height: 100vh; min-height: 100dvh; }
 .calendar-agenda-head{display:flex;align-items:center;justify-content:space-between;margin:23px 3px 12px}.calendar-agenda-head small{font-size:12px;color:#8e8e93}.calendar-agenda-head h3{font-size:23px;margin-top:3px}.calendar-agenda-head>button{width:34px;height:34px;border:0;border-radius:50%;background:#007aff;color:#fff;font-size:24px}
 .calendar-events{background:#fff;border-radius:14px;overflow:hidden}.calendar-event{display:flex;align-items:center;gap:11px;padding:14px;border-bottom:1px solid #eeeef0}.calendar-event-dot{width:4px;height:36px;border-radius:5px;background:#007aff}.calendar-event>div{flex:1}.calendar-event b,.calendar-event small{display:block}.calendar-event b{font-size:15px}.calendar-event small{font-size:12px;color:#8e8e93;margin-top:4px}.calendar-event button{border:0;background:transparent;color:#8e8e93;font-size:22px}
 .voice-recorder{background:#fff;border-radius:22px;padding:20px 16px 18px;text-align:center;box-shadow:0 2px 12px #00000008}.voice-recorder-top{display:flex;justify-content:center;align-items:center;gap:8px;color:#8e8e93;font-size:13px}.voice-live-dot{width:7px;height:7px;background:#ff3b30;border-radius:50%}.voice-wave{height:66px;display:flex;align-items:center;justify-content:center;gap:3px;margin:16px 0 6px;overflow:hidden}.voice-wave i{display:block;width:3px;height:var(--h);max-height:52px;border-radius:4px;background:#ff6b64;opacity:.72}.voice-clock{font-size:42px;font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:1px}.voice-status{font-size:13px;color:#8e8e93;margin:5px 0 18px}.voice-recorder-controls{display:flex;justify-content:center;align-items:center;gap:25px}.voice-record-button{width:66px;height:66px;border:4px solid #ff3b30;border-radius:50%;background:#fff;display:grid;place-items:center}.voice-record-button span{width:44px;height:44px;border-radius:50%;background:#ff3b30}.voice-stop-button{width:42px;height:42px;border:0;border-radius:50%;background:#e5e5ea;color:#8e8e93}.voice-hint{font-size:12px;color:#a1a1a6;margin-top:13px}.voice-library-head{display:flex;justify-content:space-between;align-items:center;margin:22px 3px 10px}.voice-library-head h3{font-size:19px}.voice-library-head span{font-size:12px;color:#8e8e93}.voice-recording-list{background:#fff;border-radius:14px;overflow:hidden}.voice-recording-item{display:flex;align-items:flex-start;gap:10px;padding:13px;border-bottom:1px solid #eeeef0}.voice-recording-symbol{width:38px;height:38px;flex-shrink:0;border-radius:11px;background:#fff0ef;color:#ff3b30;display:grid;place-items:center;font-size:10px}.voice-recording-main{flex:1;min-width:0}.voice-recording-main b,.voice-recording-main small{display:block}.voice-recording-main b{font-size:14px}.voice-recording-main small{font-size:11px;color:#8e8e93;margin:4px 0}.voice-recording-main audio{width:100%;height:34px}.voice-recording-item>button{border:0;background:transparent;color:#8e8e93;padding:5px}
+
+
+/* Refined iOS-style Mail, Camera, Settings and Safari surfaces */
+.sim-app.mail,.sim-app.camera,.sim-app.browser,.sim-app.settings{min-height:100%;padding:8px 12px 24px;background:#f2f2f7;color:#1c1c1e}
+.sim-app.mail .sim-app-subtitle,.sim-app.camera .sim-app-subtitle,.sim-app.browser .sim-app-subtitle,.sim-app.settings .sim-app-subtitle{display:none}
+.mail-toolbar{display:flex;align-items:center;justify-content:space-between;padding:12px 4px 18px}
+.mail-toolbar>div{display:flex;flex-direction:column;gap:3px}
+.mail-toolbar strong{font-size:28px;font-weight:750;letter-spacing:-.7px}
+.mail-toolbar small{font-size:12px;color:#8e8e93}
+.mail-toolbar>button{width:38px;height:38px;border:0;border-radius:50%;background:#e4efff;color:#087aff;font-size:22px}
+.mail-list{overflow:hidden;border-radius:15px;background:#fff;box-shadow:0 1px 2px #00000008}
+.mail-row{display:flex;align-items:center;gap:10px;width:100%;min-height:78px;padding:12px 10px;border:0;border-bottom:1px solid #e8e8ed;background:#fff;text-align:left;color:#1c1c1e}
+.mail-row:last-child{border-bottom:0}
+.mail-avatar{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(145deg,#dceaff,#9bbcf1);color:#315b91;font-weight:700}
+.mail-copy{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px}
+.mail-copy b,.mail-copy strong,.mail-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mail-copy b{font-size:13px}.mail-copy strong{font-size:13px;font-weight:650}.mail-copy small{font-size:11px;color:#8e8e93}
+.mail-row time{align-self:flex-start;white-space:nowrap;font-size:10px;color:#8e8e93}
+.mail-bottom{position:sticky;bottom:0;display:flex;justify-content:space-around;margin:18px -12px -24px;padding:13px 3px max(13px,env(safe-area-inset-bottom));background:#ffffffed;border-top:1px solid #e5e5ea;color:#287de2;font-size:11px}
+.mail-compose,.mail-detail{margin:8px 0 14px;padding:15px;border:1px solid #e5e5ea;border-radius:16px;background:#fff}
+.mail-detail-back{border:0;background:transparent;color:#087aff;padding:3px 0 14px;font-size:14px}
+.mail-detail h2{font-size:20px;margin:4px 0 16px;overflow-wrap:anywhere}
+.mail-detail-meta{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid #eee;border-bottom:1px solid #eee;font-size:12px}
+.mail-detail-meta small{color:#8e8e93}.mail-detail p{white-space:pre-wrap;line-height:1.7;font-size:14px;padding-top:16px}
+.sim-app.camera{background:#09090b;color:#fff;padding:0 12px 22px}
+.camera-shell{display:flex;min-height:560px;height:100%;flex-direction:column}
+.camera-topbar{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 8px;color:#f5f5f7}
+.camera-topbar button{border:0;background:transparent;color:inherit;font-size:20px}
+.camera-topbar span{font-size:13px;color:#d1d1d6}
+.camera-viewfinder{position:relative;flex:1;min-height:310px;max-height:440px;display:grid;place-items:center;overflow:hidden;border-radius:18px;background:radial-gradient(ellipse at 50% 40%,#34343a,#111115 72%)}
+.camera-focus{width:54px;height:54px;border:1px solid #ffffffaa;border-radius:3px;position:relative}
+.camera-focus:before,.camera-focus:after{content:"";position:absolute;background:#ffffffaa}
+.camera-focus:before{width:1px;height:72px;left:26px;top:-10px}.camera-focus:after{height:1px;width:72px;top:26px;left:-10px}
+.camera-hint{position:absolute;bottom:15px;color:#ffffff9c;font-size:11px}
+.camera-controls{height:104px;display:flex;align-items:center;justify-content:space-around}
+.camera-gallery,.camera-switch{width:44px;height:44px;border:1px solid #777;border-radius:12px;background:#242428;color:#fff;font-size:24px;display:grid;place-items:center;overflow:hidden}
+.camera-gallery img{width:100%;height:100%;object-fit:cover}
+.camera-shutter{width:72px;height:72px;border:5px solid #f5f5f7;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+.camera-shutter span{width:54px;height:54px;border-radius:50%;background:#fff}
+.camera-modebar{display:flex;justify-content:center;gap:30px;align-items:center;color:#aaa;font-size:12px;padding:0 0 12px}
+.camera-modebar b{color:#ffd45c;font-weight:700}
+.camera-footnote{text-align:center;color:#929299;font-size:10px;line-height:1.5;padding:0 18px}
+.camera-result{width:100%;height:100%;object-fit:contain;background:#080808}
+.camera-preview-label{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#fff;font-size:12px;text-shadow:0 1px 4px #000}
+.camera-viewfinder:has(.camera-result){background:#080808}
+.sim-app.settings .settings-profile{align-items:center;gap:12px;margin:8px 0 22px;padding:17px;border-radius:16px;background:linear-gradient(110deg,#fff,#f9f9fb)}
+.settings-profile>div:nth-child(2){flex:1;min-width:0}
+.settings-profile b{font-size:17px}.settings-profile p{font-size:11px;line-height:1.5}
+.settings-profile>span{font-size:22px;color:#c7c7cc}
+.settings-group{overflow:hidden;margin:0 0 20px;border-radius:15px;background:#fff}
+.settings-section-title{padding:13px 14px 5px;color:#8e8e93;font-size:11px}
+.settings-group .setting-row{gap:10px;padding:13px 14px}
+.setting-icon{width:25px;flex:0 0 25px;text-align:center;font-size:17px}
+.setting-label{flex:1}
+.settings-group .setting-row input{margin-left:auto}
+.settings-action{display:block;width:calc(100% - 24px);margin:5px 12px;text-align:left;background:transparent;color:#087aff;border-radius:0;border-bottom:1px solid #f0f0f2;padding:12px 2px}
+.settings-action.danger{color:#ff3b30}
+.settings-footnote{text-align:center;color:#8e8e93;font-size:10px;line-height:1.5;padding:0 16px}
+.sim-app.browser{background:#f2f2f7;padding:10px 12px 22px}
+.browser-home{min-height:540px;display:flex;flex-direction:column}
+.browser-form{border:1px solid #e1e1e6;border-radius:13px;background:#fff;box-shadow:0 2px 7px #00000008;padding:7px 9px;gap:8px}
+.browser-form>span{font-size:14px;color:#8e8e93}
+.browser-form input{font-size:13px;padding:8px 2px;color:#333}
+.browser-form button{border-radius:9px;padding:8px 12px}
+.browser-welcome{text-align:center;padding:54px 10px 30px}
+.browser-compass{font-size:47px;filter:drop-shadow(0 3px 5px #0002)}
+.browser-welcome h2{font-size:19px;margin:12px 0 5px}
+.browser-welcome p{font-size:12px;color:#8e8e93}
+.browser-favorites-title{font-size:13px;font-weight:650;margin:8px 4px}
+.browser-shortcuts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0 20px}
+.browser-shortcuts button{min-width:0;gap:7px;font-size:11px}
+.browser-shortcuts span{width:48px;height:48px;border-radius:15px;background:#fff;box-shadow:0 1px 4px #0000000c;font-size:22px;color:#333}
+.browser-shortcuts b{font-weight:500}
+.browser-privacy{display:flex;align-items:center;gap:12px;margin-top:10px;padding:14px;border-radius:14px;background:#fff}
+.browser-privacy>span{font-size:23px}.browser-privacy div{display:flex;flex-direction:column;gap:4px}
+.browser-privacy b{font-size:12px}.browser-privacy small{font-size:10px;line-height:1.5;color:#8e8e93}
+.browser-bottom{display:flex;justify-content:space-around;margin-top:auto;padding:18px 0 3px;color:#7c7c82}
+.browser-bottom button{border:0;background:transparent;color:inherit;font-size:22px}
+.kakao-call-avatar{position:relative!important;width:112px!important;height:112px!important;min-width:112px!important;min-height:112px!important;flex:0 0 112px!important;display:block!important;border-radius:50%!important;overflow:hidden!important;isolation:isolate;line-height:0!important}
+.kakao-call-avatar img{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;object-fit:cover!important;object-position:center!important;border:0!important;border-radius:50%!important}
+.kakao-call-avatar i{display:none!important}
+.kakao-call-avatar:not(.has-photo){display:grid!important;place-items:center!important;line-height:1!important}
