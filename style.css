@@ -1652,3 +1652,8 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.phone-app .phone-voicemail-art svg{width:42px;height:42px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sim-app.phone-app .phone-voicemail-empty b{font-size:17px;line-height:1.35;font-weight:600;color:#77777e}
 .sim-app.phone-app .phone-voicemail-empty p{max-width:230px;margin:0;font-size:13px;line-height:1.55;color:#9a9aa1}
+
+
+/* Center the dial pad vertically in the available Phone tab area. */
+.sim-app.phone-app .phone-tab-content:has(.phone-keypad-wrap){display:flex!important;flex-direction:column!important;justify-content:center!important;padding-top:12px!important;padding-bottom:12px!important;}
+.sim-app.phone-app .phone-keypad-wrap{margin:0 auto!important;}
