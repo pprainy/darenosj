@@ -1640,3 +1640,15 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.phone-app .phone-call-button{width:66px!important;height:58px!important;border-radius:30px!important;display:grid!important;place-items:center!important;padding:0!important;box-shadow:none!important}
 .sim-app.phone-app .phone-call-svg{width:26px!important;height:26px!important;stroke:#fff!important;stroke-width:1.8!important;fill:none!important}
 @media(max-height:700px){.sim-app.phone-app .phone-keypad-wrap{margin-top:8px!important}.sim-app.phone-app .phone-keypad{gap:8px 16px!important;margin-bottom:12px!important}.sim-app.phone-app .phone-keypad button{width:60px!important;height:60px!important}}
+
+
+/* Phone voicemail: quiet iOS-style empty state, scoped to the Phone app. */
+.sim-app.phone-app .phone-voicemail-page{min-height:100%;display:flex;flex-direction:column}
+.sim-app.phone-app .phone-voicemail-page .phone-page-heading{min-height:42px;align-items:center;margin:0 0 8px}
+.sim-app.phone-app .phone-voicemail-page .phone-page-heading h2{font-size:28px;line-height:1.2;font-weight:700;letter-spacing:-.6px}
+.sim-app.phone-app .phone-voicemail-page .phone-edit{font-size:16px;font-weight:500;color:#007aff;padding:8px 2px}
+.sim-app.phone-app .phone-voicemail-empty{flex:1;min-height:300px;height:auto;padding:34px 16px 70px;gap:12px;justify-content:center}
+.sim-app.phone-app .phone-voicemail-art{width:76px;height:76px;display:grid;place-items:center;border-radius:50%;background:#f0f0f5;color:#9a9aa1;margin-bottom:7px}
+.sim-app.phone-app .phone-voicemail-art svg{width:42px;height:42px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sim-app.phone-app .phone-voicemail-empty b{font-size:17px;line-height:1.35;font-weight:600;color:#77777e}
+.sim-app.phone-app .phone-voicemail-empty p{max-width:230px;margin:0;font-size:13px;line-height:1.55;color:#9a9aa1}
