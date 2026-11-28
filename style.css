@@ -1657,3 +1657,15 @@ body { min-height: 100vh; min-height: 100dvh; }
 /* Center the dial pad vertically in the available Phone tab area. */
 .sim-app.phone-app .phone-tab-content:has(.phone-keypad-wrap){display:flex!important;flex-direction:column!important;justify-content:center!important;padding-top:12px!important;padding-bottom:12px!important;}
 .sim-app.phone-app .phone-keypad-wrap{margin:0 auto!important;}
+
+
+/* KakaoTalk bottom navigation: crisp, consistent SVG line icons. */
+.kakaotalk .social-tabbar{background:#fff;border-top:1px solid #ececef;padding:5px 5px max(5px,env(safe-area-inset-bottom));}
+.kakaotalk .social-tabbar button{gap:4px;color:#8b8b90;}
+.kakaotalk .social-tabbar button span{width:25px;height:25px;display:grid;place-items:center;font-size:0;line-height:1;}
+.kakaotalk .social-tabbar button span svg{display:block;width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round;}
+.kakaotalk .social-tabbar button[data-tab="more"] span svg circle{fill:currentColor;stroke:none;}
+.kakaotalk .social-tabbar button small{font-size:10px;line-height:13px;font-weight:500;}
+.kakaotalk .social-tabbar button.active{color:#252525;}
+.kakaotalk .social-tabbar button.active span svg{stroke-width:2;}
+.kakaotalk .social-tabbar button.active[data-tab="more"] span svg circle{fill:currentColor;}
