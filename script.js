@@ -393,7 +393,14 @@ function renderApp(name){
   (saved.calls||[]).forEach(call=>{if(!call.id||usedCallIds.has(call.id))call.id=createCallId();usedCallIds.add(call.id)});
   persist();
   const tab=saved.phoneTab||'recent', calls=saved.calls||[], contacts=saved.contacts||[];
-  const tabs=[['favorites','☆','个人收藏'],['recent','◷','最近通话'],['contacts','♙','通讯录'],['keypad','▦','拨号键盘'],['voicemail','▣','语音留言']];
+  const phoneTabIcon=(name)=>{const paths={
+  favorites:'<path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/>',
+  recent:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+  contacts:'<circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M17 8h4M17 12h4M17 16h4"/>',
+  keypad:'<circle cx="6" cy="5" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="18" cy="5" r="1"/><circle cx="6" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="18" cy="12" r="1"/><circle cx="6" cy="19" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="18" cy="19" r="1"/>',
+  voicemail:'<path d="M7 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm10 0a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM7 16h10"/>'
+  };return '<svg aria-hidden="true" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="display:block">'+(paths[name]||paths.recent)+'</svg>'};
+    const tabs=[['favorites','favorites','个人收藏'],['recent','recent','最近通话'],['contacts','contacts','通讯录'],['keypad','keypad','拨号键盘'],['voicemail','voicemail','语音留言']];
   let body='';
   if(tab==='recent'){
    const filter=saved.phoneFilter||'all', editing=!!saved.phoneEditing;
@@ -416,7 +423,7 @@ function renderApp(name){
   if(tab==='contacts') body=`<div class="phone-page-heading"><h2>通讯录</h2><button class="phone-add" data-action="new-contact" aria-label="添加联系人">＋</button></div><div id="contactEditor"></div><input class="phone-search" id="contactSearch" placeholder="搜索"><div class="phone-list">${contacts.map(p=>`<button class="phone-contact-row" data-action="phone-contact-call" data-person="${esc(p.name)}">${avatarMarkup(p.name,'phone-avatar')}<span>${esc(p.name)}</span><small>›</small></button>`).join('')}</div>`;
   if(tab==='keypad') body=`<div class="phone-keypad-wrap"><div class="phone-number-field"><input id="dialNumber" type="tel" inputmode="tel" autocomplete="tel" placeholder="输入电话号码" aria-label="电话号码" value="${esc(saved.phoneDialNumber||'')}"><button type="button" data-action="phone-backspace" aria-label="删除号码">⌫</button></div><div class="phone-keypad">${[['1',''],['2','ABC'],['3','DEF'],['4','GHI'],['5','JKL'],['6','MNO'],['7','PQRS'],['8','TUV'],['9','WXYZ'],['*',''],['0','+'],['#','']].map(([n,l])=>`<button data-action="phone-key" data-key="${n}"><b>${n}</b><small>${l}</small></button>`).join('')}</div><button class="phone-call-button" data-action="dial-call" aria-label="呼叫">☎</button></div>`;
   if(tab==='voicemail') body=`<div class="phone-page-heading"><h2>语音留言</h2><button class="phone-edit">编辑</button></div><div class="phone-voicemail-empty"><div>▣</div><b>没有语音留言</b><p>收到的语音留言会显示在这里。</p></div>`;
-  c.innerHTML=`<div class="sim-app phone-app"><main class="phone-tab-content">${body}</main><nav class="phone-tabbar">${tabs.map(([k,ico,label])=>`<button class="${tab===k?'active':''}" data-action="phone-tab" data-tab="${k}"><span>${ico}</span><small>${label}</small></button>`).join('')}</nav></div>`;return;
+  c.innerHTML=`<div class="sim-app phone-app"><main class="phone-tab-content">${body}</main><nav class="phone-tabbar">${tabs.map(([k,ico,label])=>`<button type="button" class="${tab===k?'active':''}" data-action="phone-tab" data-tab="${k}" aria-label="${label}"><span>${phoneTabIcon(ico)}</span><small>${label}</small></button>`).join('')}</nav></div>`;return;
  }
  if(name==='mail'){
   const items=saved.mail||[];
