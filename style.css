@@ -1613,3 +1613,14 @@ body { min-height: 100vh; min-height: 100dvh; }
 .xhs-mini-avatar{display:inline-flex!important;align-items:center!important;justify-content:center!important;font-size:12px!important;font-weight:650!important;color:#fff!important;background:#9aa6b2!important}
 .xhs-mini-avatar .ui-icon{width:16px;height:16px;stroke:#fff}
 .browser-form>span,.browser-privacy>span,.browser-compass{display:inline-flex;align-items:center;justify-content:center}
+
+
+/* Phone app bottom navigation: SVG line icons and a flush, gap-free bottom edge. */
+.app-view.open:has(.sim-app.phone-app)>.app-content{display:flex!important;flex-direction:column!important;align-items:stretch!important;height:100%!important;min-height:0!important;padding:0!important;margin:0!important;overflow:hidden!important;box-sizing:border-box!important}
+.app-view.open:has(.sim-app.phone-app)>.app-content>.sim-app.phone-app{height:100%!important;min-height:0!important;max-height:100%!important;flex:1 1 auto!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;box-sizing:border-box!important}
+.sim-app.phone-app>.phone-tab-content{flex:1 1 0!important;min-height:0!important;overflow-y:auto!important}
+.sim-app.phone-app>.phone-tabbar{position:relative!important;inset:auto!important;flex:0 0 68px!important;width:100%!important;height:68px!important;min-height:68px!important;margin:0!important;padding:4px 2px!important;box-sizing:border-box!important;border-top:1px solid #d8d8dc!important;border-radius:0!important;background:#f8f8fa!important;display:flex!important;align-items:center!important}
+.sim-app.phone-app>.phone-tabbar button{height:100%!important;min-height:0!important;padding:0!important;gap:3px!important;display:flex!important;flex:1 1 0!important;align-items:center!important;justify-content:center!important}
+.sim-app.phone-app>.phone-tabbar button span{height:25px!important;display:grid!important;place-items:center!important;font-size:0!important;line-height:1!important}
+.sim-app.phone-app>.phone-tabbar button span svg{width:23px!important;height:23px!important;display:block!important}
+.sim-app.phone-app>.phone-tabbar button small{font-size:10px!important;line-height:13px!important}
