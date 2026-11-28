@@ -1669,3 +1669,10 @@ body { min-height: 100vh; min-height: 100dvh; }
 .kakaotalk .social-tabbar button.active{color:#252525;}
 .kakaotalk .social-tabbar button.active span svg{stroke-width:2;}
 .kakaotalk .social-tabbar button.active[data-tab="more"] span svg circle{fill:currentColor;}
+
+
+/* KakaoTalk Open Chat and More pages: replace text glyphs with matching SVG line icons. */
+.kakaotalk .social-feature-list>button>span{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;color:#555;font-size:0;}
+.kakaotalk .social-feature-list>button>span svg{display:block;width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.kakaotalk .social-chat-tools button svg{display:block;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.kakaotalk .social-open-hero button{cursor:pointer;}
