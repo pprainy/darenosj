@@ -1624,3 +1624,19 @@ body { min-height: 100vh; min-height: 100dvh; }
 .sim-app.phone-app>.phone-tabbar button span{height:25px!important;display:grid!important;place-items:center!important;font-size:0!important;line-height:1!important}
 .sim-app.phone-app>.phone-tabbar button span svg{width:23px!important;height:23px!important;display:block!important}
 .sim-app.phone-app>.phone-tabbar button small{font-size:10px!important;line-height:13px!important}
+
+
+/* Phone dial keypad: consistent vector controls and balanced dialer spacing. */
+.sim-app.phone-app .phone-keypad-wrap{width:min(100%,320px)!important;max-width:320px!important;margin:18px auto 0!important;padding:0 4px 12px!important;box-sizing:border-box!important;display:flex!important;flex-direction:column!important;align-items:center!important}
+.sim-app.phone-app .phone-number-field{width:100%!important;min-height:58px!important;margin:0 0 22px!important;padding:0 4px!important;box-sizing:border-box!important}
+.sim-app.phone-app .phone-number-field input{font-variant-numeric:tabular-nums!important;letter-spacing:1.2px!important}
+.sim-app.phone-app .phone-number-field button{width:40px!important;height:40px!important;display:grid!important;place-items:center!important;padding:8px!important}
+.sim-app.phone-app .phone-dial-svg{width:23px!important;height:23px!important;display:block!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.sim-app.phone-app .phone-keypad{width:100%!important;max-width:276px!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px 18px!important;margin:0 auto 20px!important}
+.sim-app.phone-app .phone-keypad button{width:68px!important;height:68px!important;min-width:0!important;aspect-ratio:1!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}
+.sim-app.phone-app .phone-keypad button:active{background:#d1d1d6!important;transform:scale(.97)!important}
+.sim-app.phone-app .phone-keypad button b{font-size:29px!important;line-height:31px!important;font-variant-numeric:tabular-nums!important}
+.sim-app.phone-app .phone-keypad button small{font-size:9px!important;line-height:11px!important}
+.sim-app.phone-app .phone-call-button{width:66px!important;height:58px!important;border-radius:30px!important;display:grid!important;place-items:center!important;padding:0!important;box-shadow:none!important}
+.sim-app.phone-app .phone-call-svg{width:26px!important;height:26px!important;stroke:#fff!important;stroke-width:1.8!important;fill:none!important}
+@media(max-height:700px){.sim-app.phone-app .phone-keypad-wrap{margin-top:8px!important}.sim-app.phone-app .phone-keypad{gap:8px 16px!important;margin-bottom:12px!important}.sim-app.phone-app .phone-keypad button{width:60px!important;height:60px!important}}
